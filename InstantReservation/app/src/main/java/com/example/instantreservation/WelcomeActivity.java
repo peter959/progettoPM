@@ -16,7 +16,7 @@ public class WelcomeActivity extends AppCompatActivity {
     MaterialRippleLayout btnRegister;
     MaterialRippleLayout btnSignIn;
 
-    @Override
+   /* @Override
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
@@ -27,7 +27,7 @@ public class WelcomeActivity extends AppCompatActivity {
             startActivity(intent);
         }
         //updateUI(currentUser);
-    }
+    }*/
 
 
     @Override

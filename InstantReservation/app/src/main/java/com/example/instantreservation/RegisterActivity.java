@@ -60,14 +60,18 @@ public class RegisterActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         getSupportActionBar().setTitle("");
         
-        name = ETname.getText().toString();
+
 
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                name = ETname.getText().toString();
+                email = ETemail.getText().toString();
+                password = ETpassword.getText().toString();
+
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
@@ -85,7 +89,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                                 // ...
                             }
-                        });*/
+                        });
             }
         });
     }

@@ -19,7 +19,11 @@
         <item name="mrl_rippleOverlay">true</item>
         <item name="mrl_rippleColor">#FFF</item>
         <item name="mrl_rippleAlpha">0.2</item>
+    </style>
 
+    <!-- splash screen theme -->
+    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
 </resources>
