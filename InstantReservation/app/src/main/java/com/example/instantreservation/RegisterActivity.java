@@ -78,6 +78,9 @@ public class RegisterActivity extends AppCompatActivity {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d("Register", "createUserWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
                                     //updateUI(user);
                                 } else {
                                     // If sign in fails, display a message to the user.
