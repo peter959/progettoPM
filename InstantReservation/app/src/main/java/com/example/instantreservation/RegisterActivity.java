@@ -106,22 +106,21 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
-                btnSignUp.setVisibility(View.GONE);
 
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                progressButton.buttonFinished("DONE");
 
                                 if (task.isSuccessful()) {
+                                    progressButton.buttonFinished("DONE");
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d("Register", "createUserWithEmail:success");
 
-                                    FirebaseUser firebaseUuser = mAuth.getCurrentUser();
+                                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
 
                                     User user = new User(name, email, phone);
-                                    mDatabase.child("users").child(firebaseUuser.getUid()).setValue(user);
+                                    mDatabase.child("users").child(firebaseUser.getUid()).setValue(user);
 
                                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                     startActivity(intent);

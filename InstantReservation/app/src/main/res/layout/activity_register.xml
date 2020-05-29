@@ -226,12 +226,17 @@
                             android:layout_marginBottom="10dp"
                             android:inputType="textPassword"
                             />
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1">
 
                         <include
                             android:id="@+id/btn_sign_up"
                             layout="@layout/progress_btn_layout"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"/>
+                        </RelativeLayout>
 
                     </LinearLayout>
 
