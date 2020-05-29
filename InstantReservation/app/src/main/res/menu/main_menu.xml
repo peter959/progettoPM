@@ -14,6 +14,12 @@
         android:icon="@drawable/ic_add_item"
         app:showAsAction="never"
         />
+    <item
+        android:id="@+id/log_out"
+        android:title="Log out"
+        android:icon="@drawable/ic_add_item"
+        app:showAsAction="never"
+        />
 
     <item
         android:id="@+id/search_item"

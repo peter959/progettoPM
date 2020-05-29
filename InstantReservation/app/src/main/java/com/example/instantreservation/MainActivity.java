@@ -16,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     TextView titlepage, endpage, subtitlepage;
     Button btnAddNew;
+    private FirebaseAuth mAuth;
 
     //dichiaro gli oggetti corrispondenti ai componenti grafici
     DatabaseReference reference;
@@ -36,12 +39,12 @@ public class MainActivity extends AppCompatActivity {
     DoesAdapter doesAdapter;
     Toolbar toolbar;
 
-    MyDoes test = new MyDoes("bla bla", "aksjhf", "ldjash", "1213404");
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mAuth = FirebaseAuth.getInstance();
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -53,9 +56,10 @@ public class MainActivity extends AppCompatActivity {
         subtitlepage = findViewById(R.id.subtitlepage);
         btnAddNew = findViewById(R.id.btnAddNew);
         ourdoes = findViewById(R.id.ourdoes);
+
         //btnAddNew.setTypeface();
 
-        //cliccanso sul bottone + si apre l'activity per generare un nuovo does
+        //cliccando sul bottone + si apre l'activity per generare un nuovo does
         btnAddNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,11 +111,16 @@ public class MainActivity extends AppCompatActivity {
 
         switch (id) {
             case R.id.add_item:
-                Toast.makeText(getApplicationContext(), "item aggiunto", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Item added", Toast.LENGTH_SHORT).show();
                 break;
-
             case R.id.settings_item:
-                Toast.makeText(getApplicationContext(), "settings", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Settings", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.log_out:
+                mAuth.signOut();
+                Toast.makeText(getApplicationContext(), "ByeBye", Toast.LENGTH_SHORT).show();
+                Intent a = new Intent(MainActivity.this, WelcomeActivity.class);
+                startActivity(a);
                 break;
         }
 
