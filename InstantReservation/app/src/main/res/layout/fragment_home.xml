@@ -12,9 +12,12 @@
         tools:showIn="@layout/app_bar_main"
         style="@style/parent.contentLayout">
 
-        <androidx.core.widget.NestedScrollView
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:isScrollContainer="false"
+            android:requiresFadingEdge="vertical"
+            android:fadingEdgeLength="40dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -22,7 +25,8 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:text="Hello Kapil!"
+                    android:id="@+id/hello_name"
+                    android:text="Hello Bitches!"
                     style="@style/viewParent.headerText" />
 
                 <RelativeLayout
@@ -143,6 +147,116 @@
 
                 </RelativeLayout>
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp">
+
+                    <TextView
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:text="Popular Courses"
+                        style="@style/viewParent.headerText"/>
+
+                    <TextView
+                        android:layout_alignParentRight="true"
+                        style="@style/viewParent"
+                        android:text="See All"
+                        android:layout_centerVertical="true"
+                        android:textSize="@dimen/headerMoreTextSize"
+                        android:textColor="@color/primaryTextColor"
+                        android:textStyle="bold"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+
+                <TextView
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:text="Popular Courses"
+                    style="@style/viewParent.headerText"/>
+
+                <TextView
+                    android:layout_alignParentRight="true"
+                    style="@style/viewParent"
+                    android:text="See All"
+                    android:layout_centerVertical="true"
+                    android:textSize="@dimen/headerMoreTextSize"
+                    android:textColor="@color/primaryTextColor"
+                    android:textStyle="bold"/>
+
+            </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp">
+
+                    <TextView
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:text="Popular Courses"
+                        style="@style/viewParent.headerText"/>
+
+                    <TextView
+                        android:layout_alignParentRight="true"
+                        style="@style/viewParent"
+                        android:text="See All"
+                        android:layout_centerVertical="true"
+                        android:textSize="@dimen/headerMoreTextSize"
+                        android:textColor="@color/primaryTextColor"
+                        android:textStyle="bold"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp">
+
+                    <TextView
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:text="Popular Courses"
+                        style="@style/viewParent.headerText"/>
+
+                    <TextView
+                        android:layout_alignParentRight="true"
+                        style="@style/viewParent"
+                        android:text="See All"
+                        android:layout_centerVertical="true"
+                        android:textSize="@dimen/headerMoreTextSize"
+                        android:textColor="@color/primaryTextColor"
+                        android:textStyle="bold"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp">
+
+                    <TextView
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:text="Popular Courses"
+                        style="@style/viewParent.headerText"/>
+
+                    <TextView
+                        android:layout_alignParentRight="true"
+                        style="@style/viewParent"
+                        android:text="See All"
+                        android:layout_centerVertical="true"
+                        android:textSize="@dimen/headerMoreTextSize"
+                        android:textColor="@color/primaryTextColor"
+                        android:textStyle="bold"/>
+
+                </RelativeLayout>
+
                 <!--remove the below layout with recycler view, use card poplar courses as model for design-->
 
                 <LinearLayout
@@ -194,7 +308,7 @@
                 </LinearLayout>
 
             </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+        </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -59,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
-   // SharedPreferences settings;
+    SharedPreferences settings;
 
     //Button btnSignUp;
     View btnSignUp;
@@ -125,9 +125,13 @@ public class RegisterActivity extends AppCompatActivity {
                                     mDatabase.child("users").child(firebaseUser.getUid()).setValue(user);
 
                                     //SHARED PREFERENCES
-                                    //settings = getPreferences(MODE_PRIVATE);
-                                   // SharedPreferences.Editor editor = settings.edit();
-                                    //editor.putString("userUID", firebaseUser.getUid());
+                                    settings = getPreferences(MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = settings.edit();
+                                    editor.putString("userUID", firebaseUser.getUid());
+                                    editor.putString("userName", name);
+                                    editor.putString("userEmail", email);
+                                    editor.putString("userPhone", phone);
+                                    editor.commit();
                                     //SHARED PREFERENCES
 
                                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
