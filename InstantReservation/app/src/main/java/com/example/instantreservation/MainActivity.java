@@ -1,129 +1,122 @@
 package com.example.instantreservation;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-import android.view.Menu;
+//import androidx.support.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView titlepage, endpage, subtitlepage;
-    Button btnAddNew;
-    private FirebaseAuth mAuth;
+    private BottomNavigationView bottomNavigationView;
+    private Toolbar toolbar;
 
-    //dichiaro gli oggetti corrispondenti ai componenti grafici
-    DatabaseReference reference;
-    RecyclerView ourdoes;
-    ArrayList<MyDoes> list;
-    DoesAdapter doesAdapter;
-    Toolbar toolbar;
+    final Fragment profileFragment = new ProfileFragment();
+    final Fragment homeFragment = new HomeFragment();
+    final FragmentManager fm = getSupportFragmentManager();
+    Fragment active = homeFragment;
 
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigationMyProfile:
+                    //fragment =
+                    fm.beginTransaction().hide(active).show(profileFragment).commit();
+                    active = profileFragment;
+                    return true;
+                case R.id.navigationFavorites:
+                    return true;
+                case R.id.navigationHome:
+                    fm.beginTransaction().hide(active).show(homeFragment).commit();
+                    active = homeFragment;
+                    return true;
+                case R.id.navigationSearch:
+
+                    return true;
+                case R.id.navigationCamera:
+                    //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                    // drawer.openDrawer(GravityCompat.START);
+                    return true;
+            }
+            return false;
+        }
+    };
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAuth = FirebaseAuth.getInstance();
-
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setTitle("Hi ");
 
-        // inizializzo gli oggetti corrispondenti ai componenti grafici
-        titlepage = findViewById(R.id.titlepage);
-        endpage = findViewById(R.id.endpage);
-        subtitlepage = findViewById(R.id.subtitlepage);
-        btnAddNew = findViewById(R.id.btnAddNew);
-        ourdoes = findViewById(R.id.ourdoes);
+        fm.beginTransaction().add(R.id.main_container,profileFragment,"2").hide(profileFragment).commit();
+        fm.beginTransaction().add(R.id.main_container,homeFragment, "1").commit();
 
-        //btnAddNew.setTypeface();
 
-        //cliccando sul bottone + si apre l'activity per generare un nuovo does
-        btnAddNew.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //intent che consente di navifare alla activity NewTaskAct
-                Intent a = new Intent(MainActivity.this, WelcomeActivity.class);
-                startActivity(a);
-            }
-        });
+        bottomNavigationView = findViewById(R.id.navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        //working with data
-        ourdoes.setLayoutManager(new LinearLayoutManager(this));
-        list = new ArrayList<MyDoes>();
+       /* CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationBehavior());*/
 
-        //get data from database
-        reference = FirebaseDatabase.getInstance().getReference().child("DoesApp");
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // set code to retrive data
-                for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
-                    //preleva dati da firebase e li inserisce in un oggetto MyDoes
-                    MyDoes p = dataSnapshot1.getValue(MyDoes.class);
-                    list.add(p);
-                }
-                doesAdapter = new DoesAdapter(MainActivity.this, list);
-                ourdoes.setAdapter(doesAdapter);
-                doesAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                //set code to show an error
-                Toast.makeText(getApplicationContext(), "No Data", Toast.LENGTH_SHORT).show();
-            }
-        });
+        bottomNavigationView.setSelectedItemId(R.id.navigationHome);
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
+   /* @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }*/
 
+    /*
+    @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        switch (id) {
-            case R.id.add_item:
-                Toast.makeText(getApplicationContext(), "Item added", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.settings_item:
-                Toast.makeText(getApplicationContext(), "Settings", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.log_out:
-                mAuth.signOut();
-                Toast.makeText(getApplicationContext(), "ByeBye", Toast.LENGTH_SHORT).show();
-                Intent a = new Intent(MainActivity.this, WelcomeActivity.class);
-                startActivity(a);
-                break;
+        if (id == R.id.nav_camera) {
+            // Handle the camera action
+        } else if (id == R.id.nav_gallery) {
+
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_dark_mode) {
+            //code for setting dark mode
+            //true for dark mode, false for day mode, currently toggling on each click
+           //DarkModePrefManager darkModePrefManager = new DarkModePrefManager(this);
+          //  darkModePrefManager.setDarkMode(!darkModePrefManager.isNightMode());
+          //  AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            recreate();
+
         }
 
-        return super.onOptionsItemSelected(item);
-    }
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }*/
+
 }

@@ -3,8 +3,13 @@ package com.example.instantreservation;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Shader;
 import android.os.Bundle;
+import android.text.TextPaint;
 import android.view.View;
+import android.widget.TextView;
 
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -15,6 +20,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     MaterialRippleLayout btnRegister;
     MaterialRippleLayout btnSignIn;
+    TextView title;
 
    /* @Override
     public void onStart() {
@@ -30,10 +36,24 @@ public class WelcomeActivity extends AppCompatActivity {
     }*/
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+
+        title = (TextView) findViewById(R.id.txt_title);
+
+        TextPaint paint = title.getPaint();
+        float width = paint.measureText("Instant Reservation");
+
+        Shader textShader = new LinearGradient(0, 0, width, title.getTextSize(),
+                new int[]{
+                        Color.parseColor("#C55BEA"),
+                        Color.parseColor("#E75375"),
+                }, null, Shader.TileMode.CLAMP);
+        title.getPaint().setShader(textShader);
+
 
         //mAuth = FirebaseAuth.getInstance();
         btnRegister = findViewById(R.id.btnRegister);

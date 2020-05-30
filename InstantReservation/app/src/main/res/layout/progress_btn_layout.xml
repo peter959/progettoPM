@@ -12,7 +12,6 @@
         android:id="@+id/card_btn"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +22,7 @@
             android:id="@+id/constraint_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/background">
+            android:background="@drawable/background_gradient">
 
             <ProgressBar
                 android:id="@+id/progressBar"
