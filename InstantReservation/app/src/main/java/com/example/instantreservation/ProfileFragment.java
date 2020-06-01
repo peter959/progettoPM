@@ -17,6 +17,7 @@ public class ProfileFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private SharedPreferences userInfo;
 
 
     private String mParam1;
@@ -53,11 +54,14 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         View returnView = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        Bundle args = getArguments();
-        String name = args.getString("name");
+        userInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        String name = userInfo.getString("userName" , "null");
+        String email = userInfo.getString("userEmail" , "null");
 
-        TextView tv_name = (TextView) returnView.findViewById(R.id.name);
-        tv_name.setText(name);
+        TextView tv_userName = (TextView) returnView.findViewById(R.id.userName);
+        TextView tv_userEmail = (TextView) returnView.findViewById(R.id.userEmail);
+        tv_userName.setText(name);
+        tv_userEmail.setText(email);
         // Inflate the layout for this fragment
         return returnView;
     }
