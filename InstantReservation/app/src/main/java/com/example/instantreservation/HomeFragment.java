@@ -66,9 +66,13 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View returnView = inflater.inflate(R.layout.fragment_home, container, false);
+
+        Bundle args = getArguments();
+        String name = args.getString("name");
+
         // Inflate the layout for this fragment
         TextView hello_name = (TextView) returnView.findViewById(R.id.hello_name);
-        hello_name.setText("a bello!");
+        hello_name.setText(name);
 
         return returnView;
     }
