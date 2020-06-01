@@ -16,6 +16,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.zxing.WriterException;
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 import androidx.fragment.app.Fragment;
@@ -61,7 +64,13 @@ public class FavoritesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View returnView = inflater.inflate(R.layout.fragment_favorites, container, false);
 
-        QRGEncoder qrgEncoder = new QRGEncoder("Ciaone", null, QRGContents.Type.TEXT, 50);
+        JSONObject json = new JSONObject();
+        try {
+            json.put("id","3rhfduhsj298dh3f2de9k");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        QRGEncoder qrgEncoder = new QRGEncoder(json.toString(), null, QRGContents.Type.TEXT, 350);
         try {
             // Getting QR-Code as Bitmap
             Bitmap bitmap = qrgEncoder.encodeAsBitmap();
