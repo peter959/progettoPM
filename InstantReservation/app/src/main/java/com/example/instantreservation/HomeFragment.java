@@ -76,7 +76,7 @@ public class HomeFragment extends Fragment {
 
         // Inflate the layout for this fragment
         TextView hello_name = (TextView) returnView.findViewById(R.id.hello_name);
-        hello_name.setText(name);
+        hello_name.setText("Hello " + name + "!");
 
         return returnView;
     }

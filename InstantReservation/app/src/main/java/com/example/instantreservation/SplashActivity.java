@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class SplashActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+
     /*
     @Override
     public void onStart() {

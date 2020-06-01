@@ -1,6 +1,8 @@
 package com.example.instantreservation;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -22,26 +24,22 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static final Pattern PASSWORD_PATTERN =
-            Pattern.compile("^" +
-                    //"(?=.*[0-9])" +         //at least 1 digit
-                    //"(?=.*[a-z])" +         //at least 1 lower case letter
-                    //"(?=.*[A-Z])" +         //at least 1 upper case letter
-                    "(?=.*[a-zA-Z])" +      //any letter
-                    //"(?=.*[@#$%^&+=])" +    //at least 1 special character
-                    "(?=\\S+$)" +           //no white spaces
-                    ".{4,}" +               //at least 4 characters
-                    "$");
+    private DatabaseReference mDatabase;
+    private FirebaseAuth mAuth;
+    private FirebaseUser firebaseUser;
 
     View btnLogIn;
     ProgressButton progressButton;
-    private FirebaseAuth mAuth;
-
     EditText ETemail, ETpassword;
     String email, password;
 
@@ -70,21 +68,13 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         getSupportActionBar().setTitle("");
 
-
-
         btnLogIn = findViewById(R.id.btn_sign_in);
         progressButton = new ProgressButton(LoginActivity.this, btnLogIn, "LOG IN");
-
-
         ETemail = findViewById(R.id.edit_text_email);
         ETpassword = findViewById(R.id.edit_text_password);
 
         //initialize Validation Style
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
-
-        //Add Validation for mail
-        //awesomeValidation.addValidation(this, R.id.edit_text_email, RegexTemplate.NOT_EMPTY,R.string.invalid_email);
-
 
         btnLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,12 +95,30 @@ public class LoginActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     progressButton.buttonFinished("DONE");
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Log.d("LOG IN", "signInWithEmail:success");
-                                    Toast.makeText(LoginActivity.this, "Authentication Success.",
-                                            Toast.LENGTH_SHORT).show();
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    //updateUI(user);
+
+                                    firebaseUser = mAuth.getCurrentUser();
+                                    mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid());
+                                    mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            String name =  dataSnapshot.child("fullname").getValue().toString();
+                                            String phone =  dataSnapshot.child("phone").getValue().toString();
+                                            //SHARED PREFERENCES
+                                            SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                                            editor.putString("userUID", firebaseUser.getUid());
+                                            editor.putString("userName", name);
+                                            editor.putString("userEmail", email);
+                                            editor.putString("userPhone", phone);
+                                            editor.commit();
+                                            //SHARED PREFERENCES
+                                            System.out.println("-------Logged: email: " + email + ", name: " + name + ", phone:" + phone + ", UID: " + firebaseUser.getUid());
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {}
+                                    });
+
                                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                     startActivity(intent);
                                     finish();
@@ -121,8 +129,6 @@ public class LoginActivity extends AppCompatActivity {
                                     Log.d("LOG IN", "<" + email + " " + password + ">");
                                     Toast.makeText(LoginActivity.this, "Authentication failed.",
                                             Toast.LENGTH_SHORT).show();
-                                    //updateUI(null);
-                                    // ...
                                 }
 
                                 // ...
@@ -170,6 +176,17 @@ public class LoginActivity extends AppCompatActivity {
             return true;
         }
     }
+
+    private static final Pattern PASSWORD_PATTERN =
+            Pattern.compile("^" +
+                    //"(?=.*[0-9])" +         //at least 1 digit
+                    //"(?=.*[a-z])" +         //at least 1 lower case letter
+                    //"(?=.*[A-Z])" +         //at least 1 upper case letter
+                    "(?=.*[a-zA-Z])" +      //any letter
+                    //"(?=.*[@#$%^&+=])" +    //at least 1 special character
+                    "(?=\\S+$)" +           //no white spaces
+                    ".{4,}" +               //at least 4 characters
+                    "$");
 
 }
 
