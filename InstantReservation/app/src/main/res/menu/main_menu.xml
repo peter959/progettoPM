@@ -25,6 +25,6 @@
         android:id="@+id/search_item"
         android:title="search"
         android:icon="@drawable/ic_search"
-        app:showAsAction="always"
+        app:showAsAction="never"
         app:actionViewClass="android.widget.SearchView" />
 </menu>

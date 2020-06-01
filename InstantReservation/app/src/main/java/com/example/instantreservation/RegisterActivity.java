@@ -1,6 +1,7 @@
 package com.example.instantreservation;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -59,7 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
-    SharedPreferences settings;
+    private SharedPreferences settings;
 
     //Button btnSignUp;
     View btnSignUp;
@@ -125,8 +126,8 @@ public class RegisterActivity extends AppCompatActivity {
                                     mDatabase.child("users").child(firebaseUser.getUid()).setValue(user);
 
                                     //SHARED PREFERENCES
-                                    settings = getPreferences(MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = settings.edit();
+                                    SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
                                     editor.putString("userUID", firebaseUser.getUid());
                                     editor.putString("userName", name);
                                     editor.putString("userEmail", email);

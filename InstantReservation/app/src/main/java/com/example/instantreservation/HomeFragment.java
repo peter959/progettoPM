@@ -1,5 +1,7 @@
 package com.example.instantreservation;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -21,6 +23,8 @@ public class HomeFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private SharedPreferences userInfo;
+
 
     private TextView hello_name;
 
@@ -67,8 +71,8 @@ public class HomeFragment extends Fragment {
 
         View returnView = inflater.inflate(R.layout.fragment_home, container, false);
 
-        Bundle args = getArguments();
-        String name = args.getString("name");
+        userInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        String name = userInfo.getString("userName" , "null");
 
         // Inflate the layout for this fragment
         TextView hello_name = (TextView) returnView.findViewById(R.id.hello_name);
