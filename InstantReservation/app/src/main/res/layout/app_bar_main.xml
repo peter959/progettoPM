@@ -36,8 +36,8 @@
         app:menu="@menu/master_bottom_navigation"
         app:elevation="10dp"
         app:labelVisibilityMode="labeled"
-        app:itemIconTint="@color/bottomNavigationTintColor"
-        app:itemTextColor="@color/bottomNavigationTextColor"
+        app:itemIconTint="@drawable/menu_selected_colors"
+        app:itemTextColor="@drawable/menu_selected_colors"
         app:itemBackground="@color/bottomNavigationBackground"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

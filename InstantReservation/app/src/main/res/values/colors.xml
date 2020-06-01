@@ -11,10 +11,6 @@
     <color name="contentTextColor">#fff</color>
     <color name="bottomNavigationBackground">#2A2E43</color>
 
-    <color name="bottomNavigationTextColor">#B2B2B2</color>
-    <color name="bottomNavigationTintColor">#B2B2B2</color>
-    <color name="bottomNavigationSelectedColor">#FC4926</color>
-
     <color name="statusBarColor">#000</color>
     <color name="whiteBodyColor">#FCFCFC</color>
     <color name="darkTextColor">#020000</color>

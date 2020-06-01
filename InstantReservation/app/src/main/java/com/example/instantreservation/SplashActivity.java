@@ -35,7 +35,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         mAuth = FirebaseAuth.getInstance();
-        mAuth.signOut();
+        //mAuth.signOut();
         try {
             Thread.sleep(1000L);
         } catch (InterruptedException e) {

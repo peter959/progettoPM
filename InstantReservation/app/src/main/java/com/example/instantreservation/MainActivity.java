@@ -101,9 +101,9 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     //user = dataSnapshot.getValue(User.class);
-                    email =  dataSnapshot.child("email").getValue().toString();
-                    name =  dataSnapshot.child("fullname").getValue().toString();
-                    System.out.println("AAAAAAAAAAAAQAAAAAAAAAAAAAAAA" + email + " " + name);
+                   // email =  dataSnapshot.child("email").getValue().toString();
+                  //  name =  dataSnapshot.child("fullname").getValue().toString();
+                  //  System.out.println("AAAAAAAAAAAAQAAAAAAAAAAAAAAAA" + email + " " + name);
                 }
 
                 @Override
@@ -112,11 +112,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            Bundle args = new Bundle();
-            args.putString("name", "name");
-            args.putString("email", "email");
-            profileFragment.setArguments(args);
-            homeFragment.setArguments(args);
+            //Bundle args = new Bundle();
+            //args.putString("name", "name");
+            //args.putString("email", "email");
+            //profileFragment.setArguments(args);
+            //homeFragment.setArguments(args);
 
         }
         else {
