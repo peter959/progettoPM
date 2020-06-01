@@ -16,14 +16,16 @@
         android:padding="10dp">
 
         <androidx.cardview.widget.CardView
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:background="@android:color/transparent"
             app:cardCornerRadius="20dp">
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:cropToPadding="true"
             android:src="@drawable/resturant_example" />
@@ -43,7 +45,7 @@
             android:text="Activity name, City, Country"
             android:textStyle="bold"
             android:textSize="12sp"
-            android:textColor="#000"/>
+            android:textColor="#000" />
     </LinearLayout>
 
     <androidx.cardview.widget.CardView

@@ -1,6 +1,7 @@
 package com.example.instantreservation;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -10,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class ProfileFragment extends Fragment {
@@ -22,6 +25,8 @@ public class ProfileFragment extends Fragment {
 
     private String mParam1;
     private String mParam2;
+
+    private FirebaseAuth mAuth;
 
 
 
@@ -45,7 +50,6 @@ public class ProfileFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-
         }
     }
 
@@ -54,15 +58,33 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         View returnView = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        mAuth = FirebaseAuth.getInstance();
+
         userInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
-        String name = userInfo.getString("userName" , "null");
-        String email = userInfo.getString("userEmail" , "null");
+        String name = userInfo.getString("userName" , "name");
+        String email = userInfo.getString("userEmail" , "email");
+
 
         TextView tv_userName = (TextView) returnView.findViewById(R.id.userName);
         TextView tv_userEmail = (TextView) returnView.findViewById(R.id.userEmail);
+
         tv_userName.setText(name);
         tv_userEmail.setText(email);
         // Inflate the layout for this fragment
+
+        final TextView logout = (TextView) returnView.findViewById(R.id.txt_log_out);
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                Intent intent = new Intent(getContext(), WelcomeActivity.class);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+
+
         return returnView;
     }
 }
