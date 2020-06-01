@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     final Fragment profileFragment = new ProfileFragment();
     final Fragment homeFragment = new HomeFragment();
+    final Fragment searchFragment = new SearchFragment();
     final FragmentManager fm = getSupportFragmentManager();
     Fragment active = homeFragment;
 
@@ -73,7 +75,8 @@ public class MainActivity extends AppCompatActivity {
                     active = homeFragment;
                     return true;
                 case R.id.navigationSearch:
-
+                    fm.beginTransaction().hide(active).show(searchFragment).commit();
+                    active = searchFragment;
                     return true;
                 case R.id.navigationCamera:
                     //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -137,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        fm.beginTransaction().add(R.id.main_container,searchFragment,"3").hide(profileFragment).commit();
         fm.beginTransaction().add(R.id.main_container,profileFragment,"2").hide(profileFragment).commit();
         fm.beginTransaction().add(R.id.main_container,homeFragment, "1").commit();
 
@@ -144,8 +148,8 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-       /* CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
-        layoutParams.setBehavior(new BottomNavigationBehavior());*/
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationBehavior());
 
         bottomNavigationView.setSelectedItemId(R.id.navigationHome);
 
