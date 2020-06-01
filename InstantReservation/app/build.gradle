@@ -51,4 +51,7 @@ dependencies {
 
     //dependency for QR reading
     implementation 'com.journeyapps:zxing-android-embedded:3.4.0'
+    //for QR generator
+    implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
+
 }

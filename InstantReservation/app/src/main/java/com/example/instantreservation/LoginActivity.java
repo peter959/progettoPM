@@ -113,15 +113,17 @@ public class LoginActivity extends AppCompatActivity {
                                             editor.commit();
                                             //SHARED PREFERENCES
                                             System.out.println("-------Logged: email: " + email + ", name: " + name + ", phone:" + phone + ", UID: " + firebaseUser.getUid());
+
+                                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                            startActivity(intent);
+                                            finish();
                                         }
 
                                         @Override
                                         public void onCancelled(@NonNull DatabaseError databaseError) {}
                                     });
 
-                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
+
                                 } else {
                                     progressButton.buttonFinished("Something went wrong :(");
                                     // If sign in fails, display a message to the user.

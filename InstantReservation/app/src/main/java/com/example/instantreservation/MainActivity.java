@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     final Fragment profileFragment = new ProfileFragment();
     final Fragment homeFragment = new HomeFragment();
     final Fragment searchFragment = new SearchFragment();
+    final Fragment favoritesFragment = new FavoritesFragment();
     final FragmentManager fm = getSupportFragmentManager();
     Fragment active = homeFragment;
 
@@ -65,11 +66,12 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigationMyProfile:
-
                     fm.beginTransaction().hide(active).show(profileFragment).commit();
                     active = profileFragment;
                     return true;
                 case R.id.navigationFavorites:
+                    fm.beginTransaction().hide(active).show(favoritesFragment).commit();
+                    active = favoritesFragment;
                     return true;
                 case R.id.navigationHome:
                     fm.beginTransaction().hide(active).show(homeFragment).commit();
@@ -96,9 +98,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAuth = FirebaseAuth.getInstance();
+        /*mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
-
         if (currentUser != null) {
 
             mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(currentUser.getUid());
@@ -118,18 +119,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            //Bundle args = new Bundle();
-            //args.putString("name", "name");
-            //args.putString("email", "email");
-            //profileFragment.setArguments(args);
-            //homeFragment.setArguments(args);
-
         }
         else {
             Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
             startActivity(intent);
             finish();
-        }
+        }*/
 
 
         /*
@@ -144,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         fm.beginTransaction().add(R.id.main_container,searchFragment,"3").hide(profileFragment).commit();
+        fm.beginTransaction().add(R.id.main_container,favoritesFragment,"4").hide(favoritesFragment).commit();
         fm.beginTransaction().add(R.id.main_container,profileFragment,"2").hide(profileFragment).commit();
         fm.beginTransaction().add(R.id.main_container,homeFragment, "1").commit();
 
