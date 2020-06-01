@@ -1,6 +1,7 @@
 package com.example.instantreservation;
 
 import android.content.Intent;
+import android.graphics.Camera;
 import android.os.Build;
 import android.os.Bundle;
 //import androidx.support.annotation.NonNull;
@@ -79,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
                     active = searchFragment;
                     return true;
                 case R.id.navigationCamera:
+                    Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
+                    startActivity(intent);
                     //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                     // drawer.openDrawer(GravityCompat.START);
                     return true;

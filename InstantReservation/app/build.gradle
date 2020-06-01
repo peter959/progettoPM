@@ -11,6 +11,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        //required for google play services and qr scanning
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -43,4 +46,9 @@ dependencies {
 
     //validation
     implementation 'com.basgeekball:awesome-validation:4.2'
+
+    implementation 'com.google.android.gms:play-services:10.0.0'
+
+    //dependency for QR reading
+    implementation 'com.journeyapps:zxing-android-embedded:3.4.0'
 }
