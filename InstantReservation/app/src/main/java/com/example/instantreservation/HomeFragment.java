@@ -24,6 +24,7 @@ public class HomeFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private SharedPreferences userInfo;
+    String name;
 
 
     private TextView hello_name;
@@ -50,6 +51,8 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        userInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        name = userInfo.getString("userName" , "null");
 
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -62,9 +65,6 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View returnView = inflater.inflate(R.layout.fragment_home, container, false);
-
-        userInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
-        String name = userInfo.getString("userName" , "null");
 
         // Inflate the layout for this fragment
         TextView hello_name = (TextView) returnView.findViewById(R.id.hello_name);

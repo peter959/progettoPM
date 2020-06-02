@@ -78,6 +78,15 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mAuth.signOut();
+                //SHARED PREFERENCES
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("userUID", null);
+                editor.putString("userName", null);
+                editor.putString("userEmail", null);
+                editor.putString("userPhone", null);
+                editor.commit();
+                //SHARED PREFERENCES
                 Intent intent = new Intent(getContext(), WelcomeActivity.class);
                 startActivity(intent);
                 getActivity().finish();
