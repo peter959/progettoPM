@@ -30,12 +30,12 @@ public class ProgressButton {
         textView.setText(text);
     }
 
-    void buttonActivated() {
+    public void buttonActivated() {
         progressBar.setVisibility(View.VISIBLE);
         textView.setText("Please wait...");
     }
 
-    void buttonFinished(String text) {
+    public void buttonFinished(String text) {
         textView.setText(text);
         progressBar.setVisibility(View.GONE);
     }
