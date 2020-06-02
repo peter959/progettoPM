@@ -14,7 +14,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".SearchFragment"
+    tools:context=".Fragment.SearchFragment"
 
     android:background="@drawable/background"
     android:focusableInTouchMode="true">
