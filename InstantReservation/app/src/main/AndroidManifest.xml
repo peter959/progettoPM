@@ -2,16 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.instantreservation">
 
-    <meta-data
-        android:name="com.google.android.gms.vision.DEPENDENCIES"
-        android:value="qrcode" />
-
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-
-    <!--Per salvare il qrcode nello storage-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,14 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".QueueActivity"></activity>
+        <activity android:name=".CameraActivity" />
         <activity android:name=".CaptureActivityPortrait"
             android:screenOrientation="fullSensor"
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme"
             android:windowSoftInputMode="stateAlwaysHidden"
             ></activity>
-        <activity
-            android:name=".CameraActivity"></activity>
+
         <activity
             android:name=".SplashActivity"
             android:theme="@style/SplashTheme">
@@ -45,5 +36,13 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".WelcomeActivity" />
     </application>
+
+    <meta-data
+        android:name="com.google.android.gms.vision.DEPENDENCIES"
+        android:value="qrcode" />
+    <uses-permission android:name="android.permission.VIBRATE" /> <!-- Per salvare il qrcode nello storage -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
 
 </manifest>
