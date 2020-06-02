@@ -21,7 +21,7 @@ public class ProgressButton {
 
     Animation fade_in;
 
-    ProgressButton (Context ct, View view, String text) {
+    public ProgressButton(Context ct, View view, String text) {
         cardView = view.findViewById(R.id.card_btn);
         layout = view.findViewById(R.id.constraint_layout);
         progressBar = view.findViewById(R.id.progressBar);
