@@ -101,6 +101,9 @@ public class CameraFragment extends Fragment {
                     JSONObject obj = new JSONObject(result.getContents());
                     Vibrator vibrator = (Vibrator)getContext().getSystemService(Context.VIBRATOR_SERVICE);
                     vibrator.vibrate(500);
+                    Intent intent = new Intent(getContext(), QueueActivity.class);
+                    intent.putExtra("payload", result.getContents());
+                    startActivity(intent);
                     Toast.makeText(getContext(), result.getContents(), Toast.LENGTH_LONG).show();
 
                 } catch (JSONException e) {
