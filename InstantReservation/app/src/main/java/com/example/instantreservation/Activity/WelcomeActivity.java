@@ -1,4 +1,4 @@
-package com.example.instantreservation;
+package com.example.instantreservation.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,8 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.balysv.materialripple.MaterialRippleLayout;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.example.instantreservation.R;
 
 public class WelcomeActivity extends AppCompatActivity {
     //private FirebaseAuth mAuth;

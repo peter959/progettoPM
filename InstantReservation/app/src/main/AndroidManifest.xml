@@ -9,8 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".QueueActivity"></activity>
-        <activity android:name=".CaptureActivityPortrait"
+        <activity android:name=".Activity.QueueActivity"></activity>
+        <activity android:name=".Activity.CaptureActivityPortrait"
             android:screenOrientation="fullSensor"
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme"
@@ -18,7 +18,7 @@
             ></activity>
 
         <activity
-            android:name=".SplashActivity"
+            android:name=".Activity.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,13 +27,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".Activity.LoginActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".Activity.RegisterActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".WelcomeActivity" />
+        <activity android:name=".Activity.MainActivity" />
+        <activity android:name=".Activity.WelcomeActivity" />
     </application>
 
     <meta-data

@@ -1,4 +1,4 @@
-package com.example.instantreservation;
+package com.example.instantreservation.Fragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.instantreservation.R;
+import com.example.instantreservation.Activity.WelcomeActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 

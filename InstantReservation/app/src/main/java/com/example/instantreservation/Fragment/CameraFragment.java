@@ -1,28 +1,26 @@
-package com.example.instantreservation;
+package com.example.instantreservation.Fragment;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.Vibrator;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
+import com.example.instantreservation.Activity.CaptureActivityPortrait;
+import com.example.instantreservation.Activity.QueueActivity;
+import com.example.instantreservation.R;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import static androidx.core.content.ContextCompat.getSystemService;
 
 
 public class CameraFragment extends Fragment {

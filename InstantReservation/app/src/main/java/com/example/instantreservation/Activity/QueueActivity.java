@@ -1,10 +1,12 @@
-package com.example.instantreservation;
+package com.example.instantreservation.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
+
+import com.example.instantreservation.R;
 
 public class QueueActivity extends AppCompatActivity {
 

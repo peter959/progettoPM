@@ -1,4 +1,4 @@
-package com.example.instantreservation;
+package com.example.instantreservation.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
