@@ -69,8 +69,15 @@ public class CameraFragment extends Fragment {
         btnScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), CameraActivity.class);
-                startActivity(intent);
+                qrScan =IntentIntegrator.forSupportFragment(CameraFragment.this);
+                qrScan.setPrompt("Scan a barcode");
+                qrScan.setCameraId(0); // Use a specific camera of the device
+                qrScan.setOrientationLocked(true);
+                qrScan.setBeepEnabled(true);
+                qrScan.setCaptureActivity(CaptureActivityPortrait.class);
+                qrScan.initiateScan();
+                /*Intent intent = new Intent(getContext(), CameraActivity.class);
+                startActivity(intent);*/
             }
         });
 
@@ -79,7 +86,7 @@ public class CameraFragment extends Fragment {
         return returnView;
     }
 
-/*
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
@@ -95,6 +102,7 @@ public class CameraFragment extends Fragment {
                     //setting values to textviews
                     //textViewName.setText(obj.getString("name"));
                     //textViewAddress.setText(obj.getString("address"));
+                    Toast.makeText(getContext(), result.getContents(), Toast.LENGTH_LONG).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                     //if control comes here
@@ -108,7 +116,7 @@ public class CameraFragment extends Fragment {
             super.onActivityResult(requestCode, resultCode, data);
         }
 
-    }*/
+    }
 
 
     /*
