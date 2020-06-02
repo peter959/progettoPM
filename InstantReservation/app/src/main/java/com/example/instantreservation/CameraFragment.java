@@ -69,14 +69,8 @@ public class CameraFragment extends Fragment {
         btnScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                qrScan =  IntentIntegrator.forSupportFragment(CameraFragment.this);
-                //qrScan = new IntentIntegrator(getActivity());
-                qrScan.setPrompt("Scan a barcode");
-                qrScan.setCameraId(0); // Use a specific camera of the device
-                qrScan.setOrientationLocked(true);
-                qrScan.setBeepEnabled(false);
-                qrScan.setCaptureActivity(CaptureActivityPortrait.class);
-                qrScan.initiateScan();
+                Intent intent = new Intent(getContext(), CameraActivity.class);
+                startActivity(intent);
             }
         });
 

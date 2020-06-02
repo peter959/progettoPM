@@ -20,8 +20,8 @@ import org.json.JSONObject;
 public class CameraActivity extends AppCompatActivity {
 
     //View Objects
-    private Button buttonScan;
-    private TextView textViewName, textViewAddress;
+    //private Button buttonScan;
+    //private TextView textViewName, textViewAddress;
 
     //qr code scanner object
     private IntentIntegrator qrScan;
@@ -29,12 +29,12 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_camera);
+        //setContentView(R.layout.activity_camera);
 
         //View objects
-        buttonScan = (Button) findViewById(R.id.buttonScan);
+       /* buttonScan = (Button) findViewById(R.id.buttonScan);
         textViewName = (TextView) findViewById(R.id.textViewName);
-        textViewAddress = (TextView) findViewById(R.id.textViewAddress);
+        textViewAddress = (TextView) findViewById(R.id.textViewAddress);*/
 
         //intializing scan object
         qrScan = new IntentIntegrator(this);
@@ -47,12 +47,12 @@ public class CameraActivity extends AppCompatActivity {
 
 
 
-        buttonScan.setOnClickListener(new View.OnClickListener() {
+        /*buttonScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
-        });
+        });*/
     }
 
     @Override
@@ -67,10 +67,8 @@ public class CameraActivity extends AppCompatActivity {
                 try {
                     //converting the data to json
                     JSONObject obj = new JSONObject(result.getContents());
-                    System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                     //setting values to textviews
-                    textViewName.setText(obj.getString("name"));
-                    textViewAddress.setText(obj.getString("address"));
+                    Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                     //if control comes here
@@ -83,5 +81,6 @@ public class CameraActivity extends AppCompatActivity {
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+        finish();
     }
 }
