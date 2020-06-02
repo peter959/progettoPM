@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,8 @@ import com.google.zxing.integration.android.IntentResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import static androidx.core.content.ContextCompat.getSystemService;
 
 
 public class CameraFragment extends Fragment {
@@ -65,7 +68,6 @@ public class CameraFragment extends Fragment {
         // Inflate the layout for this fragment
         btnScan  = returnView.findViewById(R.id.btnScan);
 
-
         btnScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,11 +75,9 @@ public class CameraFragment extends Fragment {
                 qrScan.setPrompt("Scan a barcode");
                 qrScan.setCameraId(0); // Use a specific camera of the device
                 qrScan.setOrientationLocked(true);
-                qrScan.setBeepEnabled(true);
+                qrScan.setBeepEnabled(false);
                 qrScan.setCaptureActivity(CaptureActivityPortrait.class);
                 qrScan.initiateScan();
-                /*Intent intent = new Intent(getContext(), CameraActivity.class);
-                startActivity(intent);*/
             }
         });
 
@@ -99,10 +99,10 @@ public class CameraFragment extends Fragment {
                 try {
                     //converting the data to json
                     JSONObject obj = new JSONObject(result.getContents());
-                    //setting values to textviews
-                    //textViewName.setText(obj.getString("name"));
-                    //textViewAddress.setText(obj.getString("address"));
+                    Vibrator vibrator = (Vibrator)getContext().getSystemService(Context.VIBRATOR_SERVICE);
+                    vibrator.vibrate(500);
                     Toast.makeText(getContext(), result.getContents(), Toast.LENGTH_LONG).show();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                     //if control comes here
@@ -118,33 +118,4 @@ public class CameraFragment extends Fragment {
 
     }
 
-
-    /*
-
-    if (result != null) {
-            //if qrcode has nothing in it
-            if (result.getContents() == null) {
-                Toast.makeText(getContext(), "Result Not Found", Toast.LENGTH_LONG).show();
-            } else {
-                //if qr contains data
-                try {
-                    //converting the data to json
-                    JSONObject obj = new JSONObject(result.getContents());
-                    //setting values to textviews
-                    //textViewName.setText(obj.getString("name"));
-                    //textViewAddress.setText(obj.getString("address"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    //if control comes here
-                    //that means the encoded format not matches
-                    //in this case you can display whatever data is available on the qrcode
-                    //to a toast
-                    Toast.makeText(getContext(), result.getContents(), Toast.LENGTH_LONG).show();
-                }
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-
-     */
 }
