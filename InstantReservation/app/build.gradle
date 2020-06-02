@@ -50,8 +50,10 @@ dependencies {
     implementation 'com.google.android.gms:play-services:10.0.0'
 
     //dependency for QR reading
-    implementation 'com.journeyapps:zxing-android-embedded:3.4.0'
+
+    implementation "com.journeyapps:zxing-android-embedded:3.6.0"
+    implementation "com.google.zxing:core:3.3.3"
+
     //for QR generator
     implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
-
 }
