@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.journeyapps.barcodescanner.CaptureActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,11 +38,19 @@ public class CameraActivity extends AppCompatActivity {
 
         //intializing scan object
         qrScan = new IntentIntegrator(this);
+        qrScan.setPrompt("Scan a barcode");
+        qrScan.setCameraId(0); // Use a specific camera of the device
+        qrScan.setOrientationLocked(true);
+        qrScan.setBeepEnabled(true);
+        qrScan.setCaptureActivity(CaptureActivityPortrait.class);
+        qrScan.initiateScan();
+
+
 
         buttonScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                qrScan.initiateScan();
+
             }
         });
     }

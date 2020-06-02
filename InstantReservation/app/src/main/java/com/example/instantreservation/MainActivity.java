@@ -27,6 +27,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
@@ -42,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     final Fragment profileFragment = new ProfileFragment();
     final Fragment homeFragment = new HomeFragment();
     final Fragment searchFragment = new SearchFragment();
+    final Fragment cameraFragment = new CameraFragment();
     final FragmentManager fm = getSupportFragmentManager();
     Fragment active = homeFragment;
 
@@ -80,10 +86,10 @@ public class MainActivity extends AppCompatActivity {
                     active = searchFragment;
                     return true;
                 case R.id.navigationCamera:
-                    Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
-                    startActivity(intent);
-                    //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-                    // drawer.openDrawer(GravityCompat.START);
+                    fm.beginTransaction().hide(active).show(cameraFragment).commit();
+                    active = cameraFragment;
+                    //Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
+                    //startActivity(intent);
                     return true;
             }
             return false;
@@ -143,7 +149,8 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        fm.beginTransaction().add(R.id.main_container,searchFragment,"3").hide(profileFragment).commit();
+        fm.beginTransaction().add(R.id.main_container,cameraFragment,"5").hide(cameraFragment).commit();
+        fm.beginTransaction().add(R.id.main_container,searchFragment,"3").hide(searchFragment).commit();
         fm.beginTransaction().add(R.id.main_container,profileFragment,"2").hide(profileFragment).commit();
         fm.beginTransaction().add(R.id.main_container,homeFragment, "1").commit();
 
@@ -158,7 +165,42 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
+            //if qrcode has nothing in it
+            if (result.getContents() == null) {
+                Toast.makeText(this, "Result Not Found", Toast.LENGTH_LONG).show();
+            } else {
+                //if qr contains data
+                try {
+                    //converting the data to json
+                    JSONObject obj = new JSONObject(result.getContents());
+                    //setting values to textviews
+                    //textViewName.setText(obj.getString("name"));
+                    //textViewAddress.setText(obj.getString("address"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    //if control comes here
+                    //that means the encoded format not matches
+                    //in this case you can display whatever data is available on the qrcode
+                    //to a toast
+                    Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
+                }
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+
+    }
+
    /* @Override
+    public void startActivityForResult(Intent intent, int requestCode) {
+        super.startActivityForResult(intent, requestCode);
+    }*/
+
+    /* @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
