@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
 
     /* @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.queueID.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -210,19 +210,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        int queueID = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (queueID == R.queueID.nav_camera) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (queueID == R.queueID.nav_gallery) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (queueID == R.queueID.nav_slideshow) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (queueID == R.queueID.nav_manage) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (queueID == R.queueID.nav_share) {
 
-        } else if (id == R.id.nav_dark_mode) {
+        } else if (queueID == R.queueID.nav_dark_mode) {
             //code for setting dark mode
             //true for dark mode, false for day mode, currently toggling on each click
            //DarkModePrefManager darkModePrefManager = new DarkModePrefManager(this);
@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.queueID.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }*/
