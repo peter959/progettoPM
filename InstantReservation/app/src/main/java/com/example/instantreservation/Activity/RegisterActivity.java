@@ -103,7 +103,6 @@ public class RegisterActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
 
                                 if (task.isSuccessful()) {
-                                    progressButton.buttonFinished("DONE");
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d("Register", "createUserWithEmail:success");
 
@@ -122,6 +121,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     editor.commit();
                                     //SHARED PREFERENCES
 
+                                    progressButton.buttonFinished("DONE");
                                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                     startActivity(intent);
 

@@ -94,8 +94,6 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    progressButton.buttonFinished("DONE");
-
                                     firebaseUser = mAuth.getCurrentUser();
                                     mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid());
                                     mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -114,6 +112,7 @@ public class LoginActivity extends AppCompatActivity {
                                             //SHARED PREFERENCES
                                             System.out.println("-------Logged: email: " + email + ", name: " + name + ", phone:" + phone + ", UID: " + firebaseUser.getUid());
 
+                                            progressButton.buttonFinished("DONE");
                                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                             startActivity(intent);
                                             finish();
