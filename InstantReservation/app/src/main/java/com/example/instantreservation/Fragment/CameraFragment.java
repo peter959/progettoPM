@@ -94,15 +94,16 @@ public class CameraFragment extends Fragment {
                 Toast.makeText(getContext(), "Result Not Found", Toast.LENGTH_LONG).show();
             } else {
                 //if qr contains data
-                try {
+                Vibrator vibrator = (Vibrator)getContext().getSystemService(Context.VIBRATOR_SERVICE);
+                vibrator.vibrate(500);
+                Intent intent = new Intent(getContext(), QueueActivity.class);
+                intent.putExtra("payload", result.getContents());
+                startActivity(intent);
+                Toast.makeText(getContext(), result.getContents(), Toast.LENGTH_LONG).show();
+               /* try {
                     //converting the data to json
                     JSONObject obj = new JSONObject(result.getContents());
-                    Vibrator vibrator = (Vibrator)getContext().getSystemService(Context.VIBRATOR_SERVICE);
-                    vibrator.vibrate(500);
-                    Intent intent = new Intent(getContext(), QueueActivity.class);
-                    intent.putExtra("payload", result.getContents());
-                    startActivity(intent);
-                    Toast.makeText(getContext(), result.getContents(), Toast.LENGTH_LONG).show();
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -111,7 +112,7 @@ public class CameraFragment extends Fragment {
                     //in this case you can display whatever data is available on the qrcode
                     //to a toast
                     Toast.makeText(getContext(), result.getContents(), Toast.LENGTH_LONG).show();
-                }
+                }*/
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
