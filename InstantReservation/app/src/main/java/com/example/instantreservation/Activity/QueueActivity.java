@@ -86,6 +86,8 @@ public class QueueActivity extends AppCompatActivity {
                 //queue_image.setImageURI(queue.getQueue_image());
                 //queue_QRCodeImage.setImageURI();
 
+                business_id = queue.getQueue_businessID();
+
                 queue_layout.setVisibility(View.VISIBLE);
                 progressBarQueue.setVisibility(View.GONE);
 

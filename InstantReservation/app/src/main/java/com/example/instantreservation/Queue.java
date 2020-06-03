@@ -8,6 +8,8 @@ public class Queue {
     String queue_QRCodeImage;
     String queue_image;
     String queue_city;
+    String queue_businessID;
+
     int queue_nMaxReservation;
     int queue_nReservation;
 
@@ -23,6 +25,7 @@ public class Queue {
         this.queue_QRCodeImage = queue_QRCodeImage;
         this.queue_image = queue_image;
         this.queue_city = queue_city;
+        this.queue_businessID = queue_businessID;
         this.queue_nMaxReservation = queue_nMaxReservation;
         this.queue_nReservation = queue_nReservation;
     }

@@ -6,6 +6,13 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <meta-data
+        android:name="com.google.android.gms.vision.DEPENDENCIES"
+        android:value="qrcode" />
+
+    <uses-permission android:name="android.permission.VIBRATE" /> <!-- Per salvare il qrcode nello storage -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -13,14 +20,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.QueueActivity"></activity>
-        <activity android:name=".Activity.CaptureActivityPortrait"
+        <activity android:name=".Activity.BusinessActivity"></activity>
+        <activity android:name=".Activity.QueueActivity" />
+        <activity
+            android:name=".Activity.CaptureActivityPortrait"
             android:screenOrientation="fullSensor"
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            ></activity>
-
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".Activity.SplashActivity"
             android:theme="@style/SplashTheme">
@@ -39,11 +46,5 @@
         <activity android:name=".Activity.MainActivity" />
         <activity android:name=".Activity.WelcomeActivity" />
     </application>
-
-    <meta-data
-        android:name="com.google.android.gms.vision.DEPENDENCIES"
-        android:value="qrcode" />
-    <uses-permission android:name="android.permission.VIBRATE" /> <!-- Per salvare il qrcode nello storage -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>
