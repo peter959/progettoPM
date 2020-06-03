@@ -42,6 +42,7 @@
                 app:cardBackgroundColor="@color/transparent">
 
                 <ImageView
+                    android:id="@+id/queue_image"
                     android:layout_width="match_parent"
                     android:layout_height="245dp"
                     android:src="@drawable/resturant_example"/>
@@ -54,6 +55,7 @@
                     android:padding="10dp">
 
                     <TextView
+                        android:id="@+id/queue_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Name of Queue"
@@ -67,6 +69,7 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/queue_business"
                             android:textStyle="bold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -75,6 +78,7 @@
                             android:textSize="20sp" />
 
                         <TextView
+                            android:id="@+id/queue_city"
                             android:textStyle="bold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -122,6 +126,7 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/queue_nReservation"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -157,7 +162,7 @@
 
                         <ImageView
                             android:layout_centerInParent="true"
-                            android:id="@+id/qrCodeImage"
+                            android:id="@+id/queue_QRCodeImage"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_border_clear_black_24dp"
                             android:layout_width="match_parent"
@@ -181,6 +186,7 @@
                 android:elevation="10dp"
                 >
                 <TextView
+                    android:id="@+id/queue_description"
                     android:padding="10dp"
                     android:textSize="15dp"
                     android:textStyle="bold"
