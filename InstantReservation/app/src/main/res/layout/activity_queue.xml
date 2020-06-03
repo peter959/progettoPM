@@ -5,8 +5,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".Activity.QueueActivity"
     android:background="@drawable/background"
-    tools:context=".Activity.QueueActivity">
+    android:orientation="vertical"
+    >
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_queue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,302 +26,186 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
+        <RelativeLayout
+            android:layout_marginTop="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="330dp">
 
-            <RelativeLayout
+            <androidx.cardview.widget.CardView
+                android:layout_margin= "20dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_height="245dp"
+                app:cardCornerRadius="20dp"
+                app:cardBackgroundColor="@color/transparent">
 
-                <androidx.cardview.widget.CardView
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="245dp"
+                    android:src="@drawable/resturant_example"/>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
-                    android:layout_marginBottom="20dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardPreventCornerOverlap="false"
-                    app:cardBackgroundColor="#FF402D"
-                    app:cardElevation="10dp"
-                    android:minHeight="200dp"
-                    android:layout_alignParentTop="true">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Name of Queue"
+                        android:textColor="@color/whiteBodyColor"
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
 
                     <LinearLayout
-                        android:layout_width="237dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:orientation="vertical"
-                        android:padding="10dp">
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:textStyle="bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Name of Business"
+                            android:textColor="@color/whiteBodyColor"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:textStyle="bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:text="City"
+                            android:textColor="@color/whiteBodyColor"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                app:cardBackgroundColor="@color/transparent"
+                android:layout_width="180dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="230dp"
+                app:cardElevation="10dp"
+                app:cardCornerRadius="20dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="20dp"
+                >
+
+                <LinearLayout
+                    android:background="@drawable/background_gradient"
+                    android:weightSum="3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="3"
+                        android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="bottom"
-                            android:text="Queue Name"
-                            android:textColor="@color/whiteBodyColor"
-                            android:textSize="20sp"
+                            android:layout_gravity="center"
+                            android:text="Reservations"
+                            android:textColor="@android:color/white"
                             android:textStyle="bold" />
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="bottom"
-                                android:text="Business name"
-                                android:textColor="@color/whiteBodyColor"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="bottom"
-                                android:layout_marginLeft="20dp"
-                                android:text="City name"
-                                android:textColor="@color/whiteBodyColor"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
+                            android:layout_gravity="center"
+                            android:text="0"
+                            android:textColor="@android:color/white"
+                            android:textSize="24dp"
+                            android:textStyle="bold" />
                     </LinearLayout>
-
-
-
-                </androidx.cardview.widget.CardView>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp">
-
-                <LinearLayout
-                    android:layout_centerInParent="true"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/refer_earn_button"
-                    android:layout_marginLeft="60dp"
-                    android:layout_alignParentBottom="true">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="13sp"
-                        android:textAlignment="center"
-                        android:textColor="@color/whiteTextColor"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="5dp"
-                        android:text="Refer your friends and\n earn free course *"/>
-
                 </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                <!--<ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:cropToPadding="true"
-                    android:src="@drawable/refer_icon" />-->
+            <androidx.cardview.widget.CardView
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:layout_marginTop="180dp"
+                app:cardElevation="10dp"
+                app:cardCornerRadius="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="20dp"
+                >
 
-            </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/background_gradient">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_margin="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        app:cardCornerRadius="20dp">
+
+                        <ImageView
+                            android:layout_centerInParent="true"
+                            android:id="@+id/qrCodeImage"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_border_clear_black_24dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            />
+                    </androidx.cardview.widget.CardView>
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+
+            <androidx.cardview.widget.CardView
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="20dp"
+                android:elevation="10dp"
+                >
+                <TextView
+                    android:padding="10dp"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="this is the description of this Queue, the Business Menager will edit this.\nthis is an amazing place and the food is great"/>
+
+            </androidx.cardview.widget.CardView>
 
             <RelativeLayout
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp">
+                android:layout_height="0dp"
+                android:layout_weight="1">
 
-                <TextView
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentLeft="true"
-                    android:text="Popular Courses"
-                    style="@style/viewParent.headerText"/>
-
-                <TextView
-                    android:layout_alignParentRight="true"
-                    style="@style/viewParent"
-                    android:text="See All"
-                    android:layout_centerVertical="true"
-                    android:textSize="@dimen/headerMoreTextSize"
-                    android:textColor="@color/primaryTextColor"
-                    android:textStyle="bold"/>
-
+                <include
+                    android:id="@+id/btnReserve"
+                    layout="@layout/progress_btn_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
             </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp">
-
-                <TextView
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentLeft="true"
-                    android:text="Popular Courses"
-                    style="@style/viewParent.headerText"/>
-
-                <TextView
-                    android:layout_alignParentRight="true"
-                    style="@style/viewParent"
-                    android:text="See All"
-                    android:layout_centerVertical="true"
-                    android:textSize="@dimen/headerMoreTextSize"
-                    android:textColor="@color/primaryTextColor"
-                    android:textStyle="bold"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp">
-
-                <TextView
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentLeft="true"
-                    android:text="Popular Courses"
-                    style="@style/viewParent.headerText"/>
-
-                <TextView
-                    android:layout_alignParentRight="true"
-                    style="@style/viewParent"
-                    android:text="See All"
-                    android:layout_centerVertical="true"
-                    android:textSize="@dimen/headerMoreTextSize"
-                    android:textColor="@color/primaryTextColor"
-                    android:textStyle="bold"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp">
-
-                <TextView
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentLeft="true"
-                    android:text="Popular Courses"
-                    style="@style/viewParent.headerText"/>
-
-                <TextView
-                    android:layout_alignParentRight="true"
-                    style="@style/viewParent"
-                    android:text="See All"
-                    android:layout_centerVertical="true"
-                    android:textSize="@dimen/headerMoreTextSize"
-                    android:textColor="@color/primaryTextColor"
-                    android:textStyle="bold"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp">
-
-                <TextView
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentLeft="true"
-                    android:text="Popular Courses"
-                    style="@style/viewParent.headerText"/>
-
-                <TextView
-                    android:layout_alignParentRight="true"
-                    style="@style/viewParent"
-                    android:text="See All"
-                    android:layout_centerVertical="true"
-                    android:textSize="@dimen/headerMoreTextSize"
-                    android:textColor="@color/primaryTextColor"
-                    android:textStyle="bold"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp">
-
-                <TextView
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentLeft="true"
-                    android:text="Popular Courses"
-                    style="@style/viewParent.headerText"/>
-
-                <TextView
-                    android:layout_alignParentRight="true"
-                    style="@style/viewParent"
-                    android:text="See All"
-                    android:layout_centerVertical="true"
-                    android:textSize="@dimen/headerMoreTextSize"
-                    android:textColor="@color/primaryTextColor"
-                    android:textStyle="bold"/>
-
-            </RelativeLayout>
-
-            <!--remove the below layout with recycler view, use card poplar courses as model for design-->
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <!--
-                <include layout="@layout/card_popular_courses"/>
-                <include layout="@layout/card_popular_courses"/>
-                <include layout="@layout/card_popular_courses"/>-->
-
-            </LinearLayout>
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp">
-
-                <TextView
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentLeft="true"
-                    android:text="Frutorials"
-                    style="@style/viewParent.headerText"/>
-
-                <TextView
-                    android:layout_alignParentRight="true"
-                    style="@style/viewParent"
-                    android:text="See All"
-                    android:layout_centerVertical="true"
-                    android:textSize="@dimen/headerMoreTextSize"
-                    android:textColor="@color/primaryTextColor"
-                    android:textStyle="bold"/>
-
-            </RelativeLayout>
-
-            <!--remove the below layout with recycler view, use card poplar courses as model for design-->
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="20dp">
-                <!--
-                    <include layout="@layout/card_frutorials"/>
-                    <include layout="@layout/card_frutorials"/>
-                    <include layout="@layout/card_frutorials"/>-->
-
-            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
-
-    <TextView
-        android:textAlignment="center"
-        android:layout_margin="100dp"
-        android:text="òlasjhdfòj"
-        android:layout_centerInParent="true"
-        android:id="@+id/queue_id"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
-
 </RelativeLayout>
