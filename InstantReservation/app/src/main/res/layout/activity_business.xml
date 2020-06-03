@@ -5,13 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.QueueActivity"
+    tools:context=".Activity.BusinessActivity"
     android:background="@drawable/background"
     android:orientation="vertical"
     >
 
     <ProgressBar
-        android:id="@+id/progressBarQueue"
+        android:id="@+id/progressBarBusiness"
         style="?android:attr/progressBarStyle"
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -21,18 +21,18 @@
 
 
     <LinearLayout
-        android:id="@+id/queue_layout"
+        android:id="@+id/business_layout"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_queue"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_business"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -48,7 +48,7 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="330dp">
+                    android:layout_height="wrap_content">
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
@@ -58,7 +58,7 @@
                         app:cardCornerRadius="20dp">
 
                         <ImageView
-                            android:id="@+id/queue_image"
+                            android:id="@+id/business_image"
                             android:layout_width="match_parent"
                             android:layout_height="245dp"
                             android:src="@drawable/resturant_example" />
@@ -71,10 +71,10 @@
                             android:padding="10dp">
 
                             <TextView
-                                android:id="@+id/queue_name"
+                                android:id="@+id/business_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Name of Queue"
+                                android:text="Name of Business"
                                 android:textColor="@color/whiteBodyColor"
                                 android:textSize="25sp"
                                 android:textStyle="bold" />
@@ -85,16 +85,7 @@
                                 android:orientation="horizontal">
 
                                 <TextView
-                                    android:id="@+id/queue_business"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Name of Business"
-                                    android:textColor="@color/whiteBodyColor"
-                                    android:textSize="20sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/queue_city"
+                                    android:id="@+id/business_city"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="10dp"
@@ -109,8 +100,8 @@
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
-                        android:layout_width="180dp"
-                        android:layout_height="80dp"
+                        android:layout_width="100dp"
+                        android:layout_height="60dp"
                         android:layout_alignParentStart="true"
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="230dp"
@@ -121,7 +112,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@drawable/background_gradient"
+                            android:background="#FFF"
                             android:orientation="horizontal"
                             android:weightSum="3">
 
@@ -136,17 +127,17 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
-                                    android:text="Reservations"
-                                    android:textColor="@android:color/white"
+                                    android:text="Queues"
+                                    android:textColor="@color/colorAccent"
                                     android:textStyle="bold" />
 
                                 <TextView
-                                    android:id="@+id/queue_nReservation"
+                                    android:id="@+id/business_nQueues"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:text="0"
-                                    android:textColor="@android:color/white"
+                                    android:textColor="@color/colorAccent"
                                     android:textSize="24dp"
                                     android:textStyle="bold" />
                             </LinearLayout>
@@ -154,77 +145,60 @@
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
-                        android:layout_width="130dp"
-                        android:layout_height="130dp"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="230dp"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginTop="180dp"
                         android:layout_marginRight="20dp"
-                        app:cardCornerRadius="20dp"
-                        app:cardElevation="10dp">
+                        android:elevation="10dp"
+                        app:cardCornerRadius="20dp">
 
-                        <RelativeLayout
+                        <TextView
+                            android:id="@+id/business_description"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@drawable/background_gradient">
-
-                            <androidx.cardview.widget.CardView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_centerInParent="true"
-                                android:layout_margin="5dp"
-                                app:cardCornerRadius="20dp">
-
-                                <ImageView
-                                    android:id="@+id/queue_QRCodeImage"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_centerInParent="true"
-                                    android:layout_gravity="center"
-                                    android:src="@drawable/ic_border_clear_black_24dp" />
-                            </androidx.cardview.widget.CardView>
-
-                        </RelativeLayout>
+                            android:padding="10dp"
+                            android:text="this is the description of this Queue, the Business Menager will edit this.\nthis is an amazing place and the food is great"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="15dp"
+                            android:textStyle="bold" />
 
                     </androidx.cardview.widget.CardView>
 
                 </RelativeLayout>
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:elevation="10dp"
-                    app:cardCornerRadius="20dp">
-
-                    <TextView
-                        android:id="@+id/queue_description"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="10dp"
-                        android:text="this is the description of this Queue, the Business Menager will edit this.\nthis is an amazing place and the food is great"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="15dp"
-                        android:textStyle="bold" />
-
-                </androidx.cardview.widget.CardView>
-
                 <RelativeLayout
+                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_gravity="bottom"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_weight="1">
+                    android:layout_height="wrap_content">
 
-                    <include
-                        android:id="@+id/btnReserve"
-                        layout="@layout/progress_btn_layout"
+                    <LinearLayout
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="20dp"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/refer_earn_button"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="60dp"
+                        android:layout_alignParentBottom="true">
+                        <TextView
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="13sp"
+                            android:textAlignment="center"
+                            android:textColor="@color/whiteTextColor"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:text="Queues of the business"/>
+
+                    </LinearLayout>
                 </RelativeLayout>
 
+                <include layout="@layout/queue_card" />
+                <include layout="@layout/queue_card" />
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

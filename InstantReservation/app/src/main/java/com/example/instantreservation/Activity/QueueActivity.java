@@ -41,6 +41,7 @@ public class QueueActivity extends AppCompatActivity {
     LinearLayout queue_layout;
 
     String id;
+    String business_id;
 
     @Override
     public void onStart() {
@@ -61,6 +62,8 @@ public class QueueActivity extends AppCompatActivity {
                 queue_nReservation.setText(queue.getQueue_nReservationString());
                 //queue_image.setImageURI(queue.getQueue_image());
                 //queue_QRCodeImage.setImageURI();
+
+                business_id = queue.getQueue_businessID();
 
                 queue_layout.setVisibility(View.VISIBLE);
                 progressBarQueue.setVisibility(View.GONE);
@@ -102,6 +105,15 @@ public class QueueActivity extends AppCompatActivity {
         id = intent.getStringExtra("payload");
 
         reference = FirebaseDatabase.getInstance().getReference().child("codeattivita");
+
+        queue_business.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), BusinessActivity.class);
+                intent.putExtra("business_id", business_id);
+                startActivity(intent);
+            }
+        });
 
 
 
