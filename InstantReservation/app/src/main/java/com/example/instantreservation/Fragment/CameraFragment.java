@@ -104,7 +104,6 @@ public class CameraFragment extends Fragment {
                     //converting the data to json
                     JSONObject obj = new JSONObject(result.getContents());
 
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                     //if control comes here
