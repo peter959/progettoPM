@@ -85,6 +85,7 @@ public class QueueActivity extends AppCompatActivity {
                 queue_nMaxReservation = queue.getQueue_nMaxReservation();
                 queue_nReservation = queue.getQueue_nReservation();
                 queue_nReservationString.setText(queue.getQueue_nReservationString() + "/" + queue.getQueue_nMaxReservation());
+                queueBusinessID = queue.getQueue_businessID();
                 //queue_image.setImageURI(queue.getQueue_image());
                 //queue_QRCodeImage.setImageURI();
 
@@ -188,6 +189,15 @@ public class QueueActivity extends AppCompatActivity {
 
         referenceForQueueInfo = FirebaseDatabase.getInstance().getReference().child("codeattivita");
         referenceForAddingReservation= FirebaseDatabase.getInstance().getReference().child("reservations");
+
+        queue_business.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), BusinessActivity.class);
+                i.putExtra("business_id", queueBusinessID);
+                startActivity(i);
+            }
+        });
 
 
     }
