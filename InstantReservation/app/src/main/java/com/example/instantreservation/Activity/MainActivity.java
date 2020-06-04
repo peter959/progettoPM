@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                         locality = addresses.get(0).getLocality();
                         address = addresses.get(0).getAddressLine(0);
 
-                        System.out.println("AAAAAAAAAAAAAAAAAAAAAA" + locality);
+                        //System.out.println("AAAAAAAAAAAAAAAAAAAAAA" + locality);
 
 
                     }
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             //when permission granted
             getLocation();
-            Toast.makeText(this, locality + " " + address, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, locality + " " + address, Toast.LENGTH_LONG).show();
 
         } else {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);

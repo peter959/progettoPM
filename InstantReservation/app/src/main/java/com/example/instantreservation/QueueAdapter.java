@@ -44,11 +44,11 @@ public class QueueAdapter extends PagerAdapter {
         ImageView queue_image;
         TextView queue_name, queue_business;
 
-        queue_image = view.findViewById(R.id.imageID);
+        //queue_image = view.findViewById(R.id.imageID);
         queue_name = view.findViewById(R.id.queue_name);
         //queue_business = view.findViewById(R.id.queue_business);
 
-        queue_image.setImageResource(R.drawable.resturant_example);
+        //queue_image.setImageResource(R.drawable.resturant_example);
         queue_name.setText(models.get(position).getQueue_name());
         //queue_business.setText(models.get(position).getQueue_business());
 
