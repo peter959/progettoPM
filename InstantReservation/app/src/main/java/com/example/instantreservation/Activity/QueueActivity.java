@@ -99,11 +99,11 @@ public class QueueActivity extends AppCompatActivity {
                         if (dataSnapshot2.hasChild(userUID)) {
                             reserveButton.buttonFinished("Reserved");
                             reserved = true;
-                           // btnRemoveReservation.setVisibility(View.VISIBLE);
+                            btnRemoveReservation.setVisibility(View.VISIBLE);
                         }else{
                             reserveButton = new ProgressButton(QueueActivity.this, btnReserve, "Pick up a ticket");
                             reserved=false;
-                            //btnRemoveReservation.setVisibility(View.GONE);
+                            btnRemoveReservation.setVisibility(View.GONE);
                         }
                     }
                     @Override

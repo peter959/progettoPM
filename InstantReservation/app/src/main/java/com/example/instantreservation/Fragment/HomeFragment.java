@@ -11,7 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.instantreservation.Activity.MainActivity;
 import com.example.instantreservation.R;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 
 
 /**
@@ -20,19 +23,19 @@ import com.example.instantreservation.R;
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
+
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private SharedPreferences userInfo;
     String name;
 
+    private String mParam1;
+    private String mParam2;
 
     private TextView hello_name;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    FusedLocationProviderClient fusedLocationProviderClient;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -64,8 +67,10 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View returnView = inflater.inflate(R.layout.fragment_home, container, false);
+
+
+
 
         // Inflate the layout for this fragment
         TextView hello_name = (TextView) returnView.findViewById(R.id.hello_name);
