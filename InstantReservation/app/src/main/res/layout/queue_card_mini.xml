@@ -6,15 +6,15 @@
 
     <RelativeLayout
         android:layout_centerInParent="true"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
+        android:layout_width="300dp"
+        android:layout_height="250dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         >
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="200dp"
             app:cardCornerRadius="20dp">
 
             <LinearLayout
@@ -29,7 +29,7 @@
                     <ImageView
                         android:id="@+id/queue_image"
                         android:src="@drawable/resturant_example"
-                        android:scaleType="centerCrop"
+                        android:scaleType="fitXY"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
 
@@ -42,11 +42,11 @@
                         <androidx.appcompat.widget.AppCompatImageView
 
                             android:id="@+id/queue_favorite_button"
-                            android:padding="10dp"
+                            android:padding="5dp"
                             android:background="@drawable/bg_circle"
                             android:layout_alignParentEnd="true"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:src="@drawable/ic_favorite_border_black_24dp"/>
 
                     </RelativeLayout>
@@ -55,11 +55,11 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:layout_width="300dp"
+            android:layout_width="230dp"
             android:layout_height="110dp"
-            android:layout_marginTop="245dp"
+            android:layout_marginTop="145dp"
             app:cardElevation="10dp"
-            app:cardCornerRadius="20dp"
+            app:cardCornerRadius="15dp"
             android:layout_centerHorizontal="true"
             >
 
@@ -77,6 +77,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/queue_name"
                         android:layout_gravity="start"
@@ -84,9 +85,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
-                        android:textSize="20sp"
+                        android:textSize="17sp"
                         android:text="Name of the queue"
                         />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -97,7 +99,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@android:color/darker_gray"
-                            android:textSize="18sp"
+                            android:textSize="13sp"
                             android:text="Business Name"
                             />
                         <TextView
@@ -106,7 +108,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@android:color/darker_gray"
-                            android:textSize="15sp"
+                            android:textSize="12sp"
                             android:text="city"
                             />
                     </LinearLayout>
@@ -125,7 +127,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@android:color/darker_gray"
-                            android:textSize="16sp"
+                            android:textSize="13sp"
                             android:text="Reservations:"
                             />
                         <TextView

@@ -12,14 +12,13 @@ import com.example.instantreservation.Fragment.HomeFragment;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.PagerAdapter;
 
 public class QueueAdapter extends PagerAdapter {
 
     private List<Queue> models;
     private LayoutInflater layoutInflater;
-    private Fragment context;
+    private HomeFragment context;
 
     public QueueAdapter(List<Queue> models, HomeFragment context) {
         this.models = models;
@@ -40,17 +39,25 @@ public class QueueAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         layoutInflater = context.getActivity().getLayoutInflater();
-        View view = layoutInflater.inflate(R.layout.queue_card, container, false);
+        View view = layoutInflater.inflate(R.layout.queue_card_mini, container, false);
+
         ImageView queue_image;
-        TextView queue_name, queue_business;
+        TextView queue_name;
+        TextView queue_business;
+        TextView queue_city;
+        TextView queue_nReservation;
 
-        //queue_image = view.findViewById(R.id.imageID);
+        queue_image = view.findViewById(R.id.queue_image);
         queue_name = view.findViewById(R.id.queue_name);
-        //queue_business = view.findViewById(R.id.queue_business);
+        queue_business = view.findViewById(R.id.queue_business);
+        queue_city = view.findViewById(R.id.queue_city);
+        queue_nReservation = view.findViewById(R.id.queue_nReservation);
 
-        //queue_image.setImageResource(R.drawable.resturant_example);
+        queue_image.setImageResource(R.drawable.resturant_example);
         queue_name.setText(models.get(position).getQueue_name());
-        //queue_business.setText(models.get(position).getQueue_business());
+        queue_business.setText(models.get(position).getQueue_business());
+        queue_city.setText(models.get(position).getQueue_city());
+        queue_nReservation.setText(models.get(position).getQueue_nReservationString());
 
         container.addView(view, 0);
 

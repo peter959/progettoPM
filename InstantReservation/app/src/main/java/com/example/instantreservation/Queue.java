@@ -1,16 +1,16 @@
 package com.example.instantreservation;
 
 public class Queue {
-    String queue_name;
-    String queue_description;
-    String queue_business;
-    String queue_businessID;
-    String queue_QRCodeImage;
-    String queue_image;
-    String queue_city;
+    private String queue_name;
+    private String queue_description;
+    private String queue_business;
+    private String queue_businessID;
+    private String queue_QRCodeImage;
+    private String queue_image;
+    private String queue_city;
 
-    int queue_nMaxReservation;
-    int queue_nReservation;
+    private int queue_nMaxReservation;
+    private int queue_nReservation;
 
     public Queue(){
 
@@ -20,7 +20,6 @@ public class Queue {
         this.queue_name = queue_name;
         this.queue_description = queue_description;
         this.queue_business = queue_business;
-        this.queue_businessID = queue_businessID;
         this.queue_QRCodeImage = queue_QRCodeImage;
         this.queue_image = queue_image;
         this.queue_city = queue_city;

@@ -12,11 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.instantreservation.Adapter;
-import com.example.instantreservation.Model;
+import com.example.instantreservation.QueueAdapter;
+import com.example.instantreservation.Queue;
 import com.example.instantreservation.R;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +30,8 @@ public class HomeFragment extends Fragment {
     String name;
 
     ViewPager viewPager;
-    Adapter adapter;
-    List<Model> models;
+    QueueAdapter queueAdapter;
+    List<Queue> models;
 
     private TextView hello_name;
 
@@ -64,20 +62,21 @@ public class HomeFragment extends Fragment {
 
 
         // Inflate the layout for this fragment
-        //TextView hello_name = (TextView) returnView.findViewById(R.id.hello_name);
-       // hello_name.setText("Hello " + name + "!");
+        TextView hello_name = (TextView) returnView.findViewById(R.id.hello_name);
+        hello_name.setText("Hello " + name + "!");
 
         models = new ArrayList<>();
-        models.add(new Model(R.drawable.resturant_example, "Brochure", "description1"));
-        models.add(new Model(R.drawable.resturant_example, "Sticker", "description41"));
-        models.add(new Model(R.drawable.resturant_example, "Poster", "description11"));
-        models.add(new Model(R.drawable.resturant_example, "Namecard", "description21"));
+        models.add(new Queue("name", "description", "business", "businessID", "QRcode", "image", "city", 5,2));
+        models.add(new Queue("name", "description", "business", "businessID", "QRcode", "image", "city", 5,2));
+        models.add(new Queue("name", "description", "business", "businessID", "QRcode", "image", "city", 5,2));
+        models.add(new Queue("name", "description", "business", "businessID", "QRcode", "image", "city", 5,2));
 
-        adapter= new Adapter(models, this);
+
+        queueAdapter = new QueueAdapter(models, this);
 
         viewPager = returnView.findViewById(R.id.viewPager);
-        viewPager.setAdapter(adapter);
-        viewPager.setPadding(130,100,130,0);
+        viewPager.setAdapter(queueAdapter);
+        viewPager.setPadding(0,0,80,0);
 
 
 
