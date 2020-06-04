@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.example.instantreservation.Adapter;
 import com.example.instantreservation.Model;
 import com.example.instantreservation.R;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,8 +58,10 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View returnView = inflater.inflate(R.layout.fragment_home, container, false);
+
+
+
 
         // Inflate the layout for this fragment
         //TextView hello_name = (TextView) returnView.findViewById(R.id.hello_name);
