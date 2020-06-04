@@ -5,13 +5,19 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.instantreservation.Adapter;
+import com.example.instantreservation.Model;
 import com.example.instantreservation.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -20,31 +26,21 @@ import com.example.instantreservation.R;
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     private SharedPreferences userInfo;
     String name;
 
+    ViewPager viewPager;
+    Adapter adapter;
+    List<Model> models;
 
     private TextView hello_name;
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public HomeFragment() {
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
+    public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -55,10 +51,6 @@ public class HomeFragment extends Fragment {
         userInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
         name = userInfo.getString("userName" , "null");
 
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -68,8 +60,24 @@ public class HomeFragment extends Fragment {
         View returnView = inflater.inflate(R.layout.fragment_home, container, false);
 
         // Inflate the layout for this fragment
-        TextView hello_name = (TextView) returnView.findViewById(R.id.hello_name);
-        hello_name.setText("Hello " + name + "!");
+        //TextView hello_name = (TextView) returnView.findViewById(R.id.hello_name);
+       // hello_name.setText("Hello " + name + "!");
+
+        models = new ArrayList<>();
+        models.add(new Model(R.drawable.resturant_example, "Brochure", "description1"));
+        models.add(new Model(R.drawable.resturant_example, "Sticker", "description41"));
+        models.add(new Model(R.drawable.resturant_example, "Poster", "description11"));
+        models.add(new Model(R.drawable.resturant_example, "Namecard", "description21"));
+
+        adapter= new Adapter(models, this);
+
+        viewPager = returnView.findViewById(R.id.viewPager);
+        viewPager.setAdapter(adapter);
+        viewPager.setPadding(130,100,130,0);
+
+
+
+
 
         return returnView;
     }

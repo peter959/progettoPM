@@ -24,6 +24,7 @@
             app:cardCornerRadius="20dp">
 
         <ImageView
+            android:id="@+id/imageID"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
@@ -32,6 +33,7 @@
 
         </androidx.cardview.widget.CardView>
         <TextView
+            android:id="@+id/queue_name"
             android:paddingTop="5dp"
             android:paddingLeft="10dp"
             android:layout_width="wrap_content"
@@ -42,13 +44,16 @@
             android:textSize="20sp"/>
 
         <TextView
+            android:id="@+id/business_name_plus_city"
             android:paddingLeft="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Activity name, City, Country"
+            android:text="Activity name City"
             android:textStyle="bold"
             android:textSize="12sp"
             android:textColor="#000" />
+
+
     </LinearLayout>
 
     <androidx.cardview.widget.CardView

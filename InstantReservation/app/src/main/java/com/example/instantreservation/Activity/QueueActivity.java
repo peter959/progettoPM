@@ -142,13 +142,9 @@ public class QueueActivity extends AppCompatActivity {
                 if(reserved) {
                     btnRemoveReservation.setVisibility(View.GONE);
                     removeReservation(userUID, queueID);
-
-                    //btnRemoveReservation.setVisibility(View.VISIBLE);
                 }else{
-
                 }
             }
-
         });
 
     }
@@ -247,6 +243,7 @@ public class QueueActivity extends AppCompatActivity {
                                                                    reserveButton = new ProgressButton(QueueActivity.this, btnReserve, "Pick up a ticket");
                                                                    reserved = false;
                                                                    btnRemoveReservation.setVisibility(View.GONE);
+                                                                   Toast.makeText(QueueActivity.this, "Reservation cancelled", Toast.LENGTH_SHORT).show();
                                                                }else
                                                                    removeReservationButton.buttonFinishedUnsuccessully("Something went wrong :(");
                                                            }
