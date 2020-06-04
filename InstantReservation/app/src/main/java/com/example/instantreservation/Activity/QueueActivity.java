@@ -53,7 +53,9 @@ public class QueueActivity extends AppCompatActivity {
     LinearLayout queue_layout;
 
     View btnReserve;
+    View btnRemoveReservation;
     ProgressButton reserveButton;
+    ProgressButton removeReservationButton;
 
     String queueID;
     String userUID;
@@ -97,9 +99,11 @@ public class QueueActivity extends AppCompatActivity {
                         if (dataSnapshot2.hasChild(userUID)) {
                             reserveButton.buttonFinished("Reserved");
                             reserved = true;
+                           // btnRemoveReservation.setVisibility(View.VISIBLE);
                         }else{
                             reserveButton = new ProgressButton(QueueActivity.this, btnReserve, "Pick up a ticket");
                             reserved=false;
+                            //btnRemoveReservation.setVisibility(View.GONE);
                         }
                     }
                     @Override
@@ -128,6 +132,7 @@ public class QueueActivity extends AppCompatActivity {
                 if(!reserved) {
                     reserveButton.buttonActivated();
                     writeNewReservation(userUID, queueID);
+                    //btnRemoveReservation.setVisibility(View.VISIBLE);
                 }else{
                     Toast.makeText(QueueActivity.this, "You've already took a ticket!", Toast.LENGTH_SHORT).show();
                 }
@@ -145,6 +150,9 @@ public class QueueActivity extends AppCompatActivity {
         btnReserve = findViewById(R.id.btnReserve);
         reserveButton = new ProgressButton(QueueActivity.this, btnReserve, "Pick up a ticket");
         reserved = false;
+
+        btnRemoveReservation = findViewById(R.id.btnRemoveReservation);
+        removeReservationButton = new ProgressButton(QueueActivity.this, btnRemoveReservation, "Remove Reservation");
 
         Toolbar toolbar = findViewById(R.id.toolbar_queue);
         setSupportActionBar(toolbar);
@@ -194,6 +202,7 @@ public class QueueActivity extends AppCompatActivity {
                                            if (task2.isSuccessful()) {
                                                reserveButton.buttonFinished("Reserved");
                                                reserved = true;
+                                               btnRemoveReservation.setVisibility(View.VISIBLE);
                                            }else
                                                reserveButton.buttonFinishedUnsuccessully("Something went wrong :(");
                                        }
