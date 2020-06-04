@@ -99,11 +99,11 @@ public class QueueActivity extends AppCompatActivity {
                         if (dataSnapshot2.hasChild(userUID)) {
                             reserveButton.buttonFinished("Reserved");
                             reserved = true;
-                           // btnRemoveReservation.setVisibility(View.VISIBLE);
+                            btnRemoveReservation.setVisibility(View.VISIBLE);
                         }else{
                             reserveButton = new ProgressButton(QueueActivity.this, btnReserve, "Pick up a ticket");
                             reserved=false;
-                            //btnRemoveReservation.setVisibility(View.GONE);
+                            btnRemoveReservation.setVisibility(View.GONE);
                         }
                     }
                     @Override
@@ -122,10 +122,6 @@ public class QueueActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
 
-
-
-
-
         btnReserve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,6 +131,21 @@ public class QueueActivity extends AppCompatActivity {
                     //btnRemoveReservation.setVisibility(View.VISIBLE);
                 }else{
                     Toast.makeText(QueueActivity.this, "You've already took a ticket!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        });
+
+        btnRemoveReservation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(reserved) {
+                    btnRemoveReservation.setVisibility(View.GONE);
+                    removeReservation(userUID, queueID);
+
+                    //btnRemoveReservation.setVisibility(View.VISIBLE);
+                }else{
+
                 }
             }
 
@@ -152,7 +163,9 @@ public class QueueActivity extends AppCompatActivity {
         reserved = false;
 
         btnRemoveReservation = findViewById(R.id.btnRemoveReservation);
-        removeReservationButton = new ProgressButton(QueueActivity.this, btnRemoveReservation, "Remove Reservation");
+        removeReservationButton = new ProgressButton(QueueActivity.this, btnRemoveReservation, "Remove");
+        removeReservationButton.buttonRemove("Remove reservation");
+
 
         Toolbar toolbar = findViewById(R.id.toolbar_queue);
         setSupportActionBar(toolbar);
@@ -217,6 +230,35 @@ public class QueueActivity extends AppCompatActivity {
             reserveButton.buttonFinishedUnsuccessully("Retry");
         }
     }
+
+    private void removeReservation(String userUID, final String queueID){
+            DatabaseReference ref = referenceForAddingReservation.child(queueBusinessID).child(queueID).child(userUID);
+            ref.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()){
+                        referenceForQueueInfo.child(queueID)
+                                .child("queue_nReservation")
+                                .setValue(queue_nReservation-1)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                           @Override
+                                                           public void onComplete(@NonNull Task<Void> task2) {
+                                                               if (task2.isSuccessful()) {
+                                                                   reserveButton = new ProgressButton(QueueActivity.this, btnReserve, "Pick up a ticket");
+                                                                   reserved = false;
+                                                                   btnRemoveReservation.setVisibility(View.GONE);
+                                                               }else
+                                                                   removeReservationButton.buttonFinishedUnsuccessully("Something went wrong :(");
+                                                           }
+                                                       }
+
+                                );
+                    } else removeReservationButton.buttonFinishedUnsuccessully("Something went wrong :(");
+                }
+            });
+    }
+
+    //
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

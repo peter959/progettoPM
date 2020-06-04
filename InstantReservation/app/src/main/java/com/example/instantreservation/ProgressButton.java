@@ -1,13 +1,17 @@
 package com.example.instantreservation;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
 import android.view.ContextMenu;
 import android.view.View;
 import android.view.animation.Animation;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -31,6 +35,7 @@ public class ProgressButton {
         layout.setBackground(cardView.getResources().getDrawable(R.drawable.background_gradient));
     }
 
+
     public void buttonActivated() {
         progressBar.setVisibility(View.VISIBLE);
         textView.setText("Please wait...");
@@ -40,6 +45,12 @@ public class ProgressButton {
         layout.setBackground(cardView.getResources().getDrawable(R.drawable.background_gradient_button_done));
         textView.setText(text);
         progressBar.setVisibility(View.GONE);
+    }
+
+    public void buttonRemove(String text) {
+        layout.setBackground(cardView.getResources().getDrawable(R.drawable.background_gradient_button_unsuccess));
+        textView.setText(text);
+        //progressBar.setVisibility(View.GONE);
     }
 
     public void buttonFinishedUnsuccessully(String text) {
