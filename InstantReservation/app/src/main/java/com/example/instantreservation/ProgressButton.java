@@ -12,7 +12,7 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class ProgressButton {
-    String textButton;
+    private String textButton;
 
     private CardView cardView;
     private ConstraintLayout layout;
@@ -28,6 +28,7 @@ public class ProgressButton {
         textView = view.findViewById(R.id.textView);
         textButton = text;
         textView.setText(text);
+        layout.setBackground(cardView.getResources().getDrawable(R.drawable.background_gradient));
     }
 
     public void buttonActivated() {
@@ -36,12 +37,19 @@ public class ProgressButton {
     }
 
     public void buttonFinished(String text) {
+        layout.setBackground(cardView.getResources().getDrawable(R.drawable.background_gradient_button_done));
+        textView.setText(text);
+        progressBar.setVisibility(View.GONE);
+    }
+
+    public void buttonFinishedUnsuccessully(String text) {
+        layout.setBackground(cardView.getResources().getDrawable(R.drawable.background_gradient_button_unsuccess));
         textView.setText(text);
         progressBar.setVisibility(View.GONE);
     }
 
     void setTextButton(String text) {
-        textButton = text;
+        textView.setText(text);
     }
 
 }

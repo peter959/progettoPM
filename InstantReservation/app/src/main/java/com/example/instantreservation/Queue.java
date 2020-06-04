@@ -8,7 +8,7 @@ public class Queue {
     String queue_QRCodeImage;
     String queue_image;
     String queue_city;
-    
+
     int queue_nMaxReservation;
     int queue_nReservation;
 
