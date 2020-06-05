@@ -46,7 +46,7 @@ public class QueueActivity extends AppCompatActivity {
     int queue_nMaxReservation;
     int queue_nReservation;
     TextView queue_description ;
-    ImageView queue_QRCodeImage;
+    //ImageView queue_QRCodeImage;
     ImageView queue_image;
 
     ProgressBar progressBarQueue;
@@ -153,7 +153,7 @@ public class QueueActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_queue);
+        setContentView(R.layout.activity_queue_test);
 
         btnReserve = findViewById(R.id.btnReserve);
         reserveButton = new ProgressButton(QueueActivity.this, btnReserve, "Pick up a ticket");
@@ -176,7 +176,7 @@ public class QueueActivity extends AppCompatActivity {
         queue_city = findViewById(R.id.queue_city);
         queue_nReservationString = findViewById(R.id.queue_nReservation);
         queue_description = findViewById(R.id.queue_description);
-        queue_QRCodeImage = findViewById(R.id.queue_QRCodeImage);
+        //queue_QRCodeImage = findViewById(R.id.queue_QRCodeImage);
         queue_image = findViewById(R.id.queue_image);
 
         progressBarQueue = findViewById(R.id.progressBarQueue);

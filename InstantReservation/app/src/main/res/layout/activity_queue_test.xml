@@ -20,12 +20,20 @@
         android:visibility="gone"/>
 
     <LinearLayout
+        android:id="@+id/queue_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_queue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            />
 
         <ScrollView
-            android:id="@+id/queue_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fadingEdgeLength="40dp"
@@ -40,13 +48,6 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="300dp">
-
-                    <androidx.appcompat.widget.Toolbar
-                        android:id="@+id/toolbar_queue"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        />
 
                     <ImageView
                         android:id="@+id/queue_image"
@@ -96,10 +97,10 @@
                                 <TextView
                                     android:id="@+id/queue_business"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="match_parent"
                                     android:text="Business Name"
-                                    android:textSize="15sp"
-                                    android:textColor="@android:color/black"/>
+                                    android:textColor="@android:color/black"
+                                    android:textSize="15sp" />
 
                                 <TextView
                                     android:id="@+id/queue_city"
@@ -195,7 +196,7 @@
                                 android:layout_height="match_parent"
                                 android:padding="10dp"
                                 android:text="this is the description of this Queue, the Business Menager will edit this.\nthis is an amazing place and the food is great"
-                                android:textColor="@android:color/black"
+                                android:textColor="@android:color/white"
                                 android:textSize="15dp"
                                 android:textStyle="bold" />
 
@@ -220,7 +221,7 @@
                                 layout="@layout/progress_btn_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:visibility="visible"/>
+                                android:visibility="gone"/>
 
                         </LinearLayout>
 

@@ -53,11 +53,11 @@
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="245dp"
-                        android:layout_margin="20dp"
                         app:cardBackgroundColor="@color/transparent"
                         app:cardCornerRadius="20dp">
 
                         <ImageView
+                            android:scaleType="fitXY"
                             android:id="@+id/business_image"
                             android:layout_width="match_parent"
                             android:layout_height="245dp"

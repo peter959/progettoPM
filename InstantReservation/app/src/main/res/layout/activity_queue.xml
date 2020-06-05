@@ -19,7 +19,6 @@
         tools:targetApi="Q"
         android:visibility="gone"/>
 
-
     <LinearLayout
         android:id="@+id/queue_layout"
         android:orientation="vertical"
