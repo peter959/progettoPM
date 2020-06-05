@@ -26,6 +26,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
+                    <TextView
+                        android:id="@+id/queue_ID"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textSize="0sp"/>
+
                     <ImageView
                         android:id="@+id/queue_image"
                         android:src="@drawable/resturant_example"

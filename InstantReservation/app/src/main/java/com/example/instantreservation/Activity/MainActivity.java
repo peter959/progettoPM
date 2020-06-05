@@ -16,7 +16,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -30,6 +32,7 @@ import com.example.instantreservation.Fragment.FavoritesFragment;
 import com.example.instantreservation.Fragment.HomeFragment;
 import com.example.instantreservation.Fragment.ProfileFragment;
 import com.example.instantreservation.Fragment.SearchFragment;
+import com.example.instantreservation.Queue;
 import com.example.instantreservation.R;
 import com.example.instantreservation.User;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -206,8 +209,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }*/
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void onFavoriteToggleClick(View view) {
-        Toast.makeText(this, "toggle", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, t.getText(), Toast.LENGTH_SHORT).show();
+        //Queue prova = HomeFragment.getModels(0);
+      //  System.out.println(prova.getQueue_name());
     }
 
 }

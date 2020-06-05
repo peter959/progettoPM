@@ -6,13 +6,19 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.instantreservation.Activity.QueueActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -20,6 +26,8 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
 
     Context context;
     ArrayList<Queue> queues;
+    private FirebaseUser firebaseUser;
+    DatabaseReference referenceForAddingReservationInUserFavorites;
 
     public QueueAdapterRecycler(Context c, ArrayList<Queue> p) {
         context = c;
@@ -47,6 +55,22 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
         myViewHolder.queue_city.setText(queue_city);
         myViewHolder.queue_nReservation.setText(queue_nReservation);
         myViewHolder.queue_image.setImageResource(R.drawable.resturant_example);
+
+        View v = myViewHolder.itemView;
+        ToggleButton tb = v.findViewById(R.id.toggleFavorite);
+
+        tb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                referenceForAddingReservationInUserFavorites = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid());
+                if (checked) {
+                    referenceForAddingReservationInUserFavorites.child("favoritesQueue").child(queue_id).setValue("favorite");
+                } else {
+                    referenceForAddingReservationInUserFavorites.child("favoritesQueue").child(queue_id).removeValue();
+                }
+            }
+        });
 
 
         //Quando il does viene toccato, vengono passati ad EditTaskDesk le informazioni già presenti
