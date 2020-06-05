@@ -22,9 +22,9 @@ public class QueueAdapter extends PagerAdapter {
 
     private List<Queue> models;
     private LayoutInflater layoutInflater;
-    private HomeFragment context;
+    private Context context;
 
-    public QueueAdapter(List<Queue> models, HomeFragment context) {
+    public QueueAdapter(List<Queue> models, Context context) {
         this.models = models;
         this.context = context;
     }
@@ -42,7 +42,7 @@ public class QueueAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        layoutInflater = context.getActivity().getLayoutInflater();
+        layoutInflater = LayoutInflater.from(context);
         View view = layoutInflater.inflate(R.layout.queue_card_mini, container, false);
 
         ImageView queue_image;
@@ -70,9 +70,9 @@ public class QueueAdapter extends PagerAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context.getActivity(), QueueActivity.class);
+                Intent intent = new Intent(context, QueueActivity.class);
                 intent.putExtra("payload", queue_id);
-                context.getActivity().startActivity(intent);
+                context.startActivity(intent);
             }
         });
 

@@ -102,7 +102,7 @@ public class HomeFragment extends Fragment {
                                 System.out.println(queue.getQueue_name());
                                 models.add(queue);
 
-                                queueAdapter = new QueueAdapter(models, HomeFragment.this);
+                                queueAdapter = new QueueAdapter(models, getContext());
 
                                 viewPager.setAdapter(queueAdapter);
                                 queueAdapter.notifyDataSetChanged();
