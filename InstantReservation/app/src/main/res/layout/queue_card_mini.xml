@@ -56,16 +56,6 @@
                                 android:onClick="onFavoriteToggleClick"/>
                         </RelativeLayout>
 
-
-                            <!--<androidx.appcompat.widget.AppCompatImageView
-                                android:id="@+id/queue_favorite_button"
-                                android:layout_alignParentEnd="true"
-                                android:background="@drawable/bg_circle"
-                                android:padding="5dp"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:src="@drawable/ic_favorite_border_black_24dp"/>-->
-
                     </RelativeLayout>
                 </RelativeLayout>
             </LinearLayout>
