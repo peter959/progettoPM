@@ -29,7 +29,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
@@ -41,7 +42,8 @@
                     app:cardBackgroundColor="#FF402D"
                     app:cardElevation="10dp"
                     android:minHeight="200dp"
-                    android:layout_alignParentTop="true">
+                    android:layout_alignParentTop="true"
+                    >
 
                     <LinearLayout
                         android:layout_gravity="center_horizontal"
@@ -76,13 +78,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/my_favorites"
                 android:layout_width="match_parent"
-                android:layout_marginTop="-60dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_height="wrap_content">
-            </androidx.recyclerview.widget.RecyclerView>
-
-
+                android:layout_height="408dp"
+                android:visibility="visible"></androidx.recyclerview.widget.RecyclerView>
 
         </LinearLayout>
     </ScrollView>

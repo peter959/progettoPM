@@ -1,6 +1,7 @@
 package com.example.instantreservation.Activity;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 //import androidx.support.annotation.NonNull;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -125,8 +127,8 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigationMyProfile:
-                    fm.beginTransaction().hide(active).show(profileFragment).commit();
-                    active = profileFragment;
+                    //fm.beginTransaction().hide(active).show(profileFragment).commit();
+                    //active = profileFragment;
                     return true;
                 case R.id.navigationFavorites:
                     fm.beginTransaction().hide(active).show(favoritesFragment).commit();

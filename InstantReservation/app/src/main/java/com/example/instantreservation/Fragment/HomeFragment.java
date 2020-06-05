@@ -77,6 +77,7 @@ public class HomeFragment extends Fragment {
         final View returnView = inflater.inflate(R.layout.fragment_home, container, false);
         progressBar = returnView.findViewById(R.id.progressBarReservations);
         viewPager = returnView.findViewById(R.id.viewPager);
+        
 
         TextView hello_name = (TextView) returnView.findViewById(R.id.hello_name);
         hello_name.setText("Hello " + name + "!");

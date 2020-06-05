@@ -1,13 +1,26 @@
 package com.example.instantreservation.Fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.example.instantreservation.Queue;
+
+import com.example.instantreservation.QueueAdapter;
+import com.example.instantreservation.QueueAdapterRecycler;
 import com.example.instantreservation.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.WriterException;
 
 
@@ -16,68 +29,101 @@ import org.json.JSONObject;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class FavoritesFragment extends Fragment {
 
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private SharedPreferences userInfo;
+    String name;
+    String userUID;
 
-    private String mParam1;
-    private String mParam2;
+    RecyclerView recyclerView;
+    QueueAdapterRecycler queueAdapter;
+    ArrayList<Queue> models;
+    //ProgressBar progressBar;
 
-
-
+    DatabaseReference referenceForReservedQueue;
+    DatabaseReference referenceForQueueInfo;
 
     public FavoritesFragment() {
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
-    public static FavoritesFragment newInstance(String param1, String param2) {
-        FavoritesFragment fragment = new FavoritesFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
+        userInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        name = userInfo.getString("userName" , "null");
+        userUID = userInfo.getString("userUID", "null");
+
+        referenceForReservedQueue = FirebaseDatabase.getInstance().getReference().child("users").child(userUID).child("reservedQueue");
+        referenceForQueueInfo = FirebaseDatabase.getInstance().getReference().child("codeattivita");
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View returnView = inflater.inflate(R.layout.fragment_favorites, container, false);
+        recyclerView = returnView.findViewById(R.id.my_favorites);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        JSONObject json = new JSONObject();
-        try {
-            json.put("id","3rhfduhsj298dh3f2de9k");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        QRGEncoder qrgEncoder = new QRGEncoder(json.toString(), null, QRGContents.Type.TEXT, 350);
-        try {
-            // Getting QR-Code as Bitmap
-            Bitmap bitmap = qrgEncoder.encodeAsBitmap();
+        models = new ArrayList<>();
+        models.add(new Queue("name", "description", "business", "businessID", "QRcode", "image", "city", 5,2));
+        models.add(new Queue("name", "description", "business", "businessID", "QRcode", "image", "city", 5,2));
 
-            //ImageView qrImage = (ImageView) returnView.findViewById(R.id.qrCodeImage);
-            // Setting Bitmap to ImageView
-            //qrImage.setImageBitmap(bitmap);
 
-        } catch (WriterException e) {
-            System.out.println("------------------------- Errore generazione QRcode: ");
-        }
+        //recyclerView.setVisibility(View.GONE);
+        //progressBar.setVisibility(View.VISIBLE);
 
+        referenceForReservedQueue.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    final String queueID =  dataSnapshot1.getKey();
+                    System.out.println(dataSnapshot1.getKey());
+                    if (queueID!=null) {
+                        referenceForQueueInfo.child(queueID);
+                        referenceForQueueInfo.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
+                                Queue queue = dataSnapshot2.child(queueID).getValue(Queue.class);
+                                queue.setQueue_id(queueID);
+                                System.out.println(queue.getQueue_name());
+                                models.add(queue);
+
+                                queueAdapter = new QueueAdapterRecycler(getContext(), models);
+
+                                recyclerView.setAdapter(queueAdapter);
+                                queueAdapter.notifyDataSetChanged();
+                                //recyclerView.setVisibility(View.VISIBLE);
+                                //progressBar.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         return returnView;
     }

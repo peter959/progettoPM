@@ -50,7 +50,7 @@ public class QueueAdapter extends PagerAdapter {
         TextView queue_business;
         TextView queue_city;
         TextView queue_nReservation;
-         final String queue_id;
+        final String queue_id;
 
         queue_image = view.findViewById(R.id.queue_image);
         queue_name = view.findViewById(R.id.queue_name);
