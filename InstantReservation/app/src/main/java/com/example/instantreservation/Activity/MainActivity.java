@@ -87,15 +87,10 @@ public class MainActivity extends AppCompatActivity {
                         Geocoder geocoder = new Geocoder (MainActivity.this, Locale.getDefault());
                         //Initialize address List
                         List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-
                         latitude = addresses.get(0).getLatitude();
                         longitude = addresses.get(0).getLongitude();
                         locality = addresses.get(0).getLocality();
                         address = addresses.get(0).getAddressLine(0);
-
-                        //System.out.println("AAAAAAAAAAAAAAAAAAAAAA" + locality);
-
-
                     }
                     catch (IOException e) {
                         e.printStackTrace();
@@ -121,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
 
-        //updateUI(currentUser);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -149,8 +143,6 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigationCamera:
                     fm.beginTransaction().hide(active).show(cameraFragment).commit();
                     active = cameraFragment;
-                    //Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
-                    //startActivity(intent);
                     return true;
             }
             return false;
@@ -162,43 +154,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        /*mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-
-            mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(currentUser.getUid());
-
-            mDatabase.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    //user = dataSnapshot.getValue(User.class);
-                   // email =  dataSnapshot.child("email").getValue().toString();
-                  //  name =  dataSnapshot.child("fullname").getValue().toString();
-                  //  System.out.println("AAAAAAAAAAAAQAAAAAAAAAAAAAAAA" + email + " " + name);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-
-        }
-        else {
-            Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
-            startActivity(intent);
-            finish();
-        }*/
-
-
-        /*
-        Bundle args = new Bundle();
-        args.putString("name", "adkjshkjdhf");
-        args.putString("email", "user.getEmail()");
-        profileFragment.setArguments(args);
-        homeFragment.setArguments(args);*/
-
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -220,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
+    /*@Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result != null) {
@@ -247,56 +202,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
-
-    }
-
-   /* @Override
-    public void startActivityForResult(Intent intent, int requestCode) {
-        super.startActivityForResult(intent, requestCode);
     }*/
-
-    /* @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.queueID.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }*/
-
-    /*
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int queueID = item.getItemId();
-
-        if (queueID == R.queueID.nav_camera) {
-            // Handle the camera action
-        } else if (queueID == R.queueID.nav_gallery) {
-
-        } else if (queueID == R.queueID.nav_slideshow) {
-
-        } else if (queueID == R.queueID.nav_manage) {
-
-        } else if (queueID == R.queueID.nav_share) {
-
-        } else if (queueID == R.queueID.nav_dark_mode) {
-            //code for setting dark mode
-            //true for dark mode, false for day mode, currently toggling on each click
-           //DarkModePrefManager darkModePrefManager = new DarkModePrefManager(this);
-          //  darkModePrefManager.setDarkMode(!darkModePrefManager.isNightMode());
-          //  AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            recreate();
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.queueID.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }*/
-
 
     public void onFavoriteToggleClick(View view) {
         Toast.makeText(this, "toggle", Toast.LENGTH_SHORT).show();
