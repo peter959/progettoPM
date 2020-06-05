@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -295,5 +296,10 @@ public class MainActivity extends AppCompatActivity {
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }*/
+
+
+    public void onFavoriteToggleClick(View view) {
+        Toast.makeText(this, "toggle", Toast.LENGTH_SHORT).show();
+    }
 
 }

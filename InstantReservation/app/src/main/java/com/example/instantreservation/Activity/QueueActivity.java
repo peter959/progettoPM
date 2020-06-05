@@ -265,8 +265,6 @@ public class QueueActivity extends AppCompatActivity {
             });
     }
 
-    //
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId())
@@ -276,6 +274,10 @@ public class QueueActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onFavoriteToggleClick(View view) {
+        Toast.makeText(this, "toggle", Toast.LENGTH_SHORT).show();
     }
 
 }

@@ -6,7 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.instantreservation.Activity.MainActivity;
 import com.example.instantreservation.Fragment.HomeFragment;
 
 import java.util.List;
@@ -68,5 +70,6 @@ public class QueueAdapter extends PagerAdapter {
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((View)object);
     }
+
 }
 
