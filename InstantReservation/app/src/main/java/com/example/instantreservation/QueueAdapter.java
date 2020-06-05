@@ -1,6 +1,7 @@
 package com.example.instantreservation;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.instantreservation.Activity.MainActivity;
+import com.example.instantreservation.Activity.QueueActivity;
 import com.example.instantreservation.Fragment.HomeFragment;
 
 import java.util.List;
@@ -48,6 +50,7 @@ public class QueueAdapter extends PagerAdapter {
         TextView queue_business;
         TextView queue_city;
         TextView queue_nReservation;
+         final String queue_id;
 
         queue_image = view.findViewById(R.id.queue_image);
         queue_name = view.findViewById(R.id.queue_name);
@@ -60,8 +63,18 @@ public class QueueAdapter extends PagerAdapter {
         queue_business.setText(models.get(position).getQueue_business());
         queue_city.setText(models.get(position).getQueue_city());
         queue_nReservation.setText(models.get(position).getQueue_nReservationString());
+        queue_id = models.get(position).getQueue_id();
 
         container.addView(view, 0);
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context.getActivity(), QueueActivity.class);
+                intent.putExtra("payload", queue_id);
+                context.getActivity().startActivity(intent);
+            }
+        });
 
         return view;
     }

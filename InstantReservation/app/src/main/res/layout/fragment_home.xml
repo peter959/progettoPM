@@ -115,7 +115,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="400dp">
 
+                    <ProgressBar
+                        android:id="@+id/progressBarReservations"
+                        style="?android:attr/progressBarStyle"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_centerInParent="true"
+                        tools:targetApi="Q"
+                        android:visibility="gone"/>
+
                     <androidx.viewpager.widget.ViewPager
+                        android:visibility="visible"
                         android:id="@+id/viewPager"
                         android:foregroundGravity="center"
                         android:overScrollMode="never"

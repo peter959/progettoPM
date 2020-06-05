@@ -70,9 +70,9 @@ public class FavoritesFragment extends Fragment {
             // Getting QR-Code as Bitmap
             Bitmap bitmap = qrgEncoder.encodeAsBitmap();
 
-            ImageView qrImage = (ImageView) returnView.findViewById(R.id.qrCodeImage);
+            //ImageView qrImage = (ImageView) returnView.findViewById(R.id.qrCodeImage);
             // Setting Bitmap to ImageView
-            qrImage.setImageBitmap(bitmap);
+            //qrImage.setImageBitmap(bitmap);
 
         } catch (WriterException e) {
             System.out.println("------------------------- Errore generazione QRcode: ");

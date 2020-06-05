@@ -116,9 +116,6 @@ public class QueueActivity extends AppCompatActivity {
 
                 queue_layout.setVisibility(View.VISIBLE);
                 progressBarQueue.setVisibility(View.GONE);
-
-
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}

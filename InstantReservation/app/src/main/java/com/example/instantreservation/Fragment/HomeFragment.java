@@ -11,6 +11,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ public class HomeFragment extends Fragment {
     ViewPager viewPager;
     QueueAdapter queueAdapter;
     List<Queue> models;
+    ProgressBar progressBar;
 
     DatabaseReference referenceForReservedQueue;
     DatabaseReference referenceForQueueInfo;
@@ -60,7 +62,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         userInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
         name = userInfo.getString("userName" , "null");
         userUID = userInfo.getString("userUID", "null");
@@ -74,8 +75,17 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View returnView = inflater.inflate(R.layout.fragment_home, container, false);
+        progressBar = returnView.findViewById(R.id.progressBarReservations);
+        viewPager = returnView.findViewById(R.id.viewPager);
+
+        TextView hello_name = (TextView) returnView.findViewById(R.id.hello_name);
+        hello_name.setText("Hello " + name + "!");
 
         models = new ArrayList<>();
+
+        viewPager.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+
         referenceForReservedQueue.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
@@ -88,15 +98,17 @@ public class HomeFragment extends Fragment {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
                                 Queue queue = dataSnapshot2.child(queueID).getValue(Queue.class);
+                                queue.setQueue_id(queueID);
                                 System.out.println(queue.getQueue_name());
                                 models.add(queue);
 
                                 queueAdapter = new QueueAdapter(models, HomeFragment.this);
 
-                                viewPager = returnView.findViewById(R.id.viewPager);
                                 viewPager.setAdapter(queueAdapter);
                                 queueAdapter.notifyDataSetChanged();
                                 viewPager.setPadding(0,0,80,0);
+                                viewPager.setVisibility(View.VISIBLE);
+                                progressBar.setVisibility(View.GONE);
                             }
 
                             @Override
@@ -114,22 +126,10 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        // Inflate the layout for this fragment
-        TextView hello_name = (TextView) returnView.findViewById(R.id.hello_name);
-        hello_name.setText("Hello " + name + "!");
-
-
         //models.add(new Queue("name", "description", "business", "businessID", "QRcode", "image", "city", 5,2));
        // models.add(new Queue("name", "description", "business", "businessID", "QRcode", "image", "city", 5,2));
        // models.add(new Queue("name", "description", "business", "businessID", "QRcode", "image", "city", 5,2));
         //models.add(new Queue("name", "description", "business", "businessID", "QRcode", "image", "city", 5,2));
-
-
-
-
-
-
-
 
         return returnView;
     }
