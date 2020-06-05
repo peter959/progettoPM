@@ -127,8 +127,8 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigationMyProfile:
-                    //fm.beginTransaction().hide(active).show(profileFragment).commit();
-                    //active = profileFragment;
+                    fm.beginTransaction().hide(active).show(profileFragment).commit();
+                    active = profileFragment;
                     return true;
                 case R.id.navigationFavorites:
                     fm.beginTransaction().hide(active).show(favoritesFragment).commit();
