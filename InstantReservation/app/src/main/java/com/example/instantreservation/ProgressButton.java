@@ -43,13 +43,12 @@ public class ProgressButton {
 
     public void buttonFinished(String text) {
         //layout.setBackground(cardView.getResources().getDrawable(R.drawable.background_gradient_button_done));
-
         textView.setText(text);
         progressBar.setVisibility(View.GONE);
     }
 
     public void buttonRemove(String text) {
-        layout.setBackgroundColor(Color.TRANSPARENT);
+        layout.setBackground(cardView.getResources().getDrawable(R.drawable.background_gradient_button_unsuccess));
         textView.setText(text);
         //progressBar.setVisibility(View.GONE);
     }
