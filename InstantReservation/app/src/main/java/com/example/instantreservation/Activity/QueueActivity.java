@@ -37,6 +37,7 @@ public class QueueActivity extends AppCompatActivity {
 
     DatabaseReference referenceForQueueInfo;
     DatabaseReference referenceForAddingReservation;
+    DatabaseReference referenceForAddingReservationInUser;
     DatabaseReference referenceForAddingCheckingIfReservationExist;
 
     TextView queue_name;
@@ -189,6 +190,7 @@ public class QueueActivity extends AppCompatActivity {
 
         referenceForQueueInfo = FirebaseDatabase.getInstance().getReference().child("codeattivita");
         referenceForAddingReservation= FirebaseDatabase.getInstance().getReference().child("reservations");
+        referenceForAddingReservationInUser= FirebaseDatabase.getInstance().getReference().child("users").child(userUID);
 
         queue_business.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -208,6 +210,7 @@ public class QueueActivity extends AppCompatActivity {
         //Task<Void> task = referenceForAddingReservation.child(queueBusinessID).child(queueID).setValue(userUID);
         if(queue_nReservation < queue_nMaxReservation) {
             DatabaseReference ref = referenceForAddingReservation.child(queueBusinessID).child(queueID).child(userUID);
+            referenceForAddingReservationInUser.child("reservedQueue").child(queueID).child("state").setValue("pending");
             ref.child("state").setValue("pending").addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
@@ -239,6 +242,7 @@ public class QueueActivity extends AppCompatActivity {
 
     private void removeReservation(String userUID, final String queueID){
             DatabaseReference ref = referenceForAddingReservation.child(queueBusinessID).child(queueID).child(userUID);
+            referenceForAddingReservationInUser.child("reservedQueue").child(queueID).removeValue();
             ref.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
