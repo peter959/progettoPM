@@ -79,8 +79,8 @@ public class FavoritesFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         models = new ArrayList<>();
-        models.add(new Queue("name", "description", "business", "businessID", "QRcode", "image", "city", 5,2));
-        models.add(new Queue("name", "description", "business", "businessID", "QRcode", "image", "city", 5,2));
+        //models.add(new Queue("name", "description", "business", "businessID", "QRcode", "image", "city", 5,2));
+        //models.add(new Queue("name", "description", "business", "businessID", "QRcode", "image", "city", 5,2));
 
 
         //recyclerView.setVisibility(View.GONE);

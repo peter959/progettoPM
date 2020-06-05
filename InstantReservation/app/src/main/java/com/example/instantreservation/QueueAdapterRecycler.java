@@ -77,9 +77,9 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
         myViewHolder.itemView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context, QueueActivity.class);
-                i.putExtra("payload", queue_id);
-                context.startActivity(i);
+                Intent intent = new Intent(context, QueueActivity.class);
+                intent.putExtra("payload", queue_id);
+                context.startActivity(intent);
             }
         });
     }
