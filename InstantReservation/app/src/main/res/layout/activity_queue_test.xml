@@ -71,8 +71,7 @@
                             android:layout_height="match_parent"
                             android:background="@drawable/toggle_selector"
                             android:textOff=""
-                            android:textOn=""
-                            android:onClick="onFavoriteToggleClick"/>
+                            android:textOn="" />
                     </RelativeLayout>
 
 

@@ -60,7 +60,7 @@
                                 android:background="@drawable/toggle_selector"
                                 android:textOff=""
                                 android:textOn=""
-                                android:onClick="onFavoriteToggleClick"/>
+                                />
                         </RelativeLayout>
 
                     </RelativeLayout>

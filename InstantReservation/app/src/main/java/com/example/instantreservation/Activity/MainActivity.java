@@ -209,11 +209,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }*/
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+    /*@RequiresApi(api = Build.VERSION_CODES.M)
     public void onFavoriteToggleClick(View view) {
        // Toast.makeText(this, t.getText(), Toast.LENGTH_SHORT).show();
         //Queue prova = HomeFragment.getModels(0);
       //  System.out.println(prova.getQueue_name());
-    }
+    }*/
 
 }

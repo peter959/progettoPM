@@ -104,9 +104,9 @@ public class FavoritesFragment extends Fragment {
                                 models.add(queue);
 
                                 queueAdapter = new QueueAdapterRecycler(getContext(), models);
-
                                 recyclerView.setAdapter(queueAdapter);
                                 queueAdapter.notifyDataSetChanged();
+
                                 //recyclerView.setVisibility(View.VISIBLE);
                                 //progressBar.setVisibility(View.GONE);
                             }
@@ -127,5 +127,12 @@ public class FavoritesFragment extends Fragment {
         });
 
         return returnView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
     }
 }

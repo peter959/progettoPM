@@ -60,7 +60,7 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
         View v = myViewHolder.itemView;
         ToggleButton tb = v.findViewById(R.id.toggleFavorite);
 
-        if (queue_is_favorite == true) tb.setChecked(true);
+        tb.setChecked(queue_is_favorite);
         tb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {

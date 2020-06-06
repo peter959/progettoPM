@@ -88,7 +88,7 @@ public class QueueAdapter extends PagerAdapter {
         container.addView(view, 0);
 
         ToggleButton tb = view.findViewById(R.id.toggleFavorite);
-        if (queue_is_favorite == true) tb.setChecked(true);
+        tb.setChecked(queue_is_favorite);
         tb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {

@@ -28,6 +28,7 @@ public class Queue {
         this.queue_city = queue_city;
         this.queue_nMaxReservation = queue_nMaxReservation;
         this.queue_nReservation = queue_nReservation;
+        this.queue_is_favorite = false;
     }
 
     public Boolean getQueue_is_favorite() {

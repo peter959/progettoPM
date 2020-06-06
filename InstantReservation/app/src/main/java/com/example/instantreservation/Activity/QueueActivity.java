@@ -13,11 +13,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.example.instantreservation.ProgressButton;
 import com.example.instantreservation.Queue;
@@ -25,6 +27,8 @@ import com.example.instantreservation.R;
 import com.example.instantreservation.Reservation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,6 +43,10 @@ public class QueueActivity extends AppCompatActivity {
     DatabaseReference referenceForAddingReservation;
     DatabaseReference referenceForAddingReservationInUser;
     DatabaseReference referenceForAddingCheckingIfReservationExist;
+    DatabaseReference referenceForFavoritesQueues;
+
+    private FirebaseUser firebaseUser;
+    DatabaseReference referenceForAddingReservationInUserFavorites;
 
     TextView queue_name;
     TextView queue_business;
@@ -58,10 +66,14 @@ public class QueueActivity extends AppCompatActivity {
     ProgressButton reserveButton;
     ProgressButton removeReservationButton;
 
+    Boolean is_favorite;
+
     String queueID;
     String userUID;
     String queueBusinessID;
     SharedPreferences sharedPreferences;
+
+    ToggleButton toggleFavorite;
 
     Boolean reserved;
 
@@ -89,6 +101,20 @@ public class QueueActivity extends AppCompatActivity {
                 queueBusinessID = queue.getQueue_businessID();
                 //queue_image.setImageURI(queue.getQueue_image());
                 //queue_QRCodeImage.setImageURI();
+                referenceForFavoritesQueues.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.hasChild(queueID)) {
+                            toggleFavorite.setChecked(true);
+                        }
+                        else { toggleFavorite.setChecked(false);}
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
                 referenceForAddingCheckingIfReservationExist = FirebaseDatabase.getInstance().getReference()
                         .child("reservations")
@@ -153,9 +179,25 @@ public class QueueActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_queue_test);
 
+        //reservation Button
         btnReserve = findViewById(R.id.btnReserve);
         reserveButton = new ProgressButton(QueueActivity.this, btnReserve, "Pick up a ticket");
         reserved = false;
+
+        //favorites toggle
+        toggleFavorite = findViewById(R.id.toggleFavorite);
+        toggleFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                referenceForAddingReservationInUserFavorites = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid());
+                if (checked) {
+                    referenceForAddingReservationInUserFavorites.child("favoritesQueue").child(queueID).setValue("favorite");
+                } else {
+                    referenceForAddingReservationInUserFavorites.child("favoritesQueue").child(queueID).removeValue();
+                }
+            }
+        });
 
         btnRemoveReservation = findViewById(R.id.btnRemoveReservation);
         removeReservationButton = new ProgressButton(QueueActivity.this, btnRemoveReservation, "Remove");
@@ -187,6 +229,7 @@ public class QueueActivity extends AppCompatActivity {
 
         referenceForQueueInfo = FirebaseDatabase.getInstance().getReference().child("codeattivita");
         referenceForAddingReservation= FirebaseDatabase.getInstance().getReference().child("reservations");
+        referenceForFavoritesQueues = FirebaseDatabase.getInstance().getReference().child("users").child(userUID).child("favoritesQueue");
         referenceForAddingReservationInUser= FirebaseDatabase.getInstance().getReference().child("users").child(userUID);
 
         queue_business.setOnClickListener(new View.OnClickListener() {
@@ -277,8 +320,5 @@ public class QueueActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void onFavoriteToggleClick(View view) {
-        Toast.makeText(this, "toggle", Toast.LENGTH_SHORT).show();
-    }
 
 }
