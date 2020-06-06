@@ -99,6 +99,7 @@ public class FavoritesFragment extends Fragment {
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
                                 Queue queue = dataSnapshot2.child(queueID).getValue(Queue.class);
                                 queue.setQueue_id(queueID);
+                                queue.setQueue_is_favorite(true);
                                 System.out.println(queue.getQueue_name());
                                 models.add(queue);
 

@@ -9,6 +9,7 @@ public class Queue {
     private String queue_image;
     private String queue_city;
     private String queue_id;
+    private Boolean queue_is_favorite;
 
     private int queue_nMaxReservation;
     private int queue_nReservation;
@@ -27,6 +28,14 @@ public class Queue {
         this.queue_city = queue_city;
         this.queue_nMaxReservation = queue_nMaxReservation;
         this.queue_nReservation = queue_nReservation;
+    }
+
+    public Boolean getQueue_is_favorite() {
+        return queue_is_favorite;
+    }
+
+    public void setQueue_is_favorite(Boolean queue_is_favorite) {
+        this.queue_is_favorite = queue_is_favorite;
     }
 
     public String getQueue_id() {

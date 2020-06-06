@@ -46,6 +46,7 @@ public class HomeFragment extends Fragment {
 
     DatabaseReference referenceForReservedQueue;
     DatabaseReference referenceForQueueInfo;
+    DatabaseReference referenceForFavoritesQueues;
 
 
     private TextView hello_name;
@@ -66,6 +67,7 @@ public class HomeFragment extends Fragment {
         name = userInfo.getString("userName" , "null");
         userUID = userInfo.getString("userUID", "null");
 
+        referenceForFavoritesQueues = FirebaseDatabase.getInstance().getReference().child("users").child(userUID).child("favoritesQueue");
         referenceForReservedQueue = FirebaseDatabase.getInstance().getReference().child("users").child(userUID).child("reservedQueue");
         referenceForQueueInfo = FirebaseDatabase.getInstance().getReference().child("codeattivita");
 
@@ -77,20 +79,18 @@ public class HomeFragment extends Fragment {
         final View returnView = inflater.inflate(R.layout.fragment_home, container, false);
         progressBar = returnView.findViewById(R.id.progressBarReservations);
         viewPager = returnView.findViewById(R.id.viewPager);
-        
+
 
         TextView hello_name = (TextView) returnView.findViewById(R.id.hello_name);
         hello_name.setText("Hello " + name + "!");
 
         models = new ArrayList<>();
-
         viewPager.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
-
         referenceForReservedQueue.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) { ;
                     final String queueID =  dataSnapshot1.getKey();
                     System.out.println(dataSnapshot1.getKey());
                     if (queueID!=null) {
@@ -98,8 +98,22 @@ public class HomeFragment extends Fragment {
                         referenceForQueueInfo.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
-                                Queue queue = dataSnapshot2.child(queueID).getValue(Queue.class);
+                                final Queue queue = dataSnapshot2.child(queueID).getValue(Queue.class);
                                 queue.setQueue_id(queueID);
+                                referenceForFavoritesQueues.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.hasChild(queueID)) {
+                                            queue.setQueue_is_favorite(true);
+                                        }
+                                        else { queue.setQueue_is_favorite(false);}
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
                                 System.out.println(queue.getQueue_name());
                                 models.add(queue);
 

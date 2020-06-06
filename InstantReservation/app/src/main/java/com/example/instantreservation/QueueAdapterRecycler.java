@@ -49,6 +49,7 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
         final String queue_nReservation = queues.get(i).getQueue_nReservationString();
         final String queue_image = queues.get(i).getQueue_image();
         final String queue_id = queues.get(i).getQueue_id();
+        final Boolean queue_is_favorite = queues.get(i).getQueue_is_favorite();
 
         myViewHolder.queue_name.setText(queue_name);
         myViewHolder.queue_business.setText(queue_business);
@@ -59,6 +60,7 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
         View v = myViewHolder.itemView;
         ToggleButton tb = v.findViewById(R.id.toggleFavorite);
 
+        if (queue_is_favorite == true) tb.setChecked(true);
         tb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
