@@ -51,7 +51,7 @@ public class FavoritesFragment extends Fragment {
     ArrayList<Queue> models;
     //ProgressBar progressBar;
 
-    DatabaseReference referenceForReservedQueue;
+    DatabaseReference referenceForFavoritesQueues;
     DatabaseReference referenceForQueueInfo;
 
     public FavoritesFragment() {
@@ -66,7 +66,7 @@ public class FavoritesFragment extends Fragment {
         name = userInfo.getString("userName" , "null");
         userUID = userInfo.getString("userUID", "null");
 
-        referenceForReservedQueue = FirebaseDatabase.getInstance().getReference().child("users").child(userUID).child("reservedQueue");
+        referenceForFavoritesQueues = FirebaseDatabase.getInstance().getReference().child("users").child(userUID).child("favoritesQueue");
         referenceForQueueInfo = FirebaseDatabase.getInstance().getReference().child("codeattivita");
 
     }
@@ -86,7 +86,7 @@ public class FavoritesFragment extends Fragment {
         //recyclerView.setVisibility(View.GONE);
         //progressBar.setVisibility(View.VISIBLE);
 
-        referenceForReservedQueue.addValueEventListener(new ValueEventListener() {
+        referenceForFavoritesQueues.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {

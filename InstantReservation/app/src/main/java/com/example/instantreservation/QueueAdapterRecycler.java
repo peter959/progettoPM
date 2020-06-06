@@ -82,6 +82,7 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
                 context.startActivity(intent);
             }
         });
+
     }
 
     @Override
@@ -93,6 +94,7 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
 
         TextView queue_name, queue_business, queue_nReservation, queue_city;
         ImageView queue_image;
+        ToggleButton tb;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -101,8 +103,7 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
             queue_business = (TextView) itemView.findViewById(R.id.queue_business);
             queue_city = (TextView) itemView.findViewById(R.id.queue_city);
             queue_nReservation = (TextView) itemView.findViewById(R.id.queue_nReservation);
-
-
+            tb = itemView.findViewById(R.id.toggleFavorite);
         }
     }
 }
