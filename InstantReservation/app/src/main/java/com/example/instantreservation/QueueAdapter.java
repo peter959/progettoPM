@@ -53,11 +53,11 @@ public class QueueAdapter extends PagerAdapter {
 
     @NonNull
     @Override
-    public Object instantiateItem(@NonNull ViewGroup container, final int position) {
+    public Object instantiateItem(@NonNull final ViewGroup container, final int position) {
 
 
         layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.queue_card_mini, container, false);
+        final View view = layoutInflater.inflate(R.layout.queue_card_mini, container, false);
         TextView queue_ID;
         ImageView queue_image;
         TextView queue_name;
@@ -83,12 +83,12 @@ public class QueueAdapter extends PagerAdapter {
         queue_nReservation.setText(models.get(position).getQueue_nReservationString());
         queue_ID.setText(models.get(position).getQueue_id());
         queue_id = models.get(position).getQueue_id();
-        queue_is_favorite = models.get(position).getQueue_is_favorite();
+       // queue_is_favorite = models.get(position).getQueue_is_favorite();
 
         container.addView(view, 0);
 
-        ToggleButton tb = view.findViewById(R.id.toggleFavorite);
-        tb.setChecked(queue_is_favorite);
+        /*ToggleButton tb = view.findViewById(R.id.toggleFavorite);
+        //tb.setChecked(queue_is_favorite);
         tb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
@@ -97,10 +97,11 @@ public class QueueAdapter extends PagerAdapter {
                 if (checked) {
                    referenceForAddingReservationInUserFavorites.child("favoritesQueue").child(models.get(position).getQueue_id()).setValue("favorite");
                 } else {
+                    destroyItem(container, position, view);
                     referenceForAddingReservationInUserFavorites.child("favoritesQueue").child(models.get(position).getQueue_id()).removeValue();
                 }
             }
-        });
+        });*/
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override

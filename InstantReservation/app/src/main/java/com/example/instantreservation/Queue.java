@@ -18,7 +18,8 @@ public class Queue {
 
     }
 
-    public Queue(String queue_name, String queue_description, String queue_business, String queue_businessID, String queue_QRCodeImage, String queue_image, String queue_city, int queue_nMaxReservation, int queue_nReservation) {
+    public Queue(String queue_id, String queue_name, String queue_description, String queue_business, String queue_businessID, String queue_QRCodeImage, String queue_image, String queue_city, int queue_nMaxReservation, int queue_nReservation) {
+        this.queue_id = queue_id;
         this.queue_name = queue_name;
         this.queue_description = queue_description;
         this.queue_business = queue_business;
@@ -30,6 +31,8 @@ public class Queue {
         this.queue_nReservation = queue_nReservation;
         this.queue_is_favorite = false;
     }
+
+
 
     public Boolean getQueue_is_favorite() {
         return queue_is_favorite;

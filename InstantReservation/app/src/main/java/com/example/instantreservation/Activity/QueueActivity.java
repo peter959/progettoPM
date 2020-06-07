@@ -21,8 +21,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.example.instantreservation.Fragment.FavoritesFragment;
 import com.example.instantreservation.ProgressButton;
 import com.example.instantreservation.Queue;
+import com.example.instantreservation.QueueAdapterRecycler;
 import com.example.instantreservation.R;
 import com.example.instantreservation.Reservation;
 import com.google.android.gms.tasks.OnCompleteListener;

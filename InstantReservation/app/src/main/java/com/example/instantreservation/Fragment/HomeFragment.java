@@ -90,7 +90,7 @@ public class HomeFragment extends Fragment {
         referenceForReservedQueue.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) { ;
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     final String queueID =  dataSnapshot1.getKey();
                     System.out.println(dataSnapshot1.getKey());
                     if (queueID!=null) {
@@ -100,7 +100,7 @@ public class HomeFragment extends Fragment {
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
                                 final Queue queue = dataSnapshot2.child(queueID).getValue(Queue.class);
                                 queue.setQueue_id(queueID);
-                                referenceForFavoritesQueues.addValueEventListener(new ValueEventListener() {
+                                /*referenceForFavoritesQueues.addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         if (dataSnapshot.hasChild(queueID)) {
@@ -113,7 +113,7 @@ public class HomeFragment extends Fragment {
                                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
                                     }
-                                });
+                                });*/
                                 System.out.println(queue.getQueue_name());
                                 models.add(queue);
 
@@ -140,11 +140,6 @@ public class HomeFragment extends Fragment {
 
             }
         });
-
-        //models.add(new Queue("name", "description", "business", "businessID", "QRcode", "image", "city", 5,2));
-       // models.add(new Queue("name", "description", "business", "businessID", "QRcode", "image", "city", 5,2));
-       // models.add(new Queue("name", "description", "business", "businessID", "QRcode", "image", "city", 5,2));
-        //models.add(new Queue("name", "description", "business", "businessID", "QRcode", "image", "city", 5,2));
 
         return returnView;
     }

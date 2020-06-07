@@ -2,7 +2,6 @@ package com.example.instantreservation;
 
 import android.content.Context;
 import android.content.Intent;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,27 +10,27 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.instantreservation.Activity.QueueActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
+import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecycler.MyViewHolder> {
 
     Context context;
-    ArrayList<Queue> queues;
+    List<Queue> queues;
     private FirebaseUser firebaseUser;
     DatabaseReference referenceForAddingReservationInUserFavorites;
 
-    public QueueAdapterRecycler(Context c, ArrayList<Queue> p) {
-        context = c;
-        queues = p;
+    public QueueAdapterRecycler(Context c, List<Queue> p) {
+        this.context = c;
+        this.queues = p;
     }
 
     @NonNull
@@ -39,6 +38,13 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
     //specifico quali oggetti "iniettare" nell'adapter (itemdoes)
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         return new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.queue_card, viewGroup, false));
+    }
+
+    public void updateList(List<Queue> itemList)
+    {
+        this.queues.clear();
+        this.queues.addAll(itemList);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -49,7 +55,7 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
         final String queue_nReservation = queues.get(i).getQueue_nReservationString();
         final String queue_image = queues.get(i).getQueue_image();
         final String queue_id = queues.get(i).getQueue_id();
-        final Boolean queue_is_favorite = queues.get(i).getQueue_is_favorite();
+        //final Boolean queue_is_favorite = queues.get(i).getQueue_is_favorite();
 
         myViewHolder.queue_name.setText(queue_name);
         myViewHolder.queue_business.setText(queue_business);
@@ -60,8 +66,8 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
         View v = myViewHolder.itemView;
         ToggleButton tb = v.findViewById(R.id.toggleFavorite);
 
-        tb.setChecked(queue_is_favorite);
-        tb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        //tb.setChecked(queue_is_favorite);
+        /*tb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -72,7 +78,7 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
                     referenceForAddingReservationInUserFavorites.child("favoritesQueue").child(queue_id).removeValue();
                 }
             }
-        });
+        });*/
 
 
         //Quando il does viene toccato, vengono passati ad EditTaskDesk le informazioni già presenti
@@ -108,4 +114,5 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
             tb = itemView.findViewById(R.id.toggleFavorite);
         }
     }
+
 }
