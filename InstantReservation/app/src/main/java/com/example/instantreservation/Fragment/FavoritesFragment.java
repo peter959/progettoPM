@@ -82,6 +82,7 @@ public class FavoritesFragment extends Fragment {
         View returnView = inflater.inflate(R.layout.fragment_favorites, container, false);
         recyclerView = returnView.findViewById(R.id.my_favorites);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setNestedScrollingEnabled(false);
 
 
         referenceForFavoritesQueues.addChildEventListener(new ChildEventListener() {

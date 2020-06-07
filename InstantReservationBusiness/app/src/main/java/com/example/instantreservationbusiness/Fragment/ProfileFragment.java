@@ -29,8 +29,6 @@ public class ProfileFragment extends Fragment {
 
     private FirebaseAuth mAuth;
 
-
-
     public ProfileFragment() {
         // Required empty public constructor
     }

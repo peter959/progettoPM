@@ -62,9 +62,9 @@ public class SplashActivity extends AppCompatActivity {
                     // check if the user is a business
                     if (!dataSnapshot.hasChild(currentUser.getUid())) {
                         System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                        Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
+                       // Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
                         System.out.println("AAAAAAAAAAAASJDAKSJDNAKSBDAKSFBAHFBA");
-                        startActivity(intent);
+                       // startActivity(intent);
                         finish();
                     }
                     else {
