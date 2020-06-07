@@ -6,15 +6,15 @@
 
     <RelativeLayout
         android:layout_centerInParent="true"
-        android:layout_width="300dp"
-        android:layout_height="250dp"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         >
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="300dp"
             app:cardCornerRadius="20dp">
 
             <LinearLayout
@@ -26,54 +26,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <TextView
-                        android:id="@+id/queue_ID"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:textSize="0sp"/>
-
                     <ImageView
                         android:id="@+id/queue_image"
                         android:src="@drawable/resturant_example"
-                        android:scaleType="fitXY"
+                        android:scaleType="centerCrop"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
 
-                    <RelativeLayout
-                        android:padding="15dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center">
-
-                        <RelativeLayout
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_alignParentEnd="true"
-
-                            android:background="@drawable/bg_circle">
-                            <ToggleButton
-                                android:id="@+id/toggleFavorite"
-                                android:layout_margin="5dp"
-                                android:layout_centerInParent="true"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/toggle_selector"
-                                android:textOff=""
-                                android:textOn=""
-                                android:onClick="onFavoriteToggleClick"/>
-                        </RelativeLayout>
-
-                    </RelativeLayout>
                 </RelativeLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:layout_width="230dp"
+            android:layout_width="300dp"
             android:layout_height="110dp"
-            android:layout_marginTop="145dp"
+            android:layout_marginTop="245dp"
             app:cardElevation="10dp"
-            app:cardCornerRadius="15dp"
+            app:cardCornerRadius="20dp"
             android:layout_centerHorizontal="true"
             >
 
@@ -91,7 +60,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-
                     <TextView
                         android:id="@+id/queue_name"
                         android:layout_gravity="start"
@@ -99,10 +67,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
-                        android:textSize="17sp"
+                        android:textSize="20sp"
                         android:text="Name of the queue"
                         />
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -113,7 +80,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@android:color/darker_gray"
-                            android:textSize="13sp"
+                            android:textSize="18sp"
                             android:text="Business Name"
                             />
                         <TextView
@@ -122,7 +89,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@android:color/darker_gray"
-                            android:textSize="12sp"
+                            android:textSize="15sp"
                             android:text="city"
                             />
                     </LinearLayout>
@@ -141,7 +108,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@android:color/darker_gray"
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             android:text="Reservations:"
                             />
                         <TextView

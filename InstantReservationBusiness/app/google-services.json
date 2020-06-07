@@ -1,0 +1,93 @@
+{
+  "project_info": {
+    "project_number": "171061890673",
+    "firebase_url": "https://instant-reservation-6c2a2.firebaseio.com",
+    "project_id": "instant-reservation-6c2a2",
+    "storage_bucket": "instant-reservation-6c2a2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:171061890673:android:3d7245d5fa368424aa55d0",
+        "android_client_info": {
+          "package_name": "com.example.instantreservation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "171061890673-tb2bt5hhnh541gp95gd8l5uejjmoa0q9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.instantreservation",
+            "certificate_hash": "35251a8748ecc9435a7dda7b3ac53eb7086c83b3"
+          }
+        },
+        {
+          "client_id": "171061890673-h3pjvmadqksa412iokbc507sps22anc1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.instantreservation",
+            "certificate_hash": "c24b03d7f0ed8d84747d1dfd3d960c5faa51d0e7"
+          }
+        },
+        {
+          "client_id": "171061890673-c96d6u83hiatvmegb0oc4eker1kuhan5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCymkHDe1mAFpoddICf9JbwY6usWS-Q3GE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "171061890673-c96d6u83hiatvmegb0oc4eker1kuhan5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:171061890673:android:7fdd5f9492e03945aa55d0",
+        "android_client_info": {
+          "package_name": "com.example.instantreservationbusiness"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "171061890673-srd4pg64dur2rv6bsinfvki65tmm9ulj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.instantreservationbusiness",
+            "certificate_hash": "c24b03d7f0ed8d84747d1dfd3d960c5faa51d0e7"
+          }
+        },
+        {
+          "client_id": "171061890673-c96d6u83hiatvmegb0oc4eker1kuhan5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCymkHDe1mAFpoddICf9JbwY6usWS-Q3GE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "171061890673-c96d6u83hiatvmegb0oc4eker1kuhan5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
