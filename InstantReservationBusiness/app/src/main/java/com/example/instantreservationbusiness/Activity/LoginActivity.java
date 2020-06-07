@@ -101,15 +101,17 @@ public class LoginActivity extends AppCompatActivity {
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                             String name =  dataSnapshot.child("business_name").getValue().toString();
                                             String phone =  dataSnapshot.child("business_phone").getValue().toString();
+                                            String city =  dataSnapshot.child("business_city").getValue().toString();
+
                                             //SHARED PREFERENCES
-                                            SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+                                            SharedPreferences sharedPreferences = getSharedPreferences("BusinessInfo", Context.MODE_PRIVATE);
                                             SharedPreferences.Editor editor = sharedPreferences.edit();
                                             editor.putString("businessUID", firebaseUser.getUid());
                                             editor.putString("businessName", name);
+                                            editor.putString("businessCity", city);
                                             editor.putString("businessEmail", email);
                                             editor.putString("businessPhone", phone);
                                             editor.commit();
-                                            //SHARED PREFERENCES
                                             System.out.println("-------Logged: email: " + email + ", name: " + name + ", phone:" + phone + ", UID: " + firebaseUser.getUid());
 
                                             progressButton.buttonFinished("DONE");

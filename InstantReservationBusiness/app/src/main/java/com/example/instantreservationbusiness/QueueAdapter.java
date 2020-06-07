@@ -81,21 +81,7 @@ public class QueueAdapter extends PagerAdapter {
 
         container.addView(view, 0);
 
-        ToggleButton tb = view.findViewById(R.id.toggleFavorite);
-        tb.setChecked(queue_is_favorite);
-        tb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                referenceForAddingReservationInUserFavorites = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid());
-                if (checked) {
-                   referenceForAddingReservationInUserFavorites.child("favoritesQueue").child(models.get(position).getQueue_id()).setValue("favorite");
-                } else {
-                    referenceForAddingReservationInUserFavorites.child("favoritesQueue").child(models.get(position).getQueue_id()).removeValue();
-                }
-            }
-        });
-
+        /*
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,7 +89,7 @@ public class QueueAdapter extends PagerAdapter {
                 intent.putExtra("payload", queue_id);
                 context.startActivity(intent);
             }
-        });
+        });*/
         return view;
     }
 

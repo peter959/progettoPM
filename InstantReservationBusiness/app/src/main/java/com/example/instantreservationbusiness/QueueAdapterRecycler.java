@@ -57,22 +57,6 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
         myViewHolder.queue_image.setImageResource(R.drawable.resturant_example);
 
         View v = myViewHolder.itemView;
-        ToggleButton tb = v.findViewById(R.id.toggleFavorite);
-
-        tb.setChecked(queue_is_favorite);
-        tb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                referenceForAddingReservationInUserFavorites = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid());
-                if (checked) {
-                    referenceForAddingReservationInUserFavorites.child("favoritesQueue").child(queue_id).setValue("favorite");
-                } else {
-                    referenceForAddingReservationInUserFavorites.child("favoritesQueue").child(queue_id).removeValue();
-                }
-            }
-        });
-
 
         //Quando il does viene toccato, vengono passati ad EditTaskDesk le informazioni già presenti
         myViewHolder.itemView.setOnClickListener(new View.OnClickListener(){
@@ -104,7 +88,6 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
             queue_business = (TextView) itemView.findViewById(R.id.queue_business);
             queue_city = (TextView) itemView.findViewById(R.id.queue_city);
             queue_nReservation = (TextView) itemView.findViewById(R.id.queue_nReservation);
-            tb = itemView.findViewById(R.id.toggleFavorite);
         }
     }
 }

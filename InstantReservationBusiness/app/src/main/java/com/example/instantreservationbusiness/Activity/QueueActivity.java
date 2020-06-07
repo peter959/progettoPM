@@ -182,21 +182,6 @@ public class QueueActivity extends AppCompatActivity {
         reserveButton = new ProgressButton(QueueActivity.this, btnReserve, "Pick up a ticket");
         reserved = false;
 
-        //favorites toggle
-        toggleFavorite = findViewById(R.id.toggleFavorite);
-        toggleFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                referenceForAddingReservationInUserFavorites = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid());
-                if (checked) {
-                    referenceForAddingReservationInUserFavorites.child("favoritesQueue").child(queueID).setValue("favorite");
-                } else {
-                    referenceForAddingReservationInUserFavorites.child("favoritesQueue").child(queueID).removeValue();
-                }
-            }
-        });
-
         btnRemoveReservation = findViewById(R.id.btnRemoveReservation);
         removeReservationButton = new ProgressButton(QueueActivity.this, btnRemoveReservation, "Remove");
         removeReservationButton.buttonRemove("Remove reservation");

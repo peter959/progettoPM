@@ -58,29 +58,30 @@ public class SplashActivity extends AppCompatActivity {
             mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                     // check if the user is a business
                     if (!dataSnapshot.hasChild(currentUser.getUid())) {
-                        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                        Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
-                        System.out.println("AAAAAAAAAAAASJDAKSJDNAKSBDAKSFBAHFBA");
+                        Intent intent = new Intent(getApplicationContext(), WrongAccountActivity.class);
                         startActivity(intent);
                         finish();
                     }
                     else {
-                        String name = dataSnapshot.child("business_name").getValue().toString();
-                        String phone = dataSnapshot.child("business_phone").getValue().toString();
-                        String email = dataSnapshot.child("business_email").getValue().toString();
+                        dataSnapshot = dataSnapshot.child(currentUser.getUid());
+                        String name =  dataSnapshot.child("business_name").getValue().toString();
+                        String phone =  dataSnapshot.child("business_phone").getValue().toString();
+                        String city =  dataSnapshot.child("business_city").getValue().toString();
+                        String email =  dataSnapshot.child("business_email").getValue().toString();
+
                         //SHARED PREFERENCES
-                        SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+                        SharedPreferences sharedPreferences = getSharedPreferences("BusinessInfo", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("business_UID", currentUser.getUid());
-                        editor.putString("business_Name", name);
-                        editor.putString("business_Email", email);
-                        editor.putString("business_Phone", phone);
+                        editor.putString("businessUID", currentUser.getUid());
+                        editor.putString("businessName", name);
+                        editor.putString("businessCity", city);
+                        editor.putString("businessEmail", email);
+                        editor.putString("businessPhone", phone);
                         editor.commit();
-                        //SHARED PREFERENCES
                         System.out.println("-------Logged: email: " + email + ", name: " + name + ", phone:" + phone + ", UID: " + currentUser.getUid());
+
 
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
@@ -98,6 +99,7 @@ public class SplashActivity extends AppCompatActivity {
             System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
             Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
             startActivity(intent);
+            finish();
         }
 
     }

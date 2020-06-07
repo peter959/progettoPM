@@ -14,11 +14,14 @@ public class Business {
 
     }
 
-    public Business(String business_city, String business_phone, String business_name, String email) {
+    public Business(String business_name, String business_email, String business_phone, String business_city) {
         this.business_city = business_city;
         this.business_email = business_email;
         this.business_phone = business_phone;
         this.business_name = business_name;
+        business_nQueues = 0;
+        business_description = "Insert description";
+        business_image = "";
     }
 
     public Business(String business_city, String business_description, String business_image, int business_nQueues, String business_name) {
@@ -27,6 +30,22 @@ public class Business {
         this.business_image = business_image;
         this.business_nQueues = business_nQueues;
         this.business_name = business_name;
+    }
+
+    public String getBusiness_phone() {
+        return business_phone;
+    }
+
+    public void setBusiness_phone(String business_phone) {
+        this.business_phone = business_phone;
+    }
+
+    public String getBusiness_email() {
+        return business_email;
+    }
+
+    public void setBusiness_email(String business_email) {
+        this.business_email = business_email;
     }
 
     public String getBusiness_city() {

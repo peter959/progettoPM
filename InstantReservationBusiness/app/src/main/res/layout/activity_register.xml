@@ -185,7 +185,7 @@
                             android:textStyle="bold"/>
 
                         <EditText
-                            android:id="@+id/et_city"
+                            android:id="@+id/et_phone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="16sp"
@@ -200,12 +200,11 @@
                             android:textStyle="bold"/>
 
                         <EditText
-                            android:id="@+id/et_phone"
+                            android:id="@+id/et_city"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="16sp"
                             android:layout_marginBottom="10dp"
-                            android:inputType="number"
                             />
 
                         <TextView

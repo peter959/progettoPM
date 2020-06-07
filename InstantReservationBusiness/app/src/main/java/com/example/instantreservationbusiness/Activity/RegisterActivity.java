@@ -125,7 +125,6 @@ public class RegisterActivity extends AppCompatActivity {
                                     progressButton.buttonFinished("DONE");
                                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                     startActivity(intent);
-
                                     finish();
                                     //updateUI(user);
                                 } else {
