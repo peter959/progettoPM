@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.example.instantreservation.QueueAdapter;
 import com.example.instantreservation.Queue;
 import com.example.instantreservation.R;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,7 +50,6 @@ public class HomeFragment extends Fragment {
     DatabaseReference referenceForQueueInfo;
     DatabaseReference referenceForFavoritesQueues;
 
-
     private TextView hello_name;
 
     public HomeFragment() {
@@ -71,6 +72,8 @@ public class HomeFragment extends Fragment {
         referenceForReservedQueue = FirebaseDatabase.getInstance().getReference().child("users").child(userUID).child("reservedQueue");
         referenceForQueueInfo = FirebaseDatabase.getInstance().getReference().child("codeattivita");
 
+        models = new ArrayList<>();
+
     }
 
     @Override
@@ -81,13 +84,80 @@ public class HomeFragment extends Fragment {
         viewPager = returnView.findViewById(R.id.viewPager);
 
 
-        TextView hello_name = (TextView) returnView.findViewById(R.id.hello_name);
+        TextView hello_name = returnView.findViewById(R.id.hello_name);
         hello_name.setText("Hello " + name + "!");
 
-        models = new ArrayList<>();
         viewPager.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
-        referenceForReservedQueue.addValueEventListener(new ValueEventListener() {
+        referenceForReservedQueue.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                final String queueID =  dataSnapshot.getKey();
+                referenceForQueueInfo.child(queueID).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
+                        Queue queue = dataSnapshot1.getValue(Queue.class);
+
+                        models.add(models.size(), queue);
+                        System.out.println("ADDED on Reserved LIST: " + queueID);
+
+                        queueAdapter = new QueueAdapter(models, getContext());
+                        viewPager.setAdapter(queueAdapter);
+                        queueAdapter.notifyDataSetChanged();
+                        viewPager.setPadding(0,0,80,0);
+                        viewPager.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {}
+                });
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                final String queueID =  dataSnapshot.getKey();
+                referenceForQueueInfo.child(queueID).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
+                        Queue queue = dataSnapshot1.getValue(Queue.class);
+
+                        for (int i = 0; i<models.size(); i++){
+                            if(models.get(i).getQueue_id().equals(queueID)){
+                                models.remove(i);
+                                System.out.println("REMOVED on Reserved LIST: " + queueID);
+                            };
+                        }
+
+                        queueAdapter = new QueueAdapter(models, getContext());
+                        viewPager.setAdapter(queueAdapter);
+                        queueAdapter.notifyDataSetChanged();
+                        viewPager.setPadding(0,0,80,0);
+                        viewPager.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {}
+                });
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        /*referenceForReservedQueue.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
@@ -113,7 +183,7 @@ public class HomeFragment extends Fragment {
                                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
                                     }
-                                });*/
+                                });
                                 System.out.println(queue.getQueue_name());
                                 models.add(queue);
 
@@ -139,7 +209,11 @@ public class HomeFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
+        queueAdapter = new QueueAdapter(models, getContext());
+
+        viewPager.setAdapter(queueAdapter);
+        queueAdapter.notifyDataSetChanged();
 
         return returnView;
     }

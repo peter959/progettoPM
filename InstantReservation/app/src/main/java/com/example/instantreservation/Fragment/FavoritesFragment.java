@@ -88,11 +88,11 @@ public class FavoritesFragment extends Fragment {
             @Override
             public void onChildAdded(@NonNull final DataSnapshot dataSnapshot, @Nullable String s) {
                 final String queueID =  dataSnapshot.getKey();
-                referenceForQueueInfo.child(queueID).addValueEventListener(new ValueEventListener() {
+                referenceForQueueInfo.child(queueID).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
                         Queue queue = dataSnapshot1.getValue(Queue.class);
-                        
+
                         queue.setQueue_is_favorite(true);
                         models.add(models.size(), queue);
                         System.out.println("ADDED on Favorites LIST: " + queueID);
@@ -115,7 +115,7 @@ public class FavoritesFragment extends Fragment {
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
                 final String queueID =  dataSnapshot.getKey();
-                referenceForQueueInfo.child(queueID).addValueEventListener(new ValueEventListener() {
+                referenceForQueueInfo.child(queueID).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
                         Queue queue = dataSnapshot1.getValue(Queue.class);
@@ -149,93 +149,6 @@ public class FavoritesFragment extends Fragment {
             }
         });
 
-        /*referenceForFavoritesQueues.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-
-                System.out.println("AAAAAAAAAAAAA sei qui" + models.size());
-                referenceForFavoritesQueues.addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot1, @Nullable String s) {
-                        final String queueID =  dataSnapshot1.getKey();
-                        Queue queue = dataSnapshot1.getValue(Queue.class);
-                        //queue.setQueue_id(queueID);
-                        //queue.setQueue_is_favorite(true);
-                        System.out.println("ADDED on LIST: " + queueID);
-                        models.add(queue);
-
-                        queueAdapter = new QueueAdapterRecycler(getContext(), models);
-                        recyclerView.setAdapter(queueAdapter);
-                        queueAdapter.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot1) {
-                        final String queueID =  dataSnapshot1.getKey();
-                        System.out.println("Removed on LIST: " + queueID);
-                    }
-
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-                /*for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    final String queueID =  dataSnapshot1.getKey();
-                    System.out.println("AAAAAAAAAAAAA queues" + queueID);
-                    if (queueID!=null) {
-                        referenceForQueueInfo.child(queueID);
-
-                        referenceForQueueInfo.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
-                                Queue queue = dataSnapshot2.child(queueID).getValue(Queue.class);
-
-                                queue.setQueue_id(queueID);
-                                queue.setQueue_is_favorite(true);
-                                System.out.println(queue.getQueue_name());
-                                models.add(queue);
-
-                                //recyclerView.setVisibility(View.VISIBLE);
-                                //progressBar.setVisibility(View.GONE);
-                                /*List<Queue> newQueue = new ArrayList<Queue>(models);
-                                models.clear();
-
-                                models.addAll(newQueue);
-
-                                queueAdapter = new QueueAdapterRecycler(getContext(), models);
-                                recyclerView.setAdapter(queueAdapter);
-                                recyclerView.getAdapter().notifyDataSetChanged();
-                                queueAdapter.notifyDataSetChanged();
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {}
-                        });
-                        queueAdapter = new QueueAdapterRecycler(getContext(), models);
-                        recyclerView.setAdapter(queueAdapter);
-                        queueAdapter.notifyDataSetChanged();
-
-                    }else System.out.println("AAAAAAAAAAAAA sei NNNNNN" + models.size());
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        }); */
         queueAdapter = new QueueAdapterRecycler(getContext(), models);
         recyclerView.setAdapter(queueAdapter);
         queueAdapter.notifyDataSetChanged();
