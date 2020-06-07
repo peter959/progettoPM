@@ -54,17 +54,20 @@ public class SplashActivity extends AppCompatActivity {
 
         final FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("business").child(currentUser.getUid());
-            // check if the user is a business
-            if (mDatabase == null) {
-                System.out.println("AAAAAAAAAAAAAAAAAAAAAA" + mDatabase);
-                Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
-                startActivity(intent);
-            }
-            else {
-                mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("business");
+            mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    // check if the user is a business
+                    if (!dataSnapshot.hasChild(currentUser.getUid())) {
+                        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                        Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
+                        System.out.println("AAAAAAAAAAAASJDAKSJDNAKSBDAKSFBAHFBA");
+                        startActivity(intent);
+                        finish();
+                    }
+                    else {
                         String name = dataSnapshot.child("business_name").getValue().toString();
                         String phone = dataSnapshot.child("business_phone").getValue().toString();
                         String email = dataSnapshot.child("business_email").getValue().toString();
@@ -78,21 +81,25 @@ public class SplashActivity extends AppCompatActivity {
                         editor.commit();
                         //SHARED PREFERENCES
                         System.out.println("-------Logged: email: " + email + ", name: " + name + ", phone:" + phone + ", UID: " + currentUser.getUid());
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
-                });
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-            }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
         }
         else {
+            System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
             Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
             startActivity(intent);
         }
 
-        finish();
     }
+
 }

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.instantreservationbusiness">
 
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
@@ -17,8 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".Activity.BusinessActivity"></activity>
+        <activity android:name=".Activity.WrongAccountActivity"></activity>
+        <activity android:name=".Activity.BusinessActivity" />
         <activity android:name=".Activity.QueueActivity" />
         <activity
             android:name=".Activity.SplashActivity"
