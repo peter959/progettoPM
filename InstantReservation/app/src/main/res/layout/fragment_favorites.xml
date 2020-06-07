@@ -75,11 +75,15 @@
                     android:src="@drawable/happy_people" />
             </RelativeLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/my_favorites"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="408dp"
-                android:visibility="visible"></androidx.recyclerview.widget.RecyclerView>
+                android:layout_height="wrap_content">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/my_favorites"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"/>
+            </RelativeLayout>
 
         </LinearLayout>
     </ScrollView>

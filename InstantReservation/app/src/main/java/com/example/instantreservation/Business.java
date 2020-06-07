@@ -7,17 +7,27 @@ public class Business {
     String business_image;
     int business_nQueues;
     String business_name;
+    String business_ID;
 
     public Business() {
 
     }
 
-    public Business(String business_city, String business_description, String business_image, int business_nQueues, String business_name) {
+    public Business(String business_ID, String business_city, String business_description, String business_image, int business_nQueues, String business_name) {
+        this.business_ID = business_ID;
         this.business_city = business_city;
         this.business_description = business_description;
         this.business_image = business_image;
         this.business_nQueues = business_nQueues;
         this.business_name = business_name;
+    }
+
+    public String getBusiness_ID() {
+        return business_ID;
+    }
+
+    public void setBusiness_ID(String business_ID) {
+        this.business_ID = business_ID;
     }
 
     public String getBusiness_city() {
