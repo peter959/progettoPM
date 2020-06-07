@@ -87,11 +87,11 @@ public class HomeFragment extends Fragment {
         TextView hello_name = returnView.findViewById(R.id.hello_name);
         hello_name.setText("Hello " + name + "!");
 
-        viewPager.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
         referenceForReservedQueue.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                viewPager.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
                 final String queueID =  dataSnapshot.getKey();
                 referenceForQueueInfo.child(queueID).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -157,61 +157,8 @@ public class HomeFragment extends Fragment {
 
             }
         });
-        /*referenceForReservedQueue.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    final String queueID =  dataSnapshot1.getKey();
-                    System.out.println(dataSnapshot1.getKey());
-                    if (queueID!=null) {
-                        referenceForQueueInfo.child(queueID);
-                        referenceForQueueInfo.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
-                                final Queue queue = dataSnapshot2.child(queueID).getValue(Queue.class);
-                                queue.setQueue_id(queueID);
-                                /*referenceForFavoritesQueues.addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        if (dataSnapshot.hasChild(queueID)) {
-                                            queue.setQueue_is_favorite(true);
-                                        }
-                                        else { queue.setQueue_is_favorite(false);}
-                                    }
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                    }
-                                });
-                                System.out.println(queue.getQueue_name());
-                                models.add(queue);
-
-                                queueAdapter = new QueueAdapter(models, getContext());
-
-                                viewPager.setAdapter(queueAdapter);
-                                queueAdapter.notifyDataSetChanged();
-                                viewPager.setPadding(0,0,80,0);
-                                viewPager.setVisibility(View.VISIBLE);
-                                progressBar.setVisibility(View.GONE);
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });*/
         queueAdapter = new QueueAdapter(models, getContext());
-
         viewPager.setAdapter(queueAdapter);
         queueAdapter.notifyDataSetChanged();
 
