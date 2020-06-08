@@ -242,8 +242,18 @@
                     </androidx.cardview.widget.CardView>
                 </androidx.cardview.widget.CardView>
 
-                <include layout="@layout/queue_card" />
-                <include layout="@layout/queue_card" />
+                <RelativeLayout
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/business_queues"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible"/>
+
+                </RelativeLayout>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

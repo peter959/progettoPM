@@ -163,9 +163,8 @@ public class BusinessActivity extends AppCompatActivity {
 
         referenceForBusinessInfo = FirebaseDatabase.getInstance().getReference().child("business");
         referenceForBusinessQueuesInfo = FirebaseDatabase.getInstance().getReference().child("codeattivita");
-        referenceForQueueInfo = FirebaseDatabase.getInstance().getReference().child("codeattivita");
 
-        recyclerView = findViewById(R.id.busines_queues);
+        recyclerView = findViewById(R.id.business_queues);
         recyclerView.setLayoutManager(new LinearLayoutManager(BusinessActivity.this));
         recyclerView.setNestedScrollingEnabled(false);
 
