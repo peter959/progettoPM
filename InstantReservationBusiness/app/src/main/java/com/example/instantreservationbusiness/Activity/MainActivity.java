@@ -102,14 +102,55 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
+
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        userInfo = getSharedPreferences("BusinessInfo", Context.MODE_PRIVATE);
+        business_ID = userInfo.getString("businessUID", "null");
+
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setTitle("");
+
+        models = new ArrayList<>();
+
+        referenceForBusinessInfo = FirebaseDatabase.getInstance().getReference().child("business");
+        referenceForBusinessQueuesInfo = FirebaseDatabase.getInstance().getReference().child("queues");
+
+        recyclerView = findViewById(R.id.business_queues);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        recyclerView.setNestedScrollingEnabled(false);
+
+
+        business_name = findViewById(R.id.business_name);
+        business_city = findViewById(R.id.business_city);
+        business_nQueues = findViewById(R.id.business_nQueues);
+        business_description = findViewById(R.id.business_description);
+        business_image = findViewById(R.id.business_image);
+
+        progressBar = findViewById(R.id.progressBarBusiness);
+        business_layout = findViewById(R.id.business_layout);
+
+        editBtn = findViewById(R.id.edit_button);
+        addBtn = findViewById(R.id.add_queue_btn);
+
         referenceForBusinessQueuesInfo.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                
-                Queue queue = dataSnapshot.getValue(Queue.class);
-                if(queue.getQueue_businessID().equals(business_ID)){
-                    //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
 
+                Queue queue = dataSnapshot.getValue(Queue.class);
+                if(queue.getQueue_businessID().equals(business_ID) && !models.contains(queue)){
+                    //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
                     models.add(models.size(), queue);
                     System.out.println("ADDED on Queue LIST: " + dataSnapshot.getKey());
 
@@ -155,46 +196,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        mAuth = FirebaseAuth.getInstance();
-
-        userInfo = getSharedPreferences("BusinessInfo", Context.MODE_PRIVATE);
-        business_ID = userInfo.getString("businessUID", "null");
-
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setTitle("");
-
-        models = new ArrayList<>();
-
-        referenceForBusinessInfo = FirebaseDatabase.getInstance().getReference().child("business");
-        referenceForBusinessQueuesInfo = FirebaseDatabase.getInstance().getReference().child("queues");
-
-        recyclerView = findViewById(R.id.business_queues);
-        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-        recyclerView.setNestedScrollingEnabled(false);
-
-
-        business_name = findViewById(R.id.business_name);
-        business_city = findViewById(R.id.business_city);
-        business_nQueues = findViewById(R.id.business_nQueues);
-        business_description = findViewById(R.id.business_description);
-        business_image = findViewById(R.id.business_image);
-
-        progressBar = findViewById(R.id.progressBarBusiness);
-        business_layout = findViewById(R.id.business_layout);
-
-        editBtn = findViewById(R.id.edit_button);
-        addBtn = findViewById(R.id.add_queue_btn);
 
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
