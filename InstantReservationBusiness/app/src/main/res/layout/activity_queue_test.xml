@@ -63,6 +63,13 @@
                         android:background="@drawable/bg_circle"
                         android:layout_alignParentRight="true">
 
+                        <ImageButton
+                            android:id="@+id/edit_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_edit_black_24dp"
+                            />
+
                     </RelativeLayout>
 
 
@@ -216,21 +223,33 @@
                                 android:layout_height="1dp"
                                 android:background="@android:color/darker_gray"/>
 
-                            <include
-                                android:layout_gravity="bottom"
-                                android:id="@+id/btnReserve"
-                                layout="@layout/progress_btn_layout"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
-
-                            <include
-                                android:layout_gravity="bottom"
+                            <Button
+                                android:id="@+id/btn_menage_reservation"
+                                android:layout_marginRight="16dp"
+                                android:layout_marginLeft="16dp"
                                 android:layout_marginTop="20dp"
-                                android:id="@+id/btnRemoveReservation"
-                                layout="@layout/progress_btn_layout"
+                                android:text="Menage Reservation"
+                                android:textColor="#FFFFFF"
+                                android:textAllCaps="false"
+                                android:textSize="22sp"
+                                android:background="@drawable/bgbtncreate"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:visibility="gone"/>
+                                android:layout_height="55dp"
+                                />
+
+                            <Button
+                                android:id="@+id/btn_remove_queue"
+                                android:layout_marginRight="16dp"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginTop="20dp"
+                                android:text="Remove Queue"
+                                android:textColor="@android:color/holo_red_light"
+                                android:textAllCaps="false"
+                                android:textSize="22sp"
+                                android:background="@drawable/bgbtncancel"
+                                android:layout_width="match_parent"
+                                android:layout_height="55dp"
+                                />
 
                         </LinearLayout>
 

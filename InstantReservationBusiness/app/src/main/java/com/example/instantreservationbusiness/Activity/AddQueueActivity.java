@@ -74,39 +74,36 @@ public class AddQueueActivity extends AppCompatActivity {
                         dataSnapshot.getRef().child("queue_image").setValue("image path");
                         dataSnapshot.getRef().child("queue_QRCodeImage").setValue("QR image path");
                         dataSnapshot.getRef().child("queue_nReservation").setValue(0);
-
-                        referenceBusiness = FirebaseDatabase.getInstance().getReference().child("business").child(userInfo.getString("businessUID", "null"));
-                        referenceBusiness.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                int nQueues = dataSnapshot.child("business_nQueues").getValue(int.class) + 1;
-                                dataSnapshot.getRef().child("business_nQueues").setValue(nQueues);
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-
-                        progressButton.buttonFinished("Queue added!");
-                        Intent a = new Intent(AddQueueActivity.this, MainActivity.class);
-                        startActivity(a);
-                        finish();
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
                     }
                 });
+
+                referenceBusiness = FirebaseDatabase.getInstance().getReference().child("business").child(userInfo.getString("businessUID", "null"));
+                referenceBusiness.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        int nQueues = dataSnapshot.child("business_nQueues").getValue(int.class) + 1;
+                        System.out.println(nQueues);
+                        dataSnapshot.getRef().child("business_nQueues").setValue(nQueues);
+                        progressButton.buttonFinished("Queue added!");
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+                finish();
             }
         });
 
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent a = new Intent(AddQueueActivity.this, MainActivity.class);
-                startActivity(a);
                 finish();
             }
         });
