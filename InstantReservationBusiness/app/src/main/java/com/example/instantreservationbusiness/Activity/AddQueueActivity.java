@@ -14,7 +14,10 @@ import android.widget.ImageButton;
 
 import com.example.instantreservationbusiness.Business;
 import com.example.instantreservationbusiness.ProgressButton;
+import com.example.instantreservationbusiness.Queue;
 import com.example.instantreservationbusiness.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,6 +33,8 @@ public class AddQueueActivity extends AppCompatActivity {
     EditText add_queue_name, add_queue_desc, add_queue_maxReserv;
     DatabaseReference referenceQueue;
     DatabaseReference referenceBusiness;
+
+    String businessID, businessName, businessCity;
 
     Button btn_cancel;
     View btn_create;
@@ -48,6 +53,9 @@ public class AddQueueActivity extends AppCompatActivity {
 
 
         userInfo = getSharedPreferences("BusinessInfo", Context.MODE_PRIVATE);
+        businessID = userInfo.getString("businessUID", "null");
+        businessName = userInfo.getString("businessName", "null");
+        businessCity = userInfo.getString("businessCity", "null");
 
         btn_create = findViewById(R.id.btn_create);
         btn_cancel = findViewById(R.id.btn_cancel);
@@ -62,12 +70,53 @@ public class AddQueueActivity extends AppCompatActivity {
             public void onClick(View v) {
                 progressButton.buttonActivated();
                 referenceQueue = FirebaseDatabase.getInstance().getReference().child("queues").child("queue" + queueNum);
-                referenceQueue.addValueEventListener(new ValueEventListener() {
+                Queue queue = new Queue(add_queue_name.getText().toString(),
+                                        add_queue_desc.getText().toString(),
+                                        businessName,
+                                        businessID,
+                                        "QR image path",
+                                        "image path",
+                                        businessCity,
+                                        Integer.parseInt(add_queue_maxReserv.getText().toString()),
+                                        0);
+                referenceQueue.setValue(queue).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            referenceBusiness = FirebaseDatabase.getInstance().getReference().child("business").child(businessID);
+                            referenceBusiness.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    int nQueues = dataSnapshot.child("business_nQueues").getValue(int.class) + 1;
+                                    System.out.println(nQueues);
+                                    final Task<Void> business_nQueues = dataSnapshot.getRef().child("business_nQueues").setValue(nQueues);
+                                    business_nQueues.addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                progressButton.buttonFinished("Queue added!");
+                                                finish();
+                                            }
+                                        }
+                                    });
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+                    }
+                });
+
+                /*referenceQueue.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         dataSnapshot.getRef().child("queue_name").setValue(add_queue_name.getText().toString());
                         dataSnapshot.getRef().child("queue_description").setValue(add_queue_desc.getText().toString());
-                        dataSnapshot.getRef().child("queue_nMaxReservation").setValue(Integer.getInteger(add_queue_maxReserv.getText().toString()));
+                        dataSnapshot.getRef().child("queue_nMaxReservation").setValue(Integer.parseInt(add_queue_maxReserv.getText().toString()));
                         dataSnapshot.getRef().child("queue_businessID").setValue(userInfo.getString("businessUID", "null"));
                         dataSnapshot.getRef().child("queue_business").setValue(userInfo.getString("businessName", "null"));
                         dataSnapshot.getRef().child("queue_city").setValue(userInfo.getString("businessCity", "null"));
@@ -79,25 +128,11 @@ public class AddQueueActivity extends AppCompatActivity {
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
                     }
-                });
+                });*/
 
-                referenceBusiness = FirebaseDatabase.getInstance().getReference().child("business").child(userInfo.getString("businessUID", "null"));
-                referenceBusiness.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        int nQueues = dataSnapshot.child("business_nQueues").getValue(int.class) + 1;
-                        System.out.println(nQueues);
-                        dataSnapshot.getRef().child("business_nQueues").setValue(nQueues);
-                        progressButton.buttonFinished("Queue added!");
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
-                });
 
-                finish();
             }
         });
 

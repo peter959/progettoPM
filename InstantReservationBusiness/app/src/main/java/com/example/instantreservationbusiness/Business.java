@@ -14,6 +14,7 @@ public class Business {
 
     }
 
+
     public Business(String business_name, String business_email, String business_phone, String business_city) {
         this.business_city = business_city;
         this.business_email = business_email;
@@ -79,6 +80,10 @@ public class Business {
     public String getBusiness_nQueuesString() {
         return Integer.toString(business_nQueues);
     }
+
+    /*public void setBusiness_nQueuesString(String business_nQueues) {
+        this.business_nQueues = Integer.getInteger(business_nQueues);
+    }*/
 
     public void setBusiness_nQueues(int business_nQueues) {
         this.business_nQueues = business_nQueues;

@@ -109,19 +109,20 @@ public class QueueActivity extends AppCompatActivity {
         progressBarQueue.setVisibility(View.VISIBLE);
 
         // Check if user is signed in (non-null) and update UI accordingly.
-        referenceForQueueInfo.addValueEventListener(new ValueEventListener() {
+        referenceForQueueInfo.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Queue queue = dataSnapshot.child(queueID).getValue(Queue.class);
-                queueBusinessID = queue.getQueue_businessID();
+
+                //queueBusinessID = queue.getQueue_businessID();
                 queue_business.setText(queue.getQueue_business());
                 queue_city.setText(queue.getQueue_city());
                 queue_description.setText(queue.getQueue_description());
                 queue_name.setText(queue.getQueue_name());
-                queue_nMaxReservation = queue.getQueue_nMaxReservation();
-                queue_nReservation = queue.getQueue_nReservation();
-                queue_nReservationString.setText(queue.getQueue_nReservationString() + "/" + queue.getQueue_nMaxReservation());
-                queueBusinessID = queue.getQueue_businessID();
+                //queue_nMaxReservation = queue.getQueue_nMaxReservation();
+                //queue_nReservation = queue.getQueue_nReservation();
+                queue_nReservationString.setText(String.format("%s/%d", queue.getQueue_nReservationString(), queue.getQueue_nMaxReservation()));
+                //queueBusinessID = queue.getQueue_businessID();
                 //queue_image.setImageURI(queue.getQueue_image());
                 //queue_QRCodeImage.setImageURI();
 
@@ -149,7 +150,7 @@ public class QueueActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
-                    /*referenceBusiness = FirebaseDatabase.getInstance().getReference().child("business").child(sharedPreferences.getString("businessUID", "null"));
+                    referenceBusiness = FirebaseDatabase.getInstance().getReference().child("business").child(sharedPreferences.getString("businessUID", "null"));
                     referenceBusiness.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -162,7 +163,7 @@ public class QueueActivity extends AppCompatActivity {
                         public void onCancelled(@NonNull DatabaseError databaseError) {
 
                         }
-                    });*/
+                    });
 
                 } else {
                     Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();

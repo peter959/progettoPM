@@ -20,15 +20,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecycler.MyViewHolder> {
 
     Context context;
-    ArrayList<Queue> queues;
+    List<Queue> queues;
     private FirebaseUser firebaseUser;
     DatabaseReference referenceForAddingReservationInUserFavorites;
 
-    public QueueAdapterRecycler(Context c, ArrayList<Queue> p) {
+    public QueueAdapterRecycler(Context c, List<Queue> p) {
         context = c;
         queues = p;
     }

@@ -80,86 +80,39 @@ public class MainActivity extends AppCompatActivity {
         business_layout.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
 
-        // Check if user is signed in (non-null) and update UI accordingly.
         referenceForBusinessInfo.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
                 Business business = dataSnapshot.child(business_ID).getValue(Business.class);
-                business_city.setText(business.getBusiness_city());
-                business_description.setText(business.getBusiness_description());
-                business_name.setText(business.getBusiness_name());
-                business_nQueues.setText(business.getBusiness_nQueuesString());
-                //business_image
-
-                business_layout.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
-
+                if (business != null) {
+                    business_city.setText(business.getBusiness_city());
+                    business_description.setText(business.getBusiness_description());
+                    business_name.setText(business.getBusiness_name());
+                    business_nQueues.setText(business.getBusiness_nQueuesString());
+                    //business_image
+                    business_layout.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
+                }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
-
-
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        mAuth = FirebaseAuth.getInstance();
-
-        userInfo = getSharedPreferences("BusinessInfo", Context.MODE_PRIVATE);
-        business_ID = userInfo.getString("businessUID", "null");
-
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setTitle("");
-
-        models = new ArrayList<>();
-
-        referenceForBusinessInfo = FirebaseDatabase.getInstance().getReference().child("business");
-        referenceForBusinessQueuesInfo = FirebaseDatabase.getInstance().getReference().child("queues");
-
-        recyclerView = findViewById(R.id.business_queues);
-        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-        recyclerView.setNestedScrollingEnabled(false);
-
-
-        business_name = findViewById(R.id.business_name);
-        business_city = findViewById(R.id.business_city);
-        business_nQueues = findViewById(R.id.business_nQueues);
-        business_description = findViewById(R.id.business_description);
-        business_image = findViewById(R.id.business_image);
-
-        progressBar = findViewById(R.id.progressBarBusiness);
-        business_layout = findViewById(R.id.business_layout);
-
-        editBtn = findViewById(R.id.edit_button);
-        addBtn = findViewById(R.id.add_queue_btn);
 
         referenceForBusinessQueuesInfo.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
                 Queue queue = dataSnapshot.getValue(Queue.class);
-                queue.setQueue_id(dataSnapshot.getKey());
                 if(queue.getQueue_businessID().equals(business_ID)){
                     //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
+                    queue.setQueue_id(dataSnapshot.getKey());
                     models.add(models.size(), queue);
-                    System.out.println("ADDED on Queue LIST: " + dataSnapshot.getKey());
+                    System.out.println("ADDED on Favorites LIST: " + queue.getQueue_id());
 
-                    queueAdapter = new QueueAdapterRecycler(MainActivity.this, (ArrayList<Queue>) models);
+                    queueAdapter = new QueueAdapterRecycler(MainActivity.this, models);
                     recyclerView.setAdapter(queueAdapter);
                     queueAdapter.notifyDataSetChanged();
-
                 }
-
-
             }
 
             @Override
@@ -174,6 +127,66 @@ public class MainActivity extends AppCompatActivity {
                     //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
                     for (int i = 0; i<models.size(); i++){
                         if(models.get(i).getQueue_id().equals(queue.getQueue_id())){
+                            models.remove(i);
+                            System.out.println("REMOVED on Business LIST: " + queue.getQueue_id());
+                        }
+                    }
+
+                    queueAdapter = new QueueAdapterRecycler(MainActivity.this, models);
+                    recyclerView.setAdapter(queueAdapter);
+                    queueAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+        /*referenceForBusinessQueuesInfo.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                Queue queue = dataSnapshot.getValue(Queue.class);
+                if (queue!=null) {
+                    System.out.println("queue: " + queue.getQueue_businessID());
+                    System.out.println(" businesid." + business_ID);
+                    if (queue.getQueue_businessID().equals(business_ID)) {
+                        queue.setQueue_id(dataSnapshot.getKey());
+                        //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
+                        models.add(models.size(), queue);
+                        System.out.println("ADDED on Queue LIST: " + dataSnapshot.getKey());
+
+                        queueAdapter = new QueueAdapterRecycler(MainActivity.this, (ArrayList<Queue>) models);
+                        recyclerView.setAdapter(queueAdapter);
+                        queueAdapter.notifyDataSetChanged();
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                Queue queue = dataSnapshot.getValue(Queue.class);
+                if (queue != null && queue.getQueue_businessID().equals(business_ID)) {
+                    //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
+                    for (int i = 0; i < models.size(); i++) {
+                        if (models.get(i).getQueue_id().equals(queue.getQueue_id())) {
                             models.remove(i);
                             System.out.println("REMOVED on Business LIST: " + queue.getQueue_id());
                         }
@@ -194,7 +207,46 @@ public class MainActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
+
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        //mAuth = FirebaseAuth.getInstance();
+
+        userInfo = getSharedPreferences("BusinessInfo", Context.MODE_PRIVATE);
+        business_ID = userInfo.getString("businessUID", "null");
+
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setTitle("");
+
+        business_name = findViewById(R.id.business_name);
+        business_city = findViewById(R.id.business_city);
+        business_nQueues = findViewById(R.id.business_nQueues);
+        business_description = findViewById(R.id.business_description);
+        business_image = findViewById(R.id.business_image);
+
+        referenceForBusinessInfo = FirebaseDatabase.getInstance().getReference().child("business");
+        referenceForBusinessQueuesInfo = FirebaseDatabase.getInstance().getReference().child("queues");
+
+        recyclerView = findViewById(R.id.business_queues);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        recyclerView.setNestedScrollingEnabled(false);
+
+        models = new ArrayList<>();
+
+        progressBar = findViewById(R.id.progressBarBusiness);
+        business_layout = findViewById(R.id.business_layout);
+
+        editBtn = findViewById(R.id.edit_button);
+        addBtn = findViewById(R.id.add_queue_btn);
+
+
 
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -239,5 +291,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        models.clear();
+
+
     }
 }
