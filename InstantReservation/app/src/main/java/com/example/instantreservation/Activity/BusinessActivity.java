@@ -99,8 +99,6 @@ public class BusinessActivity extends AppCompatActivity {
                     queueAdapter.notifyDataSetChanged();
 
                 }
-
-
             }
 
             @Override
