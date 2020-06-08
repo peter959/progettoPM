@@ -25,8 +25,6 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
 
     Context context;
     List<Queue> queues;
-    private FirebaseUser firebaseUser;
-    DatabaseReference referenceForAddingReservationInUserFavorites;
 
     public QueueAdapterRecycler(Context c, List<Queue> p) {
         this.context = c;

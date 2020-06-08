@@ -12,13 +12,15 @@ const client = algoliasearch(functions.config().algolia.algolia_app_id, function
 // Name fo the algolia index for Blog posts content.
 const ALGOLIA_QUEUES_INDEX_NAME = 'queues';
 
-exports.dbWrite = functions.database.ref('/queues/{queue_id}').onWrite((change, context) => {
+exports.addQueue = functions.database.ref('/queues/{queue_id}').onWrite((change, context) => {
   //const index = client.initIndex(ALGOLIA_QUEUES_INDEX_NAME);
   
   const afterData = change.after.val(); // data after the write
 
   const data = {
   	objectID: context.params.queue_id,
+  	queue_description: afterData.queue_description,
+  	queue_name: afterData.queue_name,
     queue_business: afterData.queue_business,
     queue_city: afterData.queue_city
   };
@@ -26,8 +28,12 @@ exports.dbWrite = functions.database.ref('/queues/{queue_id}').onWrite((change, 
   return addToAlgolia(data, 'queues')
  	.then(res => console.log('SUCCESS ALGOLIA equipment ADD', res))
  	.catch(err => console.log('ERROR ALGOLIA equipment ADD', err));
+});
 
-
+exports.deleteQueue = functions.database.ref(`/queues/{queue_id}`).onDelete((snap, context) => {
+  const index = client.initIndex(ALGOLIA_QUEUES_INDEX_NAME);
+  const objectID = context.params.queue_id;
+return index.deleteObject(objectID);
 });
 
 function addToAlgolia(object, indexName) {

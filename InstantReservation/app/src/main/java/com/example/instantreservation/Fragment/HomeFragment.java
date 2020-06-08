@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment {
 
         referenceForFavoritesQueues = FirebaseDatabase.getInstance().getReference().child("users").child(userUID).child("favoritesQueue");
         referenceForReservedQueue = FirebaseDatabase.getInstance().getReference().child("users").child(userUID).child("reservedQueue");
-        referenceForQueueInfo = FirebaseDatabase.getInstance().getReference().child("codeattivita");
+        referenceForQueueInfo = FirebaseDatabase.getInstance().getReference().child("queues");
 
         models = new ArrayList<>();
 
@@ -98,6 +98,7 @@ public class HomeFragment extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
                         Queue queue = dataSnapshot1.getValue(Queue.class);
 
+                        queue.setQueue_id(dataSnapshot1.getKey());
                         models.add(models.size(), queue);
                         System.out.println("ADDED on Reserved LIST: " + queueID);
 

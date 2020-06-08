@@ -54,15 +54,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-    private DatabaseReference mDatabase;
-    private FirebaseAuth mAuth;
-    FirebaseUser currentUser;
-
-    String email, name;
-
     private BottomNavigationView bottomNavigationView;
     private Toolbar toolbar;
-    private User user;
 
     final Fragment profileFragment = new ProfileFragment();
     final Fragment homeFragment = new HomeFragment();
@@ -180,40 +173,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /*@Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (result != null) {
-            //if qrcode has nothing in it
-            if (result.getContents() == null) {
-                Toast.makeText(this, "Result Not Found", Toast.LENGTH_LONG).show();
-            } else {
-                //if qr contains data
-                try {
-                    //converting the data to json
-                    JSONObject obj = new JSONObject(result.getContents());
-                    //setting values to textviews
-                    //textViewName.setText(obj.getString("name"));
-                    //textViewAddress.setText(obj.getString("address"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    //if control comes here
-                    //that means the encoded format not matches
-                    //in this case you can display whatever data is available on the qrcode
-                    //to a toast
-                    Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
-                }
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }*/
 
-    /*@RequiresApi(api = Build.VERSION_CODES.M)
-    public void onFavoriteToggleClick(View view) {
-       // Toast.makeText(this, t.getText(), Toast.LENGTH_SHORT).show();
-        //Queue prova = HomeFragment.getModels(0);
-      //  System.out.println(prova.getQueue_name());
-    }*/
+
 
 }

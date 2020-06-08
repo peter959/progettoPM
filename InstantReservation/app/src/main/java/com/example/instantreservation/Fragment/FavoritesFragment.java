@@ -69,7 +69,7 @@ public class FavoritesFragment extends Fragment {
         userUID = userInfo.getString("userUID", "null");
 
         referenceForFavoritesQueues = FirebaseDatabase.getInstance().getReference().child("users").child(userUID).child("favoritesQueue");
-        referenceForQueueInfo = FirebaseDatabase.getInstance().getReference().child("codeattivita");
+        referenceForQueueInfo = FirebaseDatabase.getInstance().getReference().child("queues");
 
         models = new ArrayList<>();
 
@@ -94,8 +94,9 @@ public class FavoritesFragment extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
                         Queue queue = dataSnapshot1.getValue(Queue.class);
 
+                        queue.setQueue_id(dataSnapshot1.getKey());
                         queue.setQueue_is_favorite(true);
-                        models.add(models.size(), queue);
+                        models.add(queue);
                         System.out.println("ADDED on Favorites LIST: " + queueID);
 
                         queueAdapter = new QueueAdapterRecycler(getContext(), models);
@@ -149,10 +150,6 @@ public class FavoritesFragment extends Fragment {
 
             }
         });
-
-        queueAdapter = new QueueAdapterRecycler(getContext(), models);
-        recyclerView.setAdapter(queueAdapter);
-        queueAdapter.notifyDataSetChanged();
 
         return returnView;
     }
