@@ -133,6 +133,15 @@ public class QueueActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
 
+        btn_menage_reservation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ReservationMenager.class);
+                intent.putExtra("payload", queueID);
+                startActivity(intent);
+            }
+        });
+
 
         btn_remove_queue.setOnClickListener(new View.OnClickListener() {
             @Override
