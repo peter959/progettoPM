@@ -67,7 +67,7 @@ public class AddQueueActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         dataSnapshot.getRef().child("queue_name").setValue(add_queue_name.getText().toString());
                         dataSnapshot.getRef().child("queue_description").setValue(add_queue_desc.getText().toString());
-                        dataSnapshot.getRef().child("queue_nMaxReservation").setValue(add_queue_maxReserv.getText().toString());
+                        dataSnapshot.getRef().child("queue_nMaxReservation").setValue(Integer.getInteger(add_queue_maxReserv.getText().toString()));
                         dataSnapshot.getRef().child("queue_businessID").setValue(userInfo.getString("businessUID", "null"));
                         dataSnapshot.getRef().child("queue_business").setValue(userInfo.getString("businessName", "null"));
                         dataSnapshot.getRef().child("queue_city").setValue(userInfo.getString("businessCity", "null"));

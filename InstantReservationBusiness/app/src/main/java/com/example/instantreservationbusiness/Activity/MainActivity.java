@@ -1,9 +1,12 @@
 package com.example.instantreservationbusiness.Activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,8 +26,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.instantreservationbusiness.Business;
+import com.example.instantreservationbusiness.Queue;
+import com.example.instantreservationbusiness.QueueAdapterRecycler;
 import com.example.instantreservationbusiness.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,6 +40,8 @@ import com.google.zxing.integration.android.IntentIntegrator;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -42,7 +50,9 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
-    DatabaseReference reference;
+    DatabaseReference referenceForBusinessInfo;
+    DatabaseReference referenceForBusinessQueuesInfo;
+
     TextView business_name;
     TextView business_description;
     TextView business_city;
@@ -55,9 +65,13 @@ public class MainActivity extends AppCompatActivity {
     ProgressBar progressBar;
     LinearLayout business_layout;
 
+    RecyclerView recyclerView;
+    QueueAdapterRecycler queueAdapter;
+    List<Queue> models;
+
     Toolbar toolbar;
 
-    String id;
+    String business_ID;
 
     @Override
     public void onStart() {
@@ -65,12 +79,12 @@ public class MainActivity extends AppCompatActivity {
 
         business_layout.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
-        
+
         // Check if user is signed in (non-null) and update UI accordingly.
-        reference.addValueEventListener(new ValueEventListener() {
+        referenceForBusinessInfo.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Business business = dataSnapshot.child(id).getValue(Business.class);
+                Business business = dataSnapshot.child(business_ID).getValue(Business.class);
                 business_city.setText(business.getBusiness_city());
                 business_description.setText(business.getBusiness_description());
                 business_name.setText(business.getBusiness_name());
@@ -88,6 +102,61 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        referenceForBusinessQueuesInfo.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                
+                Queue queue = dataSnapshot.getValue(Queue.class);
+                if(queue.getQueue_businessID().equals(business_ID)){
+                    //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
+
+                    models.add(models.size(), queue);
+                    System.out.println("ADDED on Queue LIST: " + dataSnapshot.getKey());
+
+                    queueAdapter = new QueueAdapterRecycler(MainActivity.this, (ArrayList<Queue>) models);
+                    recyclerView.setAdapter(queueAdapter);
+                    queueAdapter.notifyDataSetChanged();
+
+                }
+
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                Queue queue = dataSnapshot.getValue(Queue.class);
+                if(queue.getQueue_businessID().equals(business_ID)){
+                    //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
+                    for (int i = 0; i<models.size(); i++){
+                        if(models.get(i).getQueue_id().equals(queue.getQueue_id())){
+                            models.remove(i);
+                            System.out.println("REMOVED on Business LIST: " + queue.getQueue_id());
+                        }
+                    }
+
+                    queueAdapter = new QueueAdapterRecycler(MainActivity.this, (ArrayList<Queue>) models);
+                    recyclerView.setAdapter(queueAdapter);
+                    queueAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 
     @Override
@@ -98,13 +167,21 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         userInfo = getSharedPreferences("BusinessInfo", Context.MODE_PRIVATE);
-        id = userInfo.getString("businessUID", "null");
-        reference = FirebaseDatabase.getInstance().getReference().child("business");
+        business_ID = userInfo.getString("businessUID", "null");
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setTitle("");
+
+        models = new ArrayList<>();
+
+        referenceForBusinessInfo = FirebaseDatabase.getInstance().getReference().child("business");
+        referenceForBusinessQueuesInfo = FirebaseDatabase.getInstance().getReference().child("queues");
+
+        recyclerView = findViewById(R.id.business_queues);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        recyclerView.setNestedScrollingEnabled(false);
 
 
         business_name = findViewById(R.id.business_name);
@@ -127,8 +204,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        reference = FirebaseDatabase.getInstance().getReference().child("business");
 
     }
 
