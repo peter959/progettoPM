@@ -1,13 +1,16 @@
 package com.example.instantreservationbusiness.Activity;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -17,9 +20,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.instantreservationbusiness.Business;
 import com.example.instantreservationbusiness.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences userInfo;
 
+    private FirebaseAuth mAuth;
+
     DatabaseReference reference;
     TextView business_name;
     TextView business_description;
@@ -48,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
     ProgressBar progressBar;
     LinearLayout business_layout;
 
+    Toolbar toolbar;
+
     String id;
 
     @Override
@@ -56,9 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
         business_layout.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
-
-        System.out.println("aaaaaaaaaaaaaaaaaaaaaaa" + id);
-
+        
         // Check if user is signed in (non-null) and update UI accordingly.
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -88,14 +95,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mAuth = FirebaseAuth.getInstance();
+
         userInfo = getSharedPreferences("BusinessInfo", Context.MODE_PRIVATE);
         id = userInfo.getString("businessUID", "null");
         reference = FirebaseDatabase.getInstance().getReference().child("business");
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setTitle("");
 
 
@@ -125,14 +133,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-       /* switch (item.getItemId())
-        {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }*/
-        return super.onOptionsItemSelected(item);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_profile, menu);
+        return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.menu_profile:
+                new AlertDialog.Builder(this)
+                        .setTitle("Log out")
+                        .setMessage("you are actually connected with " + userInfo.getString("businessEmail", null) + " do you want to quit?")
+                        .setPositiveButton("Log out", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                mAuth.signOut();
+                                Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        })
+
+                        // A null listener allows the button to dismiss the dialog and take no further action.
+                        .setNegativeButton(android.R.string.no, null)
+                        .show();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }
