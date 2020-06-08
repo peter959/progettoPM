@@ -103,8 +103,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-
     }
 
     @Override
@@ -149,7 +147,8 @@ public class MainActivity extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
                 Queue queue = dataSnapshot.getValue(Queue.class);
-                if(queue.getQueue_businessID().equals(business_ID) && !models.contains(queue)){
+                queue.setQueue_id(dataSnapshot.getKey());
+                if(queue.getQueue_businessID().equals(business_ID)){
                     //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
                     models.add(models.size(), queue);
                     System.out.println("ADDED on Queue LIST: " + dataSnapshot.getKey());

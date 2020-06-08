@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,13 +39,9 @@ import com.google.firebase.database.ValueEventListener;
 public class QueueActivity extends AppCompatActivity {
 
     DatabaseReference referenceForQueueInfo;
-    DatabaseReference referenceForAddingReservation;
-    DatabaseReference referenceForAddingReservationInUser;
-    DatabaseReference referenceForAddingCheckingIfReservationExist;
-    DatabaseReference referenceForFavoritesQueues;
+    DatabaseReference referenceBusiness;
 
     private FirebaseUser firebaseUser;
-    DatabaseReference referenceForAddingReservationInUserFavorites;
 
     TextView queue_name;
     TextView queue_business;
@@ -59,26 +56,54 @@ public class QueueActivity extends AppCompatActivity {
     ProgressBar progressBarQueue;
     LinearLayout queue_layout;
 
-    View btnReserve;
-    View btnRemoveReservation;
-    ProgressButton reserveButton;
-    ProgressButton removeReservationButton;
-
-    Boolean is_favorite;
+    Button btn_menage_reservation;
+    Button btn_remove_queue;
 
     String queueID;
-    String userUID;
     String queueBusinessID;
     SharedPreferences sharedPreferences;
-
-    ToggleButton toggleFavorite;
-
-    Boolean reserved;
 
 
     @Override
     public void onStart() {
         super.onStart();
+
+
+
+
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_queue_test);
+
+        Toolbar toolbar = findViewById(R.id.toolbar_queue);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+        getSupportActionBar().setTitle("");
+
+        btn_menage_reservation = findViewById(R.id.btn_menage_reservation);
+        btn_remove_queue = findViewById(R.id.btn_remove_queue);
+
+        queue_business = findViewById(R.id.queue_business);
+        queue_name = findViewById(R.id.queue_name);
+        queue_city = findViewById(R.id.queue_city);
+        queue_nReservationString = findViewById(R.id.queue_nReservation);
+        queue_description = findViewById(R.id.queue_description);
+        //queue_QRCodeImage = findViewById(R.id.queue_QRCodeImage);
+        queue_image = findViewById(R.id.queue_image);
+
+        progressBarQueue = findViewById(R.id.progressBarQueue);
+        queue_layout = findViewById(R.id.queue_layout);
+
+        Intent intent = getIntent();
+        queueID = intent.getStringExtra("payload");
+        sharedPreferences = getSharedPreferences("BusinessInfo", Context.MODE_PRIVATE);
+
+        referenceForQueueInfo = FirebaseDatabase.getInstance().getReference().child("queues");
+        referenceBusiness = FirebaseDatabase.getInstance().getReference().child("business").child(sharedPreferences.getString("businessUID", null));
 
         queue_layout.setVisibility(View.GONE);
         progressBarQueue.setVisibility(View.VISIBLE);
@@ -99,44 +124,6 @@ public class QueueActivity extends AppCompatActivity {
                 queueBusinessID = queue.getQueue_businessID();
                 //queue_image.setImageURI(queue.getQueue_image());
                 //queue_QRCodeImage.setImageURI();
-                referenceForFavoritesQueues.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.hasChild(queueID)) {
-                            toggleFavorite.setChecked(true);
-                        }
-                        else { toggleFavorite.setChecked(false);}
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
-                referenceForAddingCheckingIfReservationExist = FirebaseDatabase.getInstance().getReference()
-                        .child("reservations")
-                        .child(queueBusinessID)
-                        .child(queueID);
-
-                referenceForAddingCheckingIfReservationExist.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
-                        if (dataSnapshot2.hasChild(userUID)) {
-                            reserveButton.buttonFinished("Reserved");
-                            reserved = true;
-                            btnRemoveReservation.setVisibility(View.VISIBLE);
-                        }else{
-                            reserveButton = new ProgressButton(QueueActivity.this, btnReserve, "Pick up a ticket");
-                            reserved=false;
-                            btnRemoveReservation.setVisibility(View.GONE);
-                        }
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
 
                 queue_layout.setVisibility(View.VISIBLE);
                 progressBarQueue.setVisibility(View.GONE);
@@ -145,152 +132,45 @@ public class QueueActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
 
-        btnReserve.setOnClickListener(new View.OnClickListener() {
+
+        btn_remove_queue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!reserved) {
-                    reserveButton.buttonActivated();
-                    writeNewReservation(userUID, queueID);
-                    //btnRemoveReservation.setVisibility(View.VISIBLE);
-                }else{
-                    Toast.makeText(QueueActivity.this, "You've already took a ticket!", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-        });
-
-        btnRemoveReservation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(reserved) {
-                    btnRemoveReservation.setVisibility(View.GONE);
-                    removeReservation(userUID, queueID);
-                }else{
-                }
+                removeQueue(queueID);
+                finish();
             }
         });
 
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_queue_test);
-
-        //reservation Button
-        btnReserve = findViewById(R.id.btnReserve);
-        reserveButton = new ProgressButton(QueueActivity.this, btnReserve, "Pick up a ticket");
-        reserved = false;
-
-        btnRemoveReservation = findViewById(R.id.btnRemoveReservation);
-        removeReservationButton = new ProgressButton(QueueActivity.this, btnRemoveReservation, "Remove");
-        removeReservationButton.buttonRemove("Remove reservation");
-
-
-        Toolbar toolbar = findViewById(R.id.toolbar_queue);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
-        getSupportActionBar().setTitle("");
-
-
-        queue_business = findViewById(R.id.queue_business);
-        queue_name = findViewById(R.id.queue_name);
-        queue_city = findViewById(R.id.queue_city);
-        queue_nReservationString = findViewById(R.id.queue_nReservation);
-        queue_description = findViewById(R.id.queue_description);
-        //queue_QRCodeImage = findViewById(R.id.queue_QRCodeImage);
-        queue_image = findViewById(R.id.queue_image);
-
-        progressBarQueue = findViewById(R.id.progressBarQueue);
-        queue_layout = findViewById(R.id.queue_layout);
-
-        Intent intent = getIntent();
-        queueID = intent.getStringExtra("payload");
-        sharedPreferences = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
-        userUID = sharedPreferences.getString("userUID", "null");
-
-        referenceForQueueInfo = FirebaseDatabase.getInstance().getReference().child("codeattivita");
-        referenceForAddingReservation= FirebaseDatabase.getInstance().getReference().child("reservations");
-        referenceForFavoritesQueues = FirebaseDatabase.getInstance().getReference().child("users").child(userUID).child("favoritesQueue");
-        referenceForAddingReservationInUser= FirebaseDatabase.getInstance().getReference().child("users").child(userUID);
-
-        /*queue_business.setOnClickListener(new View.OnClickListener() {
+    private void removeQueue(final String queueID){
+        DatabaseReference ref = referenceForQueueInfo.child(queueID);
+        ref.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), BusinessActivity.class);
-                i.putExtra("business_id", queueBusinessID);
-                startActivity(i);
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    /*referenceBusiness = FirebaseDatabase.getInstance().getReference().child("business").child(sharedPreferences.getString("businessUID", "null"));
+                    referenceBusiness.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            int nQueues = dataSnapshot.child("business_nQueues").getValue(int.class) -1;
+                            dataSnapshot.getRef().child("business_nQueues").setValue(nQueues);
+                            finish();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });*/
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+                }
             }
-        });*/
-
-
+        });
     }
 
-    private void writeNewReservation(String userUID, final String queueID){
-        //Reservation reservation = new Reservation(userUID, queueID);
-       // String currentHourIn24Format = Integer.toString(rightNow.get(Calendar.HOUR_OF_DAY));
-        //Task<Void> task = referenceForAddingReservation.child(queueBusinessID).child(queueID).setValue(userUID);
-        if(queue_nReservation < queue_nMaxReservation) {
-            DatabaseReference ref = referenceForAddingReservation.child(queueBusinessID).child(queueID).child(userUID);
-            referenceForAddingReservationInUser.child("reservedQueue").child(queueID).child("state").setValue("pending");
-            ref.child("state").setValue("pending").addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()){
-                        referenceForQueueInfo.child(queueID)
-                                .child("queue_nReservation")
-                                .setValue(queue_nReservation+1)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                       @Override
-                                       public void onComplete(@NonNull Task<Void> task2) {
-                                           if (task2.isSuccessful()) {
-                                               reserveButton.buttonFinished("Reserved");
-                                               reserved = true;
-                                               btnRemoveReservation.setVisibility(View.VISIBLE);
-                                           }else
-                                               reserveButton.buttonFinishedUnsuccessully("Something went wrong :(");
-                                       }
-                                   }
-
-                                );
-                    } else reserveButton.buttonFinishedUnsuccessully("Something went wrong :(");
-                }
-            });
-        }else {
-            Toast.makeText(QueueActivity.this, "The queue is full! Retry when there is availability.", Toast.LENGTH_SHORT).show();
-            reserveButton.buttonFinishedUnsuccessully("Retry");
-        }
-    }
-
-    private void removeReservation(String userUID, final String queueID){
-            DatabaseReference ref = referenceForAddingReservation.child(queueBusinessID).child(queueID).child(userUID);
-            referenceForAddingReservationInUser.child("reservedQueue").child(queueID).removeValue();
-            ref.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()){
-                        referenceForQueueInfo.child(queueID)
-                                .child("queue_nReservation")
-                                .setValue(queue_nReservation-1)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                           @Override
-                                                           public void onComplete(@NonNull Task<Void> task2) {
-                                                               if (task2.isSuccessful()) {
-                                                                   reserveButton = new ProgressButton(QueueActivity.this, btnReserve, "Pick up a ticket");
-                                                                   reserved = false;
-                                                                   btnRemoveReservation.setVisibility(View.GONE);
-                                                                   Toast.makeText(QueueActivity.this, "Reservation cancelled", Toast.LENGTH_SHORT).show();
-                                                               }else
-                                                                   removeReservationButton.buttonFinishedUnsuccessully("Something went wrong :(");
-                                                           }
-                                                       }
-
-                                );
-                    } else removeReservationButton.buttonFinishedUnsuccessully("Something went wrong :(");
-                }
-            });
-    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
