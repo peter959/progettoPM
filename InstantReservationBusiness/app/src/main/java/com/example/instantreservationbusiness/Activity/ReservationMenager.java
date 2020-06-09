@@ -36,6 +36,7 @@ public class ReservationMenager extends AppCompatActivity {
     Button btn_next;
 
     DatabaseReference referenceReservation;
+    DatabaseReference referenceQueueinfo;
     DatabaseReference referenceUserInfo;
 
     List<Reservation> list;
@@ -54,8 +55,25 @@ public class ReservationMenager extends AppCompatActivity {
     public void onStart() {
         super.onStart();
 
-        //get data from database
+        list = new ArrayList<Reservation>();
 
+        referenceQueueinfo = FirebaseDatabase.getInstance().getReference().child("queues").child(queueID);
+
+        referenceQueueinfo.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                System.out.println(dataSnapshot.getKey());
+                queue_title.setText(dataSnapshot.child("queue_name").getValue(String.class));
+                n_reservation.setText(Integer.toString(dataSnapshot.child("queue_nReservation").getValue(Integer.class)));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        //get data from database
         referenceReservation = FirebaseDatabase.getInstance().getReference().child("reservations").child(queueID);
         referenceReservation.addChildEventListener(new ChildEventListener() {
             @Override
@@ -65,29 +83,29 @@ public class ReservationMenager extends AppCompatActivity {
                 r.setId_queue(queueID);
                 r.setId_user(dataSnapshot.getKey());
                 System.out.println("reservation     " + r.getId_queue());
-                    //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
-                    referenceUserInfo = FirebaseDatabase.getInstance().getReference().child("users").child(r.getId_user());
-                    referenceUserInfo.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            r.setUser_name(dataSnapshot.child("fullname").getValue(String.class));
-                            r.setUser_phone(dataSnapshot.child("phone").getValue(String.class));
+                //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
+                referenceUserInfo = FirebaseDatabase.getInstance().getReference().child("users").child(r.getId_user());
+                referenceUserInfo.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        r.setUser_name(dataSnapshot.child("fullname").getValue(String.class));
+                        r.setUser_phone(dataSnapshot.child("phone").getValue(String.class));
 
-                            list.add(list.size(), r);
+                        list.add(list.size(), r);
 
-                            reservationAdapter = new ReservationAdapter(ReservationMenager.this, (ArrayList<Reservation>) list);
-                            reservations.setAdapter(reservationAdapter);
-                            reservationAdapter.notifyDataSetChanged();
-                        }
+                        reservationAdapter = new ReservationAdapter(ReservationMenager.this, (ArrayList<Reservation>) list);
+                        reservations.setAdapter(reservationAdapter);
+                        reservationAdapter.notifyDataSetChanged();
+                    }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
                     }
+                });
+
+
+            }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -97,9 +115,9 @@ public class ReservationMenager extends AppCompatActivity {
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
                 Reservation r = dataSnapshot.getValue(Reservation.class);
-                    //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
-                for (int i = 0; i<list.size(); i++){
-                    if(list.get(i).getId_user().equals(r.getId_user())){
+                //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
+                for (int i = 0; i < list.size(); i++) {
+                    if (list.get(i).getId_user().equals(r.getId_user())) {
                         list.remove(i);
                     }
                 }
@@ -121,80 +139,7 @@ public class ReservationMenager extends AppCompatActivity {
         });
 
 
-        /*
-        referenceReservation = FirebaseDatabase.getInstance().getReference().child("reservations");
-        referenceReservation.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                System.out.println("snapshot     " + dataSnapshot);
-                final Reservation r = dataSnapshot.getValue(Reservation.class);
-                System.out.println("reservation     " + r.getId_queue());
-                if (r != null) {
-                    if (r.getId_queue().equals(queueID)) {
-                        //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
-                        referenceUserInfo = FirebaseDatabase.getInstance().getReference().child("users").child(r.getId_user());
-                        referenceUserInfo.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                r.setUser_name(dataSnapshot.child("fullname").getValue(String.class));
-                                r.setUser_phone(dataSnapshot.child("phone").getValue(String.class));
-
-                                list.add(list.size(), r);
-
-                                reservationAdapter = new ReservationAdapter(ReservationMenager.this, (ArrayList<Reservation>) list);
-                                reservations.setAdapter(reservationAdapter);
-                                reservationAdapter.notifyDataSetChanged();
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-
-
-                    }
-                }
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                Reservation r = dataSnapshot.getValue(Reservation.class);
-                if(r.getId_queue().equals(queueID)){
-                    //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
-                    for (int i = 0; i<list.size(); i++){
-                        if(list.get(i).getId_user().equals(r.getId_user())){
-                            list.remove(i);
-                        }
-                    }
-
-                    reservationAdapter = new ReservationAdapter(ReservationMenager.this, (ArrayList<Reservation>) list);
-                    reservations.setAdapter(reservationAdapter);
-                    reservationAdapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        */
-
-
     }
-
 
 
     @Override
@@ -208,13 +153,12 @@ public class ReservationMenager extends AppCompatActivity {
         businessID = sharedPreferences.getString("businessID", null);
 
         queue_title = findViewById(R.id.queue_title);
-        n_reservation = findViewById(R.id.n_reservation);
+        n_reservation = findViewById(R.id.nReservation);
         reservations = findViewById(R.id.reservations);
         btn_next = findViewById(R.id.btn_next);
 
 
         reservations.setLayoutManager(new LinearLayoutManager(this));
-        list = new ArrayList<Reservation>();
 
         //list.add(reservation);
 

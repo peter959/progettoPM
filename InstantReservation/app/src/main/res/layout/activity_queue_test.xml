@@ -226,6 +226,17 @@
                                 android:layout_height="1dp"
                                 android:background="@android:color/darker_gray"/>
 
+                            <EditText
+                                android:background="@drawable/bginputtask"
+                                android:id="@+id/add_note"
+                                android:inputType="text"
+                                android:paddingLeft="12dp"
+                                android:hint="Enter a note for the business"
+                                android:textColorHint="@color/colorPrimaryDark"
+                                android:layout_width="match_parent"
+                                android:layout_height="45dp"
+                                android:layout_marginBottom="20dp"/>
+
                             <include
                                 android:layout_gravity="bottom"
                                 android:id="@+id/btnReserve"

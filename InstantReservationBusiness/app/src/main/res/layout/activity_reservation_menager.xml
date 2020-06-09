@@ -84,7 +84,6 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/n_reservation"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -93,7 +92,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/queue_nReservation"
+                            android:id="@+id/nReservation"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"

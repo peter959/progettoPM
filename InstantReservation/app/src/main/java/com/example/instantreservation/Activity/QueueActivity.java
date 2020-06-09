@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -67,6 +68,8 @@ public class QueueActivity extends AppCompatActivity {
     View btnRemoveReservation;
     ProgressButton reserveButton;
     ProgressButton removeReservationButton;
+
+    EditText et_note;
 
     String queueID;
     String userUID;
@@ -206,12 +209,15 @@ public class QueueActivity extends AppCompatActivity {
         reserveButton = new ProgressButton(QueueActivity.this, btnReserve, "Pick up a ticket");
         reserved = false;
 
+        et_note = findViewById(R.id.add_note);
+
         //favorites toggle
         toggleFavorite = findViewById(R.id.toggleFavorite);
         toggleFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if(queueID!="Errore") {
+                    String note = et_note.getText().toString();
                     firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                     referenceForAddingReservationInUserFavorites = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid());
                     if (checked) {
