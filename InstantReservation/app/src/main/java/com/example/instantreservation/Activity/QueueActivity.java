@@ -60,6 +60,7 @@ public class QueueActivity extends AppCompatActivity {
     TextView queue_description ;
     //ImageView queue_QRCodeImage;
     ImageView queue_image;
+    String note;
 
     ProgressBar progressBarQueue;
     LinearLayout queue_layout;
@@ -122,7 +123,6 @@ public class QueueActivity extends AppCompatActivity {
                     });
                     referenceForAddingCheckingIfReservationExist = FirebaseDatabase.getInstance().getReference()
                             .child("reservations")
-                            .child(queueBusinessID)
                             .child(queueID);
 
                     referenceForAddingCheckingIfReservationExist.addValueEventListener(new ValueEventListener() {
@@ -217,7 +217,6 @@ public class QueueActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if(queueID!="Errore") {
-                    String note = et_note.getText().toString();
                     firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                     referenceForAddingReservationInUserFavorites = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid());
                     if (checked) {
@@ -276,37 +275,59 @@ public class QueueActivity extends AppCompatActivity {
 
     }
 
-    private void writeNewReservation(String userUID, final String queueID){
+    private void writeNewReservation(final String userUID, final String queueID){
         //Reservation reservation = new Reservation(userUID, queueID);
        // String currentHourIn24Format = Integer.toString(rightNow.get(Calendar.HOUR_OF_DAY));
         //Task<Void> task = referenceForAddingReservation.child(queueBusinessID).child(queueID).setValue(userUID);
         if(queue_nReservation < queue_nMaxReservation) {
-            DatabaseReference ref = referenceForAddingReservation.child(queueID).child(userUID);
-
-
-
-            referenceForAddingReservationInUser.child("reservedQueue").child(queueID).child("state").setValue("pending");
-            ref.child("ticket").setValue("pending").addOnCompleteListener(new OnCompleteListener<Void>() {
+            note = et_note.getText().toString();
+            referenceForQueueInfo.child(queueID).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()){
-                        referenceForQueueInfo.child(queueID)
-                                .child("queue_nReservation")
-                                .setValue(queue_nReservation+1)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                       @Override
-                                       public void onComplete(@NonNull Task<Void> task2) {
-                                           if (task2.isSuccessful()) {
-                                               reserveButton.buttonFinished("Reserved");
-                                               reserved = true;
-                                               btnRemoveReservation.setVisibility(View.VISIBLE);
-                                           }else
-                                               reserveButton.buttonFinishedUnsuccessully("Something went wrong :(");
-                                       }
-                                   }
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    final int ticket = dataSnapshot.child("queue_tickets_counter").getValue(Integer.class);
+                    referenceForQueueInfo.child(queueID).child("queue_tickets_counter").setValue(ticket+1).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            final Reservation reservation = new Reservation(ticket, note);
+                            referenceForAddingReservation.child(queueID).child(userUID).setValue(reservation).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task1) {
+                                    if (task1.isSuccessful()) {
+                                        referenceForQueueInfo.child(queueID)
+                                                .child("queue_nReservation")
+                                                .setValue(queue_nReservation+1)
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task2) {
+                                                        if (task2.isSuccessful()) {
+                                                            referenceForAddingReservationInUser.child("reservedQueue").child(queueID).setValue(reservation).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<Void> task3) {
+                                                                    if (task3.isSuccessful()) {
+                                                                        reserveButton.buttonFinished("Reserved");
+                                                                        reserved = true;
+                                                                        btnRemoveReservation.setVisibility(View.VISIBLE);
+                                                                    }else
+                                                                        reserveButton.buttonFinishedUnsuccessully("Something went wrong :(");
+                                                                }
+                                                            });
+                                                        }else
+                                                            reserveButton.buttonFinishedUnsuccessully("Something went wrong :(");
+                                                    }
+                                                });
+                                    }else
+                                        reserveButton.buttonFinishedUnsuccessully("Something went wrong :(");
+                                }
+                            });
 
-                                );
-                    } else reserveButton.buttonFinishedUnsuccessully("Something went wrong :(");
+                        }
+                    });
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
                 }
             });
         }else {
@@ -316,32 +337,39 @@ public class QueueActivity extends AppCompatActivity {
     }
 
     private void removeReservation(String userUID, final String queueID){
-            DatabaseReference ref = referenceForAddingReservation.child(queueBusinessID).child(queueID).child(userUID);
-            referenceForAddingReservationInUser.child("reservedQueue").child(queueID).removeValue();
-            ref.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            final DatabaseReference ref = referenceForAddingReservation.child(queueID).child(userUID);
+            referenceForAddingReservationInUser.child("reservedQueue").child(queueID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()){
-                        referenceForQueueInfo.child(queueID)
-                                .child("queue_nReservation")
-                                .setValue(queue_nReservation-1)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                           @Override
-                                                           public void onComplete(@NonNull Task<Void> task2) {
-                                                               if (task2.isSuccessful()) {
-                                                                   reserveButton = new ProgressButton(QueueActivity.this, btnReserve, "Pick up a ticket");
-                                                                   reserved = false;
-                                                                   btnRemoveReservation.setVisibility(View.GONE);
-                                                                   Toast.makeText(QueueActivity.this, "Reservation cancelled", Toast.LENGTH_SHORT).show();
-                                                               }else
-                                                                   removeReservationButton.buttonFinishedUnsuccessully("Something went wrong :(");
-                                                           }
-                                                       }
+                        ref.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task1) {
+                                if (task1.isSuccessful()){
+                                    referenceForQueueInfo.child(queueID)
+                                            .child("queue_nReservation")
+                                            .setValue(queue_nReservation-1)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                       @Override
+                                                                       public void onComplete(@NonNull Task<Void> task2) {
+                                                                           if (task2.isSuccessful()) {
+                                                                               reserveButton = new ProgressButton(QueueActivity.this, btnReserve, "Pick up a ticket");
+                                                                               reserved = false;
+                                                                               btnRemoveReservation.setVisibility(View.GONE);
+                                                                               Toast.makeText(QueueActivity.this, "Reservation cancelled", Toast.LENGTH_SHORT).show();
+                                                                           }else
+                                                                               removeReservationButton.buttonFinishedUnsuccessully("Something went wrong :(");
+                                                                       }
+                                                                   }
 
-                                );
-                    } else removeReservationButton.buttonFinishedUnsuccessully("Something went wrong :(");
+                                            );
+                                } else removeReservationButton.buttonFinishedUnsuccessully("Something went wrong :(");
+                            }
+                        });
+                    }
                 }
             });
+
     }
 
     @Override
