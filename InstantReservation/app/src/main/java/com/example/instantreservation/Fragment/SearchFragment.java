@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.algolia.search.saas.AlgoliaException;
 import com.algolia.search.saas.Client;
@@ -81,6 +83,9 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View returnView = inflater.inflate(R.layout.fragment_search, container, false);
+
+        final EditText et_keyword = returnView.findViewById(R.id.keyword);
+
         recyclerView = returnView.findViewById(R.id.match_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setNestedScrollingEnabled(false);
@@ -110,7 +115,7 @@ public class SearchFragment extends Fragment {
                                     queueAdapter.notifyDataSetChanged();
                                 }else {
                                     models.clear();
-                                    index.searchAsync(new Query("FUD"), completionHandler);
+                                    Toast.makeText(getContext(), "not found", Toast.LENGTH_SHORT).show();
                                 }
 
                             }
@@ -192,8 +197,9 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
+                String keyword = et_keyword.getText().toString();
                 models = new ArrayList<>();
-                index.searchAsync(new Query("FUD"), completionHandler);
+                index.searchAsync(new Query(keyword), completionHandler);
             }
         });
 
