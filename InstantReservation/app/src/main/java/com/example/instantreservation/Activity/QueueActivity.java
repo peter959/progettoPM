@@ -281,9 +281,12 @@ public class QueueActivity extends AppCompatActivity {
        // String currentHourIn24Format = Integer.toString(rightNow.get(Calendar.HOUR_OF_DAY));
         //Task<Void> task = referenceForAddingReservation.child(queueBusinessID).child(queueID).setValue(userUID);
         if(queue_nReservation < queue_nMaxReservation) {
-            DatabaseReference ref = referenceForAddingReservation.child(queueBusinessID).child(queueID).child(userUID);
+            DatabaseReference ref = referenceForAddingReservation.child(queueID).child(userUID);
+
+
+
             referenceForAddingReservationInUser.child("reservedQueue").child(queueID).child("state").setValue("pending");
-            ref.child("state").setValue("pending").addOnCompleteListener(new OnCompleteListener<Void>() {
+            ref.child("ticket").setValue("pending").addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()){

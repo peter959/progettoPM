@@ -123,69 +123,8 @@ public class SearchFragment extends Fragment {
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) {}
                         });
-                        /*referenceForQueueInfo.addChildEventListener(new ChildEventListener() {
-                            @Override
-                            public void onChildAdded(@NonNull final DataSnapshot dataSnapshot, @Nullable String s) {
-                                referenceForQueueInfo.child(queue_id).addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
-                                        Queue queue = dataSnapshot1.getValue(Queue.class);
-                                        //queue.setQueue_is_favorite(true);
-                                        models.add(queue);
-                                        System.out.println("ADDED on Matched LIST: " + queue_id);
-
-                                        queueAdapter = new QueueAdapterRecycler(getContext(), models);
-                                        recyclerView.setAdapter(queueAdapter);
-                                        queueAdapter.notifyDataSetChanged();
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {}
-                                });
-                            }
-
-                            @Override
-                            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                            }
-
-                            @Override
-                            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                                referenceForQueueInfo.child(queue_id).addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
-                                        for (int i = 0; i<models.size(); i++){
-                                            if(models.get(i).getQueue_id().equals(queue_id)){
-                                                models.remove(i);
-                                                System.out.println("REMOVED on Matched LIST: " + queue_id);
-                                            };
-                                        }
-
-                                        queueAdapter = new QueueAdapterRecycler(getContext(), models);
-                                        recyclerView.setAdapter(queueAdapter);
-                                        queueAdapter.notifyDataSetChanged();
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {}
-                                });
-
-                            }
-
-                            @Override
-                            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });*/
-
-
                     }
-                } catch (JSONException e) {
+                }catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
