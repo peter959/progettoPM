@@ -101,6 +101,40 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/reservations"
+            android:layout_width="match_parent"
+            android:layout_marginTop="350dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_height="wrap_content">
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/endpage"
+            android:textSize="16dp"
+            android:textColor="#9A9A9A"
+            android:layout_marginTop="30dp"
+            android:text="No more Reservation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+
+
     <TextView
         android:layout_alignParentBottom="true"
         android:id="@+id/txt_log_out"

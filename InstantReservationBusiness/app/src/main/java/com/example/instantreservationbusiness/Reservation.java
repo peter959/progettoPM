@@ -1,57 +1,73 @@
 package com.example.instantreservationbusiness;
 
 public class Reservation {
-    String userUID;
-    String queueID;
-    String userName;
-    String userPhone;
-    String description;
+    String id_queue;
+    String id_user;
+    int ticket;
+    String note;
+    String user_name;
+    String user_phone;
 
-    public Reservation(String userUID, String queueID) {
-        this.userUID = userUID;
-        this.queueID = queueID;
+    /*public Reservation(String id_queue, String id_user, String note, int ticket) {
+        this.id_queue = id_queue;
+        this.id_user = id_user;
+        this.note = note;
+        this.ticket = ticket;
+    } */
+
+    public Reservation(String note, int ticket) {
+        this.note = note;
+        this.ticket = ticket;
+    }
+
+    public String getUser_name() {
+        return user_name;
+    }
+
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
+    }
+
+    public String getUser_phone() {
+        return user_phone;
+    }
+
+    public void setUser_phone(String user_phone) {
+        this.user_phone = user_phone;
+    }
+
+    public int getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(int ticket) {
+        this.ticket = ticket;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public Reservation() {
     }
 
-    public String getUserName() {
-        return userName;
+    public String getId_queue() {
+        return id_queue;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setId_queue(String id_queue) {
+        this.id_queue = id_queue;
     }
 
-    public String getUserPhone() {
-        return userPhone;
+    public String getId_user() {
+        return id_user;
     }
 
-    public void setUserPhone(String userPhone) {
-        this.userPhone = userPhone;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getUserUID() {
-        return userUID;
-    }
-
-    public void setUserUID(String userUID) {
-        this.userUID = userUID;
-    }
-
-    public String getQueueID() {
-        return queueID;
-    }
-
-    public void setQueueID(String queueID) {
-        this.queueID = queueID;
+    public void setId_user(String id_user) {
+        this.id_user = id_user;
     }
 }

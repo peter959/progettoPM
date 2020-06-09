@@ -1,6 +1,7 @@
 package com.example.instantreservationbusiness.Activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,9 +15,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.instantreservationbusiness.Business;
+import com.example.instantreservationbusiness.Queue;
+import com.example.instantreservationbusiness.QueueAdapterRecycler;
 import com.example.instantreservationbusiness.R;
 import com.example.instantreservationbusiness.Reservation;
+import com.example.instantreservationbusiness.ReservationAdapter;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ReservationMenager extends AppCompatActivity {
 
@@ -33,7 +38,7 @@ public class ReservationMenager extends AppCompatActivity {
     DatabaseReference referenceReservation;
     DatabaseReference referenceUserInfo;
 
-    ArrayList<Reservation> list;
+    List<Reservation> list;
     RecyclerView reservations;
     ReservationAdapter reservationAdapter;
 
@@ -43,30 +48,34 @@ public class ReservationMenager extends AppCompatActivity {
     SharedPreferences sharedPreferences;
 
 
-    Reservation reservation = new Reservation("alkhslda", "asldalskj");
+//    Reservation reservation = new Reservation("alkhslda", "asldalskj", "tavolo per 4", 4);
 
     @Override
     public void onStart() {
         super.onStart();
 
         //get data from database
-        /*referenceReservation = FirebaseDatabase.getInstance().getReference().child("reservations").child(businessID).child(queueID);
-        referenceReservation.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // set code to retrive data
-                for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
-                    final Reservation p = dataSnapshot1.getValue(Reservation.class);
 
-                    referenceUserInfo = FirebaseDatabase.getInstance().getReference().child("users").child(p.getUserUID());
+        referenceReservation = FirebaseDatabase.getInstance().getReference().child("reservations").child(queueID);
+        referenceReservation.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                System.out.println("snapshot     " + dataSnapshot);
+                final Reservation r = dataSnapshot.getValue(Reservation.class);
+                r.setId_queue(queueID);
+                r.setId_user(dataSnapshot.getKey());
+                System.out.println("reservation     " + r.getId_queue());
+                    //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
+                    referenceUserInfo = FirebaseDatabase.getInstance().getReference().child("users").child(r.getId_user());
                     referenceUserInfo.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            p.setUserPhone(dataSnapshot.child("phone").getValue(String.class));
-                            p.setUserName(dataSnapshot.child("fullname").getValue(String.class));
-                            list.add(p);
+                            r.setUser_name(dataSnapshot.child("fullname").getValue(String.class));
+                            r.setUser_phone(dataSnapshot.child("phone").getValue(String.class));
 
-                            reservationAdapter = new ReservationAdapter(ReservationMenager.this, list);
+                            list.add(list.size(), r);
+
+                            reservationAdapter = new ReservationAdapter(ReservationMenager.this, (ArrayList<Reservation>) list);
                             reservations.setAdapter(reservationAdapter);
                             reservationAdapter.notifyDataSetChanged();
                         }
@@ -76,24 +85,116 @@ public class ReservationMenager extends AppCompatActivity {
 
                         }
                     });
+
+
+                    }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                Reservation r = dataSnapshot.getValue(Reservation.class);
+                    //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
+                for (int i = 0; i<list.size(); i++){
+                    if(list.get(i).getId_user().equals(r.getId_user())){
+                        list.remove(i);
+                    }
                 }
 
+                reservationAdapter = new ReservationAdapter(ReservationMenager.this, (ArrayList<Reservation>) list);
+                reservations.setAdapter(reservationAdapter);
+                reservationAdapter.notifyDataSetChanged();
+            }
 
-
-
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                //set code to show an error
-                Toast.makeText(getApplicationContext(), "No Data", Toast.LENGTH_SHORT).show();
+
             }
         });
 
-*/
+
+        /*
+        referenceReservation = FirebaseDatabase.getInstance().getReference().child("reservations");
+        referenceReservation.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                System.out.println("snapshot     " + dataSnapshot);
+                final Reservation r = dataSnapshot.getValue(Reservation.class);
+                System.out.println("reservation     " + r.getId_queue());
+                if (r != null) {
+                    if (r.getId_queue().equals(queueID)) {
+                        //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
+                        referenceUserInfo = FirebaseDatabase.getInstance().getReference().child("users").child(r.getId_user());
+                        referenceUserInfo.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                r.setUser_name(dataSnapshot.child("fullname").getValue(String.class));
+                                r.setUser_phone(dataSnapshot.child("phone").getValue(String.class));
+
+                                list.add(list.size(), r);
+
+                                reservationAdapter = new ReservationAdapter(ReservationMenager.this, (ArrayList<Reservation>) list);
+                                reservations.setAdapter(reservationAdapter);
+                                reservationAdapter.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+
+                    }
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                Reservation r = dataSnapshot.getValue(Reservation.class);
+                if(r.getId_queue().equals(queueID)){
+                    //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
+                    for (int i = 0; i<list.size(); i++){
+                        if(list.get(i).getId_user().equals(r.getId_user())){
+                            list.remove(i);
+                        }
+                    }
+
+                    reservationAdapter = new ReservationAdapter(ReservationMenager.this, (ArrayList<Reservation>) list);
+                    reservations.setAdapter(reservationAdapter);
+                    reservationAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        */
+
 
     }
+
 
 
     @Override
@@ -113,16 +214,13 @@ public class ReservationMenager extends AppCompatActivity {
 
 
         reservations.setLayoutManager(new LinearLayoutManager(this));
-        list = new ArrayList<>();
+        list = new ArrayList<Reservation>();
 
-        reservation.setDescription("alskda");
-        reservation.setUserName("PIPPO");
-        reservation.setUserPhone("342342345");
-        list.add(reservation);
+        //list.add(reservation);
 
-        reservationAdapter = new ReservationAdapter(ReservationMenager.this, list);
-        reservations.setAdapter(reservationAdapter);
-        reservationAdapter.notifyDataSetChanged();
+        //reservationAdapter = new ReservationAdapter(ReservationMenager.this, (ArrayList<Reservation>) list);
+        //reservations.setAdapter(reservationAdapter);
+        //reservationAdapter.notifyDataSetChanged();
 
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,5 +228,13 @@ public class ReservationMenager extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "next!", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        list.clear();
+
+
     }
 }

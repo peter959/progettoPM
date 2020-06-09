@@ -1,7 +1,6 @@
-package com.example.instantreservationbusiness.Activity;
+package com.example.instantreservation;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +9,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.instantreservationbusiness.BuildConfig;
-import com.example.instantreservationbusiness.R;
-import com.example.instantreservationbusiness.Reservation;
 
 import java.util.ArrayList;
 
@@ -37,14 +32,15 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     //
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-        final String user_name = reservations.get(i).getUserName();
-        final String user_phone = reservations.get(i).getUserPhone();
-        final String reservation_description = reservations.get(i).getDescription();
+        final String business_name = reservations.get(i).getBusiness_name();
+        final String queue_name = reservations.get(i).getQueue_name();
+        final String note = reservations.get(i).getNote();
+        final String ticket = Integer.toString(reservations.get(i).getTicket());
 
-        myViewHolder.user_name.setText(user_name);
-        myViewHolder.user_phone.setText(user_phone);
-        myViewHolder.reservation_description.setText(reservation_description);
-
+        myViewHolder.business_name.setText(business_name);
+        myViewHolder.queue_name.setText(queue_name);
+        myViewHolder.note.setText(note);
+        myViewHolder.ticket.setText(ticket);
 
     }
 
@@ -55,15 +51,14 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView user_name, user_phone, reservation_description;
-        Button item_next;
+        TextView business_name, queue_name, note, ticket;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            user_name = (TextView) itemView.findViewById(R.id.user_name);
-            user_phone = (TextView) itemView.findViewById(R.id.user_phone);
-            reservation_description = (TextView) itemView.findViewById(R.id.reservation_description);
-            item_next = itemView.findViewById(R.id.item_next);
+            business_name = (TextView) itemView.findViewById(R.id.business_name);
+            queue_name = (TextView) itemView.findViewById(R.id.queue_name);
+            note = (TextView) itemView.findViewById(R.id.note);
+            ticket = (TextView) itemView.findViewById(R.id.ticket);
 
         }
     }
