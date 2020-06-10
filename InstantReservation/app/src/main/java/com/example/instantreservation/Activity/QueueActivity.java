@@ -278,9 +278,6 @@ public class QueueActivity extends AppCompatActivity {
     }
 
     private void writeNewReservation(final String userUID, final String queueID){
-        //Reservation reservation = new Reservation(userUID, queueID);
-       // String currentHourIn24Format = Integer.toString(rightNow.get(Calendar.HOUR_OF_DAY));
-        //Task<Void> task = referenceForAddingReservation.child(queueBusinessID).child(queueID).setValue(userUID);
         if(queue_nReservation < queue_nMaxReservation) {
             note = et_note.getText().toString();
             referenceForQueueInfo.child(queueID).addListenerForSingleValueEvent(new ValueEventListener() {

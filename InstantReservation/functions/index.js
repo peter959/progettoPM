@@ -11,6 +11,7 @@ const client = algoliasearch(functions.config().algolia.algolia_app_id, function
 
 // Name fo the algolia index for Blog posts content.
 const ALGOLIA_QUEUES_INDEX_NAME = 'queues';
+const ALGOLIA_RESERVATION_INDEX_NAME = 'reservation';
 
 exports.addQueue = functions.database.ref('/queues/{queue_id}').onWrite((change, context) => {
   //const index = client.initIndex(ALGOLIA_QUEUES_INDEX_NAME);
@@ -26,14 +27,40 @@ exports.addQueue = functions.database.ref('/queues/{queue_id}').onWrite((change,
   };
 
   return addToAlgolia(data, 'queues')
- 	.then(res => console.log('SUCCESS ALGOLIA equipment ADD', res))
- 	.catch(err => console.log('ERROR ALGOLIA equipment ADD', err));
+ 	.then(res => console.log('SUCCESS ALGOLIA queue ADD', res))
+ 	.catch(err => console.log('ERROR ALGOLIA queue ADD', err));
 });
 
 exports.deleteQueue = functions.database.ref(`/queues/{queue_id}`).onDelete((snap, context) => {
   const index = client.initIndex(ALGOLIA_QUEUES_INDEX_NAME);
   const objectID = context.params.queue_id;
 return index.deleteObject(objectID);
+});
+
+exports.addReservation = functions.database.ref('/reservation/{queue_id}/{user_id}').onWrite((change, context) => {
+  
+  const afterData = change.after.val(); // data after the write
+
+  const reservation = {
+	userID: context.params.user_id,
+  	queueID: context.params.queue_id,
+  	userTicket: userTicket,
+  };
+
+  return addToAlgolia(reservation, 'reservation')
+ 	.then(res => console.log('SUCCESS ALGOLIA reservation ADD', res))
+ 	.catch(err => console.log('ERROR ALGOLIA reservation ADD', err));
+});
+
+exports.deleteReservation = functions.database.ref(`/reservation/{queue_id}/{user_id}`).onDelete((snap, context) => {
+  const index = client.initIndex(ALGOLIA_QUEUES_INDEX_NAME);
+  const reservation = {
+	userID: context.params.user_id,
+  	queueID: context.params.queue_id,
+  	userTicket: snap.userTicket,
+  };
+ 
+return index.deleteObject(reservation);
 });
 
 function addToAlgolia(object, indexName) {

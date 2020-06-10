@@ -25,6 +25,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -75,15 +76,13 @@ public class ReservationMenager extends AppCompatActivity {
 
         //get data from database
         referenceReservation = FirebaseDatabase.getInstance().getReference().child("reservations").child(queueID);
-        referenceReservation.addChildEventListener(new ChildEventListener() {
+        Query query = referenceReservation.orderByChild("ticket");
+        query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                System.out.println("snapshot     " + dataSnapshot);
                 final Reservation r = dataSnapshot.getValue(Reservation.class);
                 r.setId_queue(queueID);
                 r.setId_user(dataSnapshot.getKey());
-                System.out.println("reservation     " + r.getId_queue());
-                //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
                 referenceUserInfo = FirebaseDatabase.getInstance().getReference().child("users").child(r.getId_user());
                 referenceUserInfo.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -92,7 +91,7 @@ public class ReservationMenager extends AppCompatActivity {
                         r.setUser_phone(dataSnapshot.child("phone").getValue(String.class));
 
                         list.add(list.size(), r);
-
+                        System.out.println("Adding in queue list user: " + dataSnapshot.child("fullname").getValue(String.class));
                         reservationAdapter = new ReservationAdapter(ReservationMenager.this, (ArrayList<Reservation>) list);
                         reservations.setAdapter(reservationAdapter);
                         reservationAdapter.notifyDataSetChanged();
@@ -114,10 +113,11 @@ public class ReservationMenager extends AppCompatActivity {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                Reservation r = dataSnapshot.getValue(Reservation.class);
-                //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
+                final String userID =  dataSnapshot.getKey();
+                //Reservation r = dataSnapshot.getValue(Reservation.class);
+                System.out.println("Removing from queue reservation from user: " + userID);
                 for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i).getId_user().equals(r.getId_user())) {
+                    if (list.get(i).getId_user().equals(userID)) {
                         list.remove(i);
                     }
                 }
