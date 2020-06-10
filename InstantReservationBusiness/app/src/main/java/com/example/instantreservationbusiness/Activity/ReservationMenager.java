@@ -20,6 +20,8 @@ import com.example.instantreservationbusiness.QueueAdapterRecycler;
 import com.example.instantreservationbusiness.R;
 import com.example.instantreservationbusiness.Reservation;
 import com.example.instantreservationbusiness.ReservationAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -169,7 +171,21 @@ public class ReservationMenager extends AppCompatActivity {
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "next!", Toast.LENGTH_LONG).show();
+                FirebaseDatabase.getInstance().getReference().child("reservations").child(queueID).child( list.get(0).getId_user()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "next!", Toast.LENGTH_LONG).show();
+                            reservationAdapter = new ReservationAdapter(ReservationMenager.this, (ArrayList<Reservation>) list);
+                            reservations.setAdapter(reservationAdapter);
+                            reservationAdapter.notifyDataSetChanged();
+                        }
+                        else Toast.makeText(getApplicationContext(), "There is an error", Toast.LENGTH_LONG).show();
+
+                    }
+                });
+
+
             }
         });
     }
