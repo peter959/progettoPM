@@ -33,6 +33,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 
 @RequiresApi(api = Build.VERSION_CODES.N)
@@ -61,6 +63,7 @@ public class QueueActivity extends AppCompatActivity {
 
     String queueID;
     String queueBusinessID;
+    String imageUri;
     SharedPreferences sharedPreferences;
 
 
@@ -92,7 +95,6 @@ public class QueueActivity extends AppCompatActivity {
         queue_city = findViewById(R.id.queue_city);
         queue_nReservationString = findViewById(R.id.queue_nReservation);
         queue_description = findViewById(R.id.queue_description);
-        //queue_QRCodeImage = findViewById(R.id.queue_QRCodeImage);
         queue_image = findViewById(R.id.queue_image);
 
         progressBarQueue = findViewById(R.id.progressBarQueue);
@@ -113,7 +115,6 @@ public class QueueActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Queue queue = dataSnapshot.child(queueID).getValue(Queue.class);
-
                 //queueBusinessID = queue.getQueue_businessID();
                 queue_business.setText(queue.getQueue_business());
                 queue_city.setText(queue.getQueue_city());
@@ -122,8 +123,7 @@ public class QueueActivity extends AppCompatActivity {
                 //queue_nMaxReservation = queue.getQueue_nMaxReservation();
                 //queue_nReservation = queue.getQueue_nReservation();
                 queue_nReservationString.setText(String.format("%s/%d", queue.getQueue_nReservationString(), queue.getQueue_nMaxReservation()));
-                //queueBusinessID = queue.getQueue_businessID();
-                //queue_image.setImageURI(queue.getQueue_image());
+                imageUri = queue.getQueue_image();
                 //queue_QRCodeImage.setImageURI();
 
                 queue_layout.setVisibility(View.VISIBLE);
@@ -154,6 +154,10 @@ public class QueueActivity extends AppCompatActivity {
     }
 
     private void removeQueue(final String queueID){
+
+        final StorageReference storageRefQR = FirebaseStorage.getInstance().getReference().child("images/queue_qr_codes/"+queueID);
+        final StorageReference storageRefImage = FirebaseStorage.getInstance().getReference().child(imageUri);
+
         DatabaseReference ref = referenceForQueueInfo.child(queueID);
         ref.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -164,8 +168,23 @@ public class QueueActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             int nQueues = dataSnapshot.child("business_nQueues").getValue(int.class) -1;
-                            dataSnapshot.getRef().child("business_nQueues").setValue(nQueues);
-                            finish();
+                            dataSnapshot.getRef().child("business_nQueues").setValue(nQueues).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    storageRefQR.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            storageRefImage.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    finish();
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+
                         }
 
                         @Override
