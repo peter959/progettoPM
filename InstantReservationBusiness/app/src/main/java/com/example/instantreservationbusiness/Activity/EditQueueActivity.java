@@ -36,7 +36,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.Random;
 
-public class EditBusinessActivity extends AppCompatActivity {
+public class EditQueueActivity extends AppCompatActivity {
 
     private SharedPreferences businessInfo;
     public static final int PICK_IMAGE = 1;
@@ -63,15 +63,15 @@ public class EditBusinessActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE) {
-           imageUri = data.getData();
-           add_business_image.setImageURI(imageUri);
+            imageUri = data.getData();
+            add_business_image.setImageURI(imageUri);
         }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_business);
+        setContentView(R.layout.activity_edit_queue);
 
         storageRef = FirebaseStorage.getInstance().getReference().child("images/business_images");
 
@@ -81,7 +81,7 @@ public class EditBusinessActivity extends AppCompatActivity {
 
         btn_edit = findViewById(R.id.btn_edit);
         btn_cancel = findViewById(R.id.btn_cancel);
-        progressButton = new ProgressButton(EditBusinessActivity.this, btn_edit, "Save changes");
+        progressButton = new ProgressButton(EditQueueActivity.this, btn_edit, "Save changes");
 
         add_business_name = findViewById(R.id.add_business_name);
         add_business_desc = findViewById(R.id.add_business_desc);

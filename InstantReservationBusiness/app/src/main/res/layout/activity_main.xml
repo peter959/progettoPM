@@ -65,6 +65,7 @@
                         android:layout_alignParentRight="true">
 
                         <ImageButton
+                            android:background="@color/transparent"
                             android:id="@+id/edit_button"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
