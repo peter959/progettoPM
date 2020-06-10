@@ -64,7 +64,7 @@ public class EditBusinessActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_business);
 
         businessInfo = getSharedPreferences("BusinessInfo", Context.MODE_PRIVATE);
-        businessID = businessInfo.getString(businessID, "error");
+        businessID = businessInfo.getString("businessUID", "error");
 
 
         btn_edit = findViewById(R.id.btn_edit);
@@ -77,9 +77,11 @@ public class EditBusinessActivity extends AppCompatActivity {
         add_business_image = findViewById(R.id.add_business_image);
 
         Intent intent = getIntent();
-        add_business_city.setHint(intent.getStringExtra("city"));
-        add_business_name.setHint(intent.getStringExtra("name"));
-        add_business_desc.setHint(intent.getStringExtra("description"));
+        add_business_city.setText(intent.getStringExtra("city"));
+        add_business_name.setText(intent.getStringExtra("name"));
+        add_business_desc.setText(intent.getStringExtra("description"));
+
+
 
         add_business_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,13 +95,12 @@ public class EditBusinessActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 progressButton.buttonActivated();
-                String name, desc, city;
-
 
                 referenceBusiness = FirebaseDatabase.getInstance().getReference().child("business").child(businessID);
                 referenceBusiness.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                         dataSnapshot.getRef().child("business_name").setValue(add_business_name.getText().toString());
                         dataSnapshot.getRef().child("business_description").setValue(add_business_desc.getText().toString());
                         dataSnapshot.getRef().child("business_city").setValue(add_business_city.getText().toString());
