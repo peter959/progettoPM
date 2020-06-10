@@ -17,10 +17,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.ReservationMenager"></activity>
+        <activity android:name=".Activity.EditBusinessActivity"></activity>
+        <activity android:name=".Activity.ReservationMenager" />
         <activity android:name=".Activity.AddQueueActivity" />
         <activity android:name=".Activity.WrongAccountActivity" />
-        <activity android:name=".Activity.BusinessActivity" />
         <activity android:name=".Activity.QueueActivity" />
         <activity
             android:name=".Activity.SplashActivity"

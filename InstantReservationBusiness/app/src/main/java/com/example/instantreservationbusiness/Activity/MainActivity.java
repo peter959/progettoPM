@@ -73,6 +73,10 @@ public class MainActivity extends AppCompatActivity {
 
     String business_ID;
 
+    Business business;
+
+
+
     @Override
     public void onStart() {
         super.onStart();
@@ -83,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         referenceForBusinessInfo.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-                Business business = dataSnapshot.child(business_ID).getValue(Business.class);
+                business = dataSnapshot.child(business_ID).getValue(Business.class);
                 if (business != null) {
                     business_city.setText(business.getBusiness_city());
                     business_description.setText(business.getBusiness_description());
@@ -215,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
         userInfo = getSharedPreferences("BusinessInfo", Context.MODE_PRIVATE);
         business_ID = userInfo.getString("businessUID", "null");
@@ -246,7 +250,16 @@ public class MainActivity extends AppCompatActivity {
         editBtn = findViewById(R.id.edit_button);
         addBtn = findViewById(R.id.add_queue_btn);
 
-
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), EditBusinessActivity.class);
+                intent.putExtra("city", business.getBusiness_city());
+                intent.putExtra("name", business.getBusiness_name());
+                intent.putExtra("description", business.getBusiness_description());
+                startActivity(intent);
+            }
+        });
 
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override

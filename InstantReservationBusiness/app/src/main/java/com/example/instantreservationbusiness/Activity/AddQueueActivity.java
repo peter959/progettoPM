@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,6 +31,7 @@ import java.util.Random;
 public class AddQueueActivity extends AppCompatActivity {
 
     private SharedPreferences userInfo;
+    public static final int PICK_IMAGE = 2;
 
     EditText add_queue_name, add_queue_desc, add_queue_maxReserv;
     DatabaseReference referenceQueue;
@@ -43,8 +46,16 @@ public class AddQueueActivity extends AppCompatActivity {
     //generate queueID
     Integer queueNum = new Random().nextInt();
 
-
     ProgressButton progressButton;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE) {
+            Uri imageUri = data.getData();
+            add_queue_image.setImageURI(imageUri);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +75,15 @@ public class AddQueueActivity extends AppCompatActivity {
         add_queue_desc = findViewById(R.id.add_queue_desc);
         add_queue_name = findViewById(R.id.add_queue_name);
         add_queue_maxReserv = findViewById(R.id.add_queue_maxReserv);
+        add_queue_image = findViewById(R.id.add_queue_image);
+
+        add_queue_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                startActivityForResult(gallery, PICK_IMAGE);
+            }
+        });
 
         btn_create.setOnClickListener(new View.OnClickListener() {
             @Override
