@@ -129,10 +129,12 @@ public class QueueActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
                             if (dataSnapshot2.hasChild(userUID)) {
+                                et_note.setVisibility(View.GONE);
                                 reserveButton.buttonFinished("Reserved");
                                 reserved = true;
                                 btnRemoveReservation.setVisibility(View.VISIBLE);
                             }else{
+                                et_note.setVisibility(View.VISIBLE);
                                 reserveButton = new ProgressButton(QueueActivity.this, btnReserve, "Pick up a ticket");
                                 reserved=false;
                                 btnRemoveReservation.setVisibility(View.GONE);
@@ -304,6 +306,7 @@ public class QueueActivity extends AppCompatActivity {
                                                                 @Override
                                                                 public void onComplete(@NonNull Task<Void> task3) {
                                                                     if (task3.isSuccessful()) {
+                                                                        et_note.setVisibility(View.GONE);
                                                                         reserveButton.buttonFinished("Reserved");
                                                                         reserved = true;
                                                                         btnRemoveReservation.setVisibility(View.VISIBLE);
@@ -353,6 +356,7 @@ public class QueueActivity extends AppCompatActivity {
                                                                        @Override
                                                                        public void onComplete(@NonNull Task<Void> task2) {
                                                                            if (task2.isSuccessful()) {
+                                                                               et_note.setVisibility(View.VISIBLE);
                                                                                reserveButton = new ProgressButton(QueueActivity.this, btnReserve, "Pick up a ticket");
                                                                                reserved = false;
                                                                                btnRemoveReservation.setVisibility(View.GONE);

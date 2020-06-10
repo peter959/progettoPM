@@ -33,7 +33,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
 
-                    <RelativeLayout
+                    <!--<RelativeLayout
                         android:padding="15dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
                                 android:textOn="" />
                         </RelativeLayout>
 
-                    </RelativeLayout>
+                    </RelativeLayout>-->
                 </RelativeLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>

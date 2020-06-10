@@ -119,10 +119,10 @@ public class ProfileFragment extends Fragment {
         });
 
 
-
         reservations = returnView.findViewById(R.id.reservations);
         reservations.setLayoutManager(new LinearLayoutManager(getContext()));
         list = new ArrayList<Reservation>();
+
 
         referenceReservation = FirebaseDatabase.getInstance().getReference().child("reservations");
         referenceReservation.addChildEventListener(new ChildEventListener() {
@@ -139,7 +139,7 @@ public class ProfileFragment extends Fragment {
                         r.setId_queue(dataSnapshot.getKey());
 
                         referenceQueueInfo = FirebaseDatabase.getInstance().getReference().child("queues").child(r.getId_queue());
-                        referenceQueueInfo.addValueEventListener(new ValueEventListener() {
+                        referenceQueueInfo.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshotQueue) {
                                 System.out.println("queueSnaphotkey     " + dataSnapshotQueue.getKey());
@@ -175,7 +175,7 @@ public class ProfileFragment extends Fragment {
                 Reservation r = dataSnapshot.getValue(Reservation.class);
                 //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
                 for (int i = 0; i<list.size(); i++){
-                    if(list.get(i).getId_user().equals(r.getId_user())){
+                    if(list.get(i).getId_queue().equals(r.getId_queue())){
                         list.remove(i);
                     }
                 }
@@ -198,5 +198,11 @@ public class ProfileFragment extends Fragment {
 
 
         return returnView;
+    }
+
+    @Override
+    public void onResume() {
+        list.clear();
+        super.onResume();
     }
 }
