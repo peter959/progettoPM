@@ -22,12 +22,17 @@ import com.example.instantreservationbusiness.ProgressButton;
 import com.example.instantreservationbusiness.Queue;
 import com.example.instantreservationbusiness.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.Random;
 
@@ -37,12 +42,17 @@ public class EditBusinessActivity extends AppCompatActivity {
     public static final int PICK_IMAGE = 1;
 
     EditText add_business_name, add_business_desc, add_business_city;
+
+    StorageReference storageRef;
+
     DatabaseReference referenceBusiness;
 
     Button btn_cancel;
     View btn_edit;
     ImageButton add_business_image;
     ImageView business_image;
+    String current_imageUri;
+    Uri imageUri;
 
     String businessID;
 
@@ -53,7 +63,7 @@ public class EditBusinessActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE) {
-           Uri imageUri = data.getData();
+           imageUri = data.getData();
            add_business_image.setImageURI(imageUri);
         }
     }
@@ -62,6 +72,8 @@ public class EditBusinessActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_business);
+
+        storageRef = FirebaseStorage.getInstance().getReference().child("images/business_images");
 
         businessInfo = getSharedPreferences("BusinessInfo", Context.MODE_PRIVATE);
         businessID = businessInfo.getString("businessUID", "error");
@@ -104,9 +116,25 @@ public class EditBusinessActivity extends AppCompatActivity {
                         dataSnapshot.getRef().child("business_name").setValue(add_business_name.getText().toString());
                         dataSnapshot.getRef().child("business_description").setValue(add_business_desc.getText().toString());
                         dataSnapshot.getRef().child("business_city").setValue(add_business_city.getText().toString());
+                        if (imageUri != null) {
+                            // TODO: remove old image
+                            dataSnapshot.getRef().child("business_image").setValue("images/business_images/"+imageUri.getLastPathSegment());
+                            StorageReference imageRef = storageRef.child(imageUri.getLastPathSegment());
+                            UploadTask uploadTask = imageRef.putFile(imageUri);
+                            uploadTask.addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    progressButton.buttonFinishedUnsuccessully("Error upload image");
+                                }
+                            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    progressButton.buttonFinished("Saved");
+                                    finish();
+                                }
+                            });
+                        }
 
-                        progressButton.buttonFinished("Saved");
-                        finish();
                     }
 
                     @Override
@@ -114,6 +142,7 @@ public class EditBusinessActivity extends AppCompatActivity {
 
                     }
                 });
+
             }
         });
 

@@ -25,6 +25,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.instantreservationbusiness.Business;
 import com.example.instantreservationbusiness.Queue;
 import com.example.instantreservationbusiness.QueueAdapterRecycler;
@@ -36,6 +37,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.zxing.integration.android.IntentIntegrator;
 
 import org.json.JSONObject;
@@ -75,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
 
     Business business;
 
+    String imageUri;
+
 
 
     @Override
@@ -88,12 +93,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
                 business = dataSnapshot.child(business_ID).getValue(Business.class);
+                //TODO: verificare che child esiste
                 if (business != null) {
                     business_city.setText(business.getBusiness_city());
                     business_description.setText(business.getBusiness_description());
                     business_name.setText(business.getBusiness_name());
                     business_nQueues.setText(business.getBusiness_nQueuesString());
-                    //business_image
+                    imageUri = business.getBusiness_image();
+                    if (imageUri != null) {
+                        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(imageUri);
+                        Glide.with(MainActivity.this).load(storageReference).into(business_image);
+                    }
                     business_layout.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.GONE);
                 }
@@ -111,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
                     //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
                     queue.setQueue_id(dataSnapshot.getKey());
                     models.add(models.size(), queue);
-                    System.out.println("ADDED on Favorites LIST: " + queue.getQueue_id());
 
                     queueAdapter = new QueueAdapterRecycler(MainActivity.this, models);
                     recyclerView.setAdapter(queueAdapter);
@@ -257,6 +266,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("city", business.getBusiness_city());
                 intent.putExtra("name", business.getBusiness_name());
                 intent.putExtra("description", business.getBusiness_description());
+                intent.putExtra("image", imageUri);
                 startActivity(intent);
             }
         });

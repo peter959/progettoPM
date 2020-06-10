@@ -155,7 +155,6 @@
                         android:paddingLeft="12dp"
                         android:layout_width="match_parent"
                         android:layout_height="180dp"
-                        android:scaleType="fitXY"
                         android:src="@drawable/ic_image_black_24dp"/>
 
 
