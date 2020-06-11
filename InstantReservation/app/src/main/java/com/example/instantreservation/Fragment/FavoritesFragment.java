@@ -94,7 +94,6 @@ public class FavoritesFragment extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
                         if(dataSnapshot1.exists()){
                             Queue queue = dataSnapshot1.getValue(Queue.class);
-
                             queue.setQueue_id(dataSnapshot1.getKey());
                             queue.setQueue_is_favorite(true);
                             models.add(queue);

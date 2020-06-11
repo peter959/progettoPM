@@ -135,20 +135,18 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                Queue queue = dataSnapshot.getValue(Queue.class);
-                if(queue.getQueue_businessID().equals(business_ID)){
-                    //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
-                    for (int i = 0; i<models.size(); i++){
-                        if(models.get(i).getQueue_id().equals(queue.getQueue_id())){
-                            models.remove(i);
-                            System.out.println("REMOVED on Business LIST: " + queue.getQueue_id());
-                        }
+                String queueID = dataSnapshot.getKey();
+                for (int i = 0; i<models.size(); i++){
+                    if(models.get(i).getQueue_id().equals(queueID)){
+                        models.remove(i);
+                        System.out.println("REMOVED on Business LIST: " + queueID);
                     }
-
-                    queueAdapter = new QueueAdapterRecycler(MainActivity.this, models);
-                    recyclerView.setAdapter(queueAdapter);
-                    queueAdapter.notifyDataSetChanged();
                 }
+
+                queueAdapter = new QueueAdapterRecycler(MainActivity.this, models);
+                recyclerView.setAdapter(queueAdapter);
+                queueAdapter.notifyDataSetChanged();
+
             }
 
             @Override
