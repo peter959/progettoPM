@@ -35,14 +35,14 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:fadingEdgeLength="40dp"
             android:isScrollContainer="false"
             android:requiresFadingEdge="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <RelativeLayout
@@ -64,6 +64,7 @@
                         android:layout_alignParentRight="true">
 
                         <ImageButton
+                            android:background="@color/transparent"
                             android:id="@+id/edit_button"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -130,11 +131,11 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:layout_alignParentEnd="true"
                             android:padding="10dp"
                             android:layout_marginRight="10dp"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true">
 
                             <androidx.cardview.widget.CardView
                                 android:layout_width="130dp"
@@ -184,9 +185,9 @@
                     <androidx.cardview.widget.CardView
                         app:cardBackgroundColor="#5F5980"
                         android:layout_marginTop="80dp"
-                        android:layout_marginBottom="-20dp"
+                        android:layout_marginBottom="50dp"
                         android:layout_width="match_parent"
-                        android:layout_height="450dp"
+                        android:layout_height="wrap_content"
                         android:elevation="10dp"
                         app:cardCornerRadius="20dp">
 
@@ -195,7 +196,8 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:layout_marginLeft="20dp"
-                            android:layout_marginRight="20dp">
+                            android:layout_marginRight="20dp"
+                            android:layout_marginBottom="20dp">
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -223,6 +225,22 @@
                                 android:layout_height="1dp"
                                 android:background="@android:color/darker_gray"/>
 
+                            <androidx.cardview.widget.CardView
+                                android:layout_gravity="center"
+                                android:layout_width="150dp"
+                                android:layout_height="150dp"
+                                app:cardCornerRadius="20dp"
+                                >
+
+                                <ImageView
+                                    android:id="@+id/queue_qr"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    />
+
+                            </androidx.cardview.widget.CardView>
+
+
                             <Button
                                 android:id="@+id/btn_menage_reservation"
                                 android:layout_marginRight="16dp"
@@ -249,6 +267,7 @@
                                 android:background="@drawable/bgbtncancel"
                                 android:layout_width="match_parent"
                                 android:layout_height="55dp"
+                                android:layout_marginBottom="20dp"
                                 />
 
                         </LinearLayout>
@@ -256,6 +275,7 @@
                     </androidx.cardview.widget.CardView>
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
+
         </ScrollView>
     </LinearLayout>
 </RelativeLayout>

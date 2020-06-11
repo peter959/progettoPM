@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                     business_name.setText(business.getBusiness_name());
                     business_nQueues.setText(business.getBusiness_nQueuesString());
                     imageUri = business.getBusiness_image();
-                    if (imageUri != null) {
+                    if (!imageUri.equals("")) {
                         StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(imageUri);
                         Glide.with(MainActivity.this).load(storageReference).into(business_image);
                     }
@@ -161,66 +161,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
-
-
-        /*referenceForBusinessQueuesInfo.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                Queue queue = dataSnapshot.getValue(Queue.class);
-                if (queue!=null) {
-                    System.out.println("queue: " + queue.getQueue_businessID());
-                    System.out.println(" businesid." + business_ID);
-                    if (queue.getQueue_businessID().equals(business_ID)) {
-                        queue.setQueue_id(dataSnapshot.getKey());
-                        //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
-                        models.add(models.size(), queue);
-                        System.out.println("ADDED on Queue LIST: " + dataSnapshot.getKey());
-
-                        queueAdapter = new QueueAdapterRecycler(MainActivity.this, (ArrayList<Queue>) models);
-                        recyclerView.setAdapter(queueAdapter);
-                        queueAdapter.notifyDataSetChanged();
-
-                    }
-                }
-
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                Queue queue = dataSnapshot.getValue(Queue.class);
-                if (queue != null && queue.getQueue_businessID().equals(business_ID)) {
-                    //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
-                    for (int i = 0; i < models.size(); i++) {
-                        if (models.get(i).getQueue_id().equals(queue.getQueue_id())) {
-                            models.remove(i);
-                            System.out.println("REMOVED on Business LIST: " + queue.getQueue_id());
-                        }
-                    }
-
-                    queueAdapter = new QueueAdapterRecycler(MainActivity.this, (ArrayList<Queue>) models);
-                    recyclerView.setAdapter(queueAdapter);
-                    queueAdapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });*/
 
     }
 

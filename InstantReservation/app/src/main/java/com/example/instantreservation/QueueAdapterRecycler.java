@@ -10,11 +10,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.bumptech.glide.Glide;
 import com.example.instantreservation.Activity.QueueActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -51,7 +54,7 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
         final String queue_business = queues.get(i).getQueue_business();
         final String queue_city = queues.get(i).getQueue_city();
         final String queue_nReservation = queues.get(i).getQueue_nReservationString();
-        final String queue_image = queues.get(i).getQueue_image();
+        final String queue_imageUri = queues.get(i).getQueue_image();
         final String queue_id = queues.get(i).getQueue_id();
         //final Boolean queue_is_favorite = queues.get(i).getQueue_is_favorite();
 
@@ -60,6 +63,10 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
         myViewHolder.queue_city.setText(queue_city);
         myViewHolder.queue_nReservation.setText(queue_nReservation);
         myViewHolder.queue_image.setImageResource(R.drawable.resturant_example);
+        if (!queue_imageUri.equals("")) {
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(queue_imageUri);
+            Glide.with(context).load(storageReference).into(myViewHolder.queue_image);
+        }
 
         View v = myViewHolder.itemView;
         ToggleButton tb = v.findViewById(R.id.toggleFavorite);
