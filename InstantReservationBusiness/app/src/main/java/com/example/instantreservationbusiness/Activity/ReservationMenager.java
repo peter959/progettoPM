@@ -159,7 +159,6 @@ public class ReservationMenager extends AppCompatActivity {
         reservations = findViewById(R.id.reservations);
         btn_next = findViewById(R.id.btn_next);
 
-
         reservations.setLayoutManager(new LinearLayoutManager(this));
 
         //list.add(reservation);
@@ -171,17 +170,43 @@ public class ReservationMenager extends AppCompatActivity {
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseDatabase.getInstance().getReference().child("reservations").child(queueID).child( list.get(0).getId_user()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                final String userID = list.get(0).getId_user();
+                FirebaseDatabase.getInstance().getReference().child("reservations").child(queueID).child(userID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "next!", Toast.LENGTH_LONG).show();
-                            reservationAdapter = new ReservationAdapter(ReservationMenager.this, (ArrayList<Reservation>) list);
-                            reservations.setAdapter(reservationAdapter);
-                            reservationAdapter.notifyDataSetChanged();
+                            referenceQueueinfo.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    int nReservation = dataSnapshot.child("queue_nReservation").getValue(Integer.class);
+                                    referenceQueueinfo.child("queue_nReservation").setValue(nReservation-1).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task1) {
+                                            if(task1.isSuccessful()) {
+                                                FirebaseDatabase.getInstance().getReference().child("users").child(userID).child("reservedQueue").child(queueID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task2) {
+                                                        if(task2.isSuccessful()){
+                                                            Toast.makeText(getApplicationContext(), "next!", Toast.LENGTH_LONG).show();
+                                                            reservationAdapter = new ReservationAdapter(ReservationMenager.this, (ArrayList<Reservation>) list);
+                                                            reservations.setAdapter(reservationAdapter);
+                                                            reservationAdapter.notifyDataSetChanged();
+                                                        }  else Toast.makeText(getApplicationContext(), "There is an error", Toast.LENGTH_LONG).show();
+                                                    }
+                                                });
+                                            }  else Toast.makeText(getApplicationContext(), "There is an error", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
                         }
                         else Toast.makeText(getApplicationContext(), "There is an error", Toast.LENGTH_LONG).show();
-
                     }
                 });
 

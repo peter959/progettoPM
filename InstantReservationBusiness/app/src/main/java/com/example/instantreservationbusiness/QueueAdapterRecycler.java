@@ -77,6 +77,12 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
             }
         });
 
+
+
+
+
+
+
     }
 
     @Override
