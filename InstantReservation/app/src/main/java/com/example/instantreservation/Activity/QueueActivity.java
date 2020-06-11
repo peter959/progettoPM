@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.bumptech.glide.Glide;
 import com.example.instantreservation.Fragment.FavoritesFragment;
 import com.example.instantreservation.ProgressButton;
 import com.example.instantreservation.Queue;
@@ -37,6 +38,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 
 @RequiresApi(api = Build.VERSION_CODES.N)
@@ -58,9 +61,10 @@ public class QueueActivity extends AppCompatActivity {
     int queue_nMaxReservation;
     int queue_nReservation;
     TextView queue_description ;
-    //ImageView queue_QRCodeImage;
+
     ImageView queue_image;
     String note;
+    String imageUri;
 
     ProgressBar progressBarQueue;
     LinearLayout queue_layout;
@@ -104,6 +108,11 @@ public class QueueActivity extends AppCompatActivity {
                     queue_nReservation = queue.getQueue_nReservation();
                     queue_nReservationString.setText(queue.getQueue_nReservationString() + "/" + queue.getQueue_nMaxReservation());
                     queueBusinessID = queue.getQueue_businessID();
+                    imageUri = queue.getQueue_image();
+                    if (!imageUri.equals("")) {
+                        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(imageUri);
+                        Glide.with(QueueActivity.this).load(storageReference).into(queue_image);
+                    }
                     //queue_image.setImageURI(queue.getQueue_image());
                     //queue_QRCodeImage.setImageURI();
                     referenceForFavoritesQueues.addValueEventListener(new ValueEventListener() {

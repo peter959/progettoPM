@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.bumptech.glide.Glide;
 import com.example.instantreservation.Activity.MainActivity;
 import com.example.instantreservation.Activity.QueueActivity;
 import com.example.instantreservation.Fragment.HomeFragment;
@@ -20,6 +21,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -66,6 +69,7 @@ public class QueueAdapter extends PagerAdapter {
         TextView queue_nReservation;
         final String queue_id;
         final String userUID;
+        String queue_imageUri;
         boolean queue_is_favorite;
 
         queue_ID = view.findViewById(R.id.queue_ID);
@@ -83,6 +87,11 @@ public class QueueAdapter extends PagerAdapter {
         queue_nReservation.setText(models.get(position).getQueue_nReservationString());
         queue_ID.setText(models.get(position).getQueue_id());
         queue_id = models.get(position).getQueue_id();
+        queue_imageUri = models.get(position).getQueue_image();
+        if (!queue_imageUri.equals("")) {
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(queue_imageUri);
+            Glide.with(context).load(storageReference).into(queue_image);
+        }
        // queue_is_favorite = models.get(position).getQueue_is_favorite();
 
         container.addView(view, 0);

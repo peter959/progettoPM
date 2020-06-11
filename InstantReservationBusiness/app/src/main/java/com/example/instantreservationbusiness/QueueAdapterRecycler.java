@@ -58,12 +58,11 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
         myViewHolder.queue_business.setText(queue_business);
         myViewHolder.queue_city.setText(queue_city);
         myViewHolder.queue_nReservation.setText(queue_nReservation);
-        //myViewHolder.queue_image.setImageResource(R.drawable.resturant_example);
-        /*if (!queue_imageUri.equals("")) {
+        myViewHolder.queue_image.setImageResource(R.drawable.resturant_example);
+        if (!queue_imageUri.equals("")) {
             StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(queue_imageUri);
-            Glide.with(context).load(storageReference).into(queue_image);
-        }*/
-
+            Glide.with(context).load(storageReference).into(myViewHolder.queue_image);
+        }
 
         View v = myViewHolder.itemView;
 
@@ -76,12 +75,6 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
                 context.startActivity(intent);
             }
         });
-
-
-
-
-
-
 
     }
 

@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.instantreservation.Business;
 import com.example.instantreservation.Queue;
 import com.example.instantreservation.QueueAdapterRecycler;
@@ -27,6 +28,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +48,7 @@ public class BusinessActivity extends AppCompatActivity {
     ImageView business_image;
     String business_ID;
     String queue_ID;
+    String imageUri;
     Business business;
 
     RecyclerView recyclerView;
@@ -71,6 +75,12 @@ public class BusinessActivity extends AppCompatActivity {
                 business_description.setText(business.getBusiness_description());
                 business_name.setText(business.getBusiness_name());
                 business_nQueues.setText(business.getBusiness_nQueuesString());
+                imageUri = business.getBusiness_image();
+                if (!imageUri.equals("")) {
+                    StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(imageUri);
+                    Glide.with(BusinessActivity.this).load(storageReference).into(business_image);
+                }
+
                 //business_image
 
                 business_layout.setVisibility(View.VISIBLE);

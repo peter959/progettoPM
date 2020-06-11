@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                     business_name.setText(business.getBusiness_name());
                     business_nQueues.setText(business.getBusiness_nQueuesString());
                     imageUri = business.getBusiness_image();
-                    if (imageUri != null) {
+                    if (!imageUri.equals("")) {
                         StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(imageUri);
                         Glide.with(MainActivity.this).load(storageReference).into(business_image);
                     }
