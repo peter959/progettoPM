@@ -106,6 +106,7 @@ public class AddQueueActivity extends AppCompatActivity {
             }
         });
 
+        //CREATE A NEW QUEUE
         btn_create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -198,31 +199,10 @@ public class AddQueueActivity extends AppCompatActivity {
                     }
                 });
 
-                /*referenceQueue.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        dataSnapshot.getRef().child("queue_name").setValue(add_queue_name.getText().toString());
-                        dataSnapshot.getRef().child("queue_description").setValue(add_queue_desc.getText().toString());
-                        dataSnapshot.getRef().child("queue_nMaxReservation").setValue(Integer.parseInt(add_queue_maxReserv.getText().toString()));
-                        dataSnapshot.getRef().child("queue_businessID").setValue(userInfo.getString("businessUID", "null"));
-                        dataSnapshot.getRef().child("queue_business").setValue(userInfo.getString("businessName", "null"));
-                        dataSnapshot.getRef().child("queue_city").setValue(userInfo.getString("businessCity", "null"));
-                        dataSnapshot.getRef().child("queue_image").setValue("image path");
-                        dataSnapshot.getRef().child("queue_QRCodeImage").setValue("QR image path");
-                        dataSnapshot.getRef().child("queue_nReservation").setValue(0);
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });*/
-
-
-
-
             }
         });
 
+        //CANCEL
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

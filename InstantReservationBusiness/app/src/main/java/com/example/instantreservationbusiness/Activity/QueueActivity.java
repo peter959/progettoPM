@@ -1,10 +1,13 @@
 package com.example.instantreservationbusiness.Activity;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -21,10 +24,13 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
 import com.example.instantreservationbusiness.ProgressButton;
 import com.example.instantreservationbusiness.Queue;
 import com.example.instantreservationbusiness.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,8 +39,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
+import java.io.IOException;
+
+import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 
 @RequiresApi(api = Build.VERSION_CODES.N)
@@ -43,7 +55,6 @@ public class QueueActivity extends AppCompatActivity {
     DatabaseReference referenceForQueueInfo;
     DatabaseReference referenceBusiness;
 
-    private FirebaseUser firebaseUser;
 
     TextView queue_name;
     TextView queue_business;
@@ -52,7 +63,8 @@ public class QueueActivity extends AppCompatActivity {
     int queue_nMaxReservation;
     int queue_nReservation;
     TextView queue_description ;
-    //ImageView queue_QRCodeImage;
+
+    ImageView queue_qr;
     ImageView queue_image;
 
     ProgressBar progressBarQueue;
@@ -62,8 +74,8 @@ public class QueueActivity extends AppCompatActivity {
     Button btn_remove_queue;
 
     String queueID;
-    String queueBusinessID;
     String imageUri;
+    String qrUri;
     SharedPreferences sharedPreferences;
 
 
@@ -96,6 +108,7 @@ public class QueueActivity extends AppCompatActivity {
         queue_nReservationString = findViewById(R.id.queue_nReservation);
         queue_description = findViewById(R.id.queue_description);
         queue_image = findViewById(R.id.queue_image);
+        queue_qr = findViewById(R.id.queue_qr);
 
         progressBarQueue = findViewById(R.id.progressBarQueue);
         queue_layout = findViewById(R.id.queue_layout);
@@ -124,13 +137,44 @@ public class QueueActivity extends AppCompatActivity {
                 //queue_nReservation = queue.getQueue_nReservation();
                 queue_nReservationString.setText(String.format("%s/%d", queue.getQueue_nReservationString(), queue.getQueue_nMaxReservation()));
                 imageUri = queue.getQueue_image();
-                //queue_QRCodeImage.setImageURI();
+                if (!imageUri.equals("")) {
+                    StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(imageUri);
+                    Glide.with(QueueActivity.this).load(storageReference).into(queue_image);
+                }
+                qrUri = queue.getQueue_QRCodeImage();
+                if (!qrUri.equals("")) {
+                    StorageReference storageReferenceQR = FirebaseStorage.getInstance().getReference().child(qrUri);
+                    Glide.with(QueueActivity.this).load(storageReferenceQR).into(queue_qr);
+                }
 
                 queue_layout.setVisibility(View.VISIBLE);
                 progressBarQueue.setVisibility(View.GONE);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}
+        });
+
+        queue_qr.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                    Toast.makeText(getApplicationContext(), "hey", Toast.LENGTH_SHORT).show();
+                    StorageReference storageReferenceQR = FirebaseStorage.getInstance().getReference().child(qrUri);
+
+                    storageReferenceQR.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            System.out.println("Download url success");
+                            String url = uri.toString();
+                            downloadFile(QueueActivity.this, queueID, ".jpg", DIRECTORY_DOWNLOADS, url);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                        }
+                    });
+                return false;
+            }
         });
 
         btn_menage_reservation.setOnClickListener(new View.OnClickListener() {
@@ -210,6 +254,21 @@ public class QueueActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void downloadFile(Context context, String fileName, String fileExtension, String destinationDirectory, String url) {
+        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+        Uri uri = Uri.parse(url);
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+        System.out.println("Download request created");
+
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setDestinationInExternalFilesDir(context, destinationDirectory, fileName+fileExtension);
+        System.out.println("request set");
+
+        downloadManager.enqueue(request);
+        System.out.println("request enqueued");
+
     }
 
 
