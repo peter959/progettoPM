@@ -1,9 +1,11 @@
 package com.example.instantreservationbusiness.Activity;
 
+import android.Manifest;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,6 +25,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.example.instantreservationbusiness.ProgressButton;
@@ -256,18 +260,37 @@ public class QueueActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void checkPermission() {
+    }
+
+
     public void downloadFile(Context context, String fileName, String fileExtension, String destinationDirectory, String url) {
-        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-        Uri uri = Uri.parse(url);
-        DownloadManager.Request request = new DownloadManager.Request(uri);
-        System.out.println("Download request created");
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {//Can add more as per requirement
 
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setDestinationInExternalFilesDir(context, destinationDirectory, fileName+fileExtension);
-        System.out.println("request set");
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
+                    123);
 
-        downloadManager.enqueue(request);
-        System.out.println("request enqueued");
+        } else {
+
+            DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+            Uri uri = Uri.parse(url);
+            DownloadManager.Request request = new DownloadManager.Request(uri);
+            System.out.println("Download request created");
+
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            request.setDestinationInExternalFilesDir(context, destinationDirectory, fileName+fileExtension);
+            System.out.println("request set");
+
+            downloadManager.enqueue(request);
+            System.out.println("request enqueued");
+
+        }
+
 
     }
 
