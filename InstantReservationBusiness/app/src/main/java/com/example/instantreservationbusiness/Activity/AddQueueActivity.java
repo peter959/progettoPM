@@ -144,31 +144,31 @@ public class AddQueueActivity extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-                                                //ADD IMAGE IN STORAGE
-                                                if (imageUri != null) {
-                                                    StorageReference imageRef = storageRefImages.child(imageUri.getLastPathSegment());
-                                                    UploadTask uploadTask = imageRef.putFile(imageUri);
+                                                Bitmap qrImage = qrGenerator(queue_id);
+                                                if (qrImage != null) {
+                                                    StorageReference imageRef = storageRefQR.child(queue_id);
+                                                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                                    qrImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                                                    byte[] data = baos.toByteArray();
+
+                                                    UploadTask uploadTask = imageRef.putBytes(data);
                                                     uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                                                        //UPDATE URI QUEUE IMAGE IN FIREBASE
+                                                        //UPDATE QUEUE QR URI IN FIREBASE
                                                         @Override
                                                         public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                                            referenceQueue.child("queue_image").setValue("images/queue_images/"+imageUri.getLastPathSegment()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                //ADD QR CODE IN FIREBASE
+                                                            referenceQueue.child("queue_QRCodeImage").setValue("images/queue_qr_codes/"+queue_id).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                 @Override
                                                                 public void onComplete(@NonNull Task<Void> task) {
-                                                                    Bitmap qrImage = qrGenerator(queue_id);
-                                                                    if (qrImage != null) {
-                                                                        StorageReference imageRef = storageRefQR.child(queue_id);
-                                                                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                                                                        qrImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                                                                        byte[] data = baos.toByteArray();
-
-                                                                        UploadTask uploadTask = imageRef.putBytes(data);
+                                                                    //ADD IMAGE IN STORAGE
+                                                                    if (imageUri != null) {
+                                                                        StorageReference imageRef = storageRefImages.child(imageUri.getLastPathSegment());
+                                                                        UploadTask uploadTask = imageRef.putFile(imageUri);
                                                                         uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                                                                            //UPDATE QUEUE QR URI IN FIREBASE
+                                                                            //UPDATE URI QUEUE IMAGE IN FIREBASE
                                                                             @Override
                                                                             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                                                                referenceQueue.child("queue_QRCodeImage").setValue("images/queue_qr_codes/"+queue_id).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                referenceQueue.child("queue_image").setValue("images/queue_images/"+imageUri.getLastPathSegment()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                    //ADD QR CODE IN FIREBASE
                                                                                     @Override
                                                                                     public void onComplete(@NonNull Task<Void> task) {
                                                                                         progressButton.buttonFinished("Queue added!");
@@ -178,12 +178,16 @@ public class AddQueueActivity extends AppCompatActivity {
                                                                             }
                                                                         });
                                                                     }
-
+                                                                    else {
+                                                                        progressButton.buttonFinished("Queue added!");
+                                                                        finish();
+                                                                    }
                                                                 }
                                                             });
                                                         }
                                                     });
                                                 }
+
                                             }
                                         }
                                     });

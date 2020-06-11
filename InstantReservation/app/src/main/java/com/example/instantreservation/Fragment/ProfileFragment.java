@@ -129,7 +129,6 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
-
                     if (dataSnapshot1.getKey().equals(userID)) {
                         System.out.println("user      " + dataSnapshot1.getKey());
                         System.out.println("queue     " + dataSnapshot.getKey());

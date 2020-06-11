@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.ContactsContract;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -203,49 +204,62 @@ public class QueueActivity extends AppCompatActivity {
 
     private void removeQueue(final String queueID){
 
-        final StorageReference storageRefQR = FirebaseStorage.getInstance().getReference().child("images/queue_qr_codes/"+queueID);
-        final StorageReference storageRefImage = FirebaseStorage.getInstance().getReference().child(imageUri);
-
-        DatabaseReference ref = referenceForQueueInfo.child(queueID);
-        ref.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+        DatabaseReference resRef = FirebaseDatabase.getInstance().getReference().child("reservations").child(queueID);
+        resRef.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    referenceBusiness = FirebaseDatabase.getInstance().getReference().child("business").child(sharedPreferences.getString("businessUID", "null"));
-                    referenceBusiness.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            int nQueues = dataSnapshot.child("business_nQueues").getValue(int.class) -1;
-                            dataSnapshot.getRef().child("business_nQueues").setValue(nQueues).addOnCompleteListener(new OnCompleteListener<Void>() {
+                DatabaseReference ref = referenceForQueueInfo.child(queueID);
+                ref.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            referenceBusiness = FirebaseDatabase.getInstance().getReference().child("business").child(sharedPreferences.getString("businessUID", "null"));
+                            referenceBusiness.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    storageRefQR.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    int nQueues = dataSnapshot.child("business_nQueues").getValue(int.class) -1;
+                                    dataSnapshot.getRef().child("business_nQueues").setValue(nQueues).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
-                                            storageRefImage.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            StorageReference storageRefQR = FirebaseStorage.getInstance().getReference().child(qrUri);
+                                            storageRefQR.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
-                                                    finish();
+                                                    if (!imageUri.equals("")) {
+                                                        StorageReference storageRefImage = FirebaseStorage.getInstance().getReference().child(imageUri);
+                                                        storageRefImage.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                finish();
+                                                            }
+                                                        });
+                                                    }else {
+                                                        finish();
+                                                    }
+
                                                 }
                                             });
+
                                         }
                                     });
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
                                 }
                             });
 
+                        } else {
+                            Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
                         }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-
-                } else {
-                    Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
-                }
+                    }
+                });
             }
         });
+
+
     }
 
 
