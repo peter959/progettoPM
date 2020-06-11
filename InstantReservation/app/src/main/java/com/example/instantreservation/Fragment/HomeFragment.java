@@ -68,7 +68,6 @@ public class HomeFragment extends Fragment {
         name = userInfo.getString("userName" , "null");
         userUID = userInfo.getString("userUID", "null");
 
-        referenceForFavoritesQueues = FirebaseDatabase.getInstance().getReference().child("users").child(userUID).child("favoritesQueue");
         referenceForReservedQueue = FirebaseDatabase.getInstance().getReference().child("users").child(userUID).child("reservedQueue");
         referenceForQueueInfo = FirebaseDatabase.getInstance().getReference().child("queues");
 
@@ -89,25 +88,41 @@ public class HomeFragment extends Fragment {
 
         referenceForReservedQueue.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            public void onChildAdded(@NonNull final DataSnapshot dataSnapshot, @Nullable String s) {
                 viewPager.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
                 final String queueID =  dataSnapshot.getKey();
-                referenceForQueueInfo.child(queueID).addListenerForSingleValueEvent(new ValueEventListener() {
+                referenceForQueueInfo.child(queueID).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
-                        Queue queue = dataSnapshot1.getValue(Queue.class);
+                        if(dataSnapshot1.exists()) {
+                            Queue queue = dataSnapshot1.getValue(Queue.class);
+                            queue.setQueue_id(dataSnapshot1.getKey());
+                            models.add(models.size(), queue);
+                            System.out.println("ADDED on Reserved LIST: " + queueID);
 
-                        queue.setQueue_id(dataSnapshot1.getKey());
-                        models.add(models.size(), queue);
-                        System.out.println("ADDED on Reserved LIST: " + queueID);
+                            queueAdapter = new QueueAdapter(models, getContext());
+                            viewPager.setAdapter(queueAdapter);
+                            queueAdapter.notifyDataSetChanged();
+                            viewPager.setPadding(0, 0, 80, 0);
+                            viewPager.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.GONE);
+                        }else {
+                            for (int i = 0; i<models.size(); i++){
+                                if(models.get(i).getQueue_id().equals(queueID)){
+                                    models.remove(i);
+                                    System.out.println("REMOVED on Reservated LIST: " + queueID);
+                                }
+                                referenceForReservedQueue.child(queueID).removeValue().isComplete();
+                                queueAdapter = new QueueAdapter(models, getContext());
+                                viewPager.setAdapter(queueAdapter);
+                                queueAdapter.notifyDataSetChanged();
+                                viewPager.setPadding(0, 0, 80, 0);
+                                viewPager.setVisibility(View.VISIBLE);
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        }
 
-                        queueAdapter = new QueueAdapter(models, getContext());
-                        viewPager.setAdapter(queueAdapter);
-                        queueAdapter.notifyDataSetChanged();
-                        viewPager.setPadding(0,0,80,0);
-                        viewPager.setVisibility(View.VISIBLE);
-                        progressBar.setVisibility(View.GONE);
                     }
 
                     @Override

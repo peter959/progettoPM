@@ -156,7 +156,7 @@ public class QueueActivity extends AppCompatActivity {
                     queue_business.setText("Errore");
                     queue_business.setText("Errore");
                     queue_city.setText("Errore");
-                    queue_description.setText("Errore");
+                    queue_description.setText("The queue probably doesn't exist anymore");
                     queue_name.setText("Errore");
                     queue_nReservationString.setText("0/0");
                     queueBusinessID = "Errore";
@@ -311,6 +311,10 @@ public class QueueActivity extends AppCompatActivity {
                                                                         reserveButton.buttonFinishedUnsuccessully("Something went wrong :(");
                                                                 }
                                                             });
+                                                            et_note.setVisibility(View.GONE);
+                                                            reserveButton.buttonFinished("Reserved");
+                                                            reserved = true;
+                                                            btnRemoveReservation.setVisibility(View.VISIBLE);
                                                         }else
                                                             reserveButton.buttonFinishedUnsuccessully("Something went wrong :(");
                                                     }
