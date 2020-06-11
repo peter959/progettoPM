@@ -37,8 +37,7 @@ exports.deleteQueue = functions.database.ref(`/queues/{queue_id}`).onDelete((sna
 return index.deleteObject(objectID);
 });
 
-exports.addReservation = functions.database.ref('/reservation/{queue_id}/{user_id}').onWrite((change, context) => {
-  
+/*  
   const afterData = change.after.val(); // data after the write
 
   const reservation = {
@@ -62,6 +61,7 @@ exports.deleteReservation = functions.database.ref(`/reservation/{queue_id}/{use
  
 return index.deleteObject(reservation);
 });
+*/
 
 function addToAlgolia(object, indexName) {
  console.log('GETS IN addToAlgolia')

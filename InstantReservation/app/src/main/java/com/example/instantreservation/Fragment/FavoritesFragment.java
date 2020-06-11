@@ -92,16 +92,32 @@ public class FavoritesFragment extends Fragment {
                 referenceForQueueInfo.child(queueID).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
-                        Queue queue = dataSnapshot1.getValue(Queue.class);
+                        if(dataSnapshot1.exists()){
+                            Queue queue = dataSnapshot1.getValue(Queue.class);
 
-                        queue.setQueue_id(dataSnapshot1.getKey());
-                        queue.setQueue_is_favorite(true);
-                        models.add(queue);
-                        System.out.println("ADDED on Favorites LIST: " + queueID);
+                            queue.setQueue_id(dataSnapshot1.getKey());
+                            queue.setQueue_is_favorite(true);
+                            models.add(queue);
+                            System.out.println("ADDED on Favorites LIST: " + queueID);
 
-                        queueAdapter = new QueueAdapterRecycler(getContext(), models);
-                        recyclerView.setAdapter(queueAdapter);
-                        queueAdapter.notifyDataSetChanged();
+                            queueAdapter = new QueueAdapterRecycler(getContext(), models);
+                            recyclerView.setAdapter(queueAdapter);
+                            queueAdapter.notifyDataSetChanged();
+                        }else {
+                            for (int i = 0; i<models.size(); i++){
+                                if(models.get(i).getQueue_id().equals(queueID)){
+                                    models.remove(i);
+                                    System.out.println("REMOVED on Favorites LIST: " + queueID);
+
+                                };
+                            }
+                            referenceForFavoritesQueues.child(queueID).removeValue().isComplete();
+                            queueAdapter = new QueueAdapterRecycler(getContext(), models);
+                            recyclerView.setAdapter(queueAdapter);
+                            queueAdapter.notifyDataSetChanged();
+                            System.out.println("NON ESISTE PIU il favorite queue");
+                        }
+
                     }
 
                     @Override
