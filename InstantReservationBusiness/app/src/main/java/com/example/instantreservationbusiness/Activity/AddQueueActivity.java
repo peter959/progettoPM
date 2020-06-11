@@ -71,8 +71,10 @@ public class AddQueueActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE) {
-            imageUri = data.getData();
-            add_queue_image.setImageURI(imageUri);
+            if(data!=null) {
+                imageUri = data.getData();
+                add_queue_image.setImageURI(imageUri);
+            }
         }
     }
 

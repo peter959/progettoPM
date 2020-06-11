@@ -125,7 +125,7 @@ public class QueueActivity extends AppCompatActivity {
         progressBarQueue.setVisibility(View.VISIBLE);
 
         // Check if user is signed in (non-null) and update UI accordingly.
-        referenceForQueueInfo.addListenerForSingleValueEvent(new ValueEventListener() {
+        referenceForQueueInfo.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Queue queue = dataSnapshot.child(queueID).getValue(Queue.class);
