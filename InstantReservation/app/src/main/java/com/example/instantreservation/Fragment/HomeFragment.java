@@ -92,7 +92,7 @@ public class HomeFragment extends Fragment {
                 viewPager.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
                 final String queueID =  dataSnapshot.getKey();
-                referenceForQueueInfo.child(queueID).addValueEventListener(new ValueEventListener() {
+                referenceForQueueInfo.child(queueID).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
                         if(dataSnapshot1.exists()) {
@@ -138,29 +138,20 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
                 final String queueID =  dataSnapshot.getKey();
-                referenceForQueueInfo.child(queueID).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
-                        Queue queue = dataSnapshot1.getValue(Queue.class);
+                for (int i = 0; i<models.size(); i++){
+                    if(models.get(i).getQueue_id().equals(queueID)){
+                        models.remove(i);
+                        System.out.println("!!!REMOVED on Reserved LIST: " + queueID);
+                    };
+                }
 
-                        for (int i = 0; i<models.size(); i++){
-                            if(models.get(i).getQueue_id().equals(queueID)){
-                                models.remove(i);
-                                System.out.println("REMOVED on Reserved LIST: " + queueID);
-                            };
-                        }
+                queueAdapter = new QueueAdapter(models, getContext());
+                viewPager.setAdapter(queueAdapter);
+                queueAdapter.notifyDataSetChanged();
+                viewPager.setPadding(0,0,80,0);
+                viewPager.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
 
-                        queueAdapter = new QueueAdapter(models, getContext());
-                        viewPager.setAdapter(queueAdapter);
-                        queueAdapter.notifyDataSetChanged();
-                        viewPager.setPadding(0,0,80,0);
-                        viewPager.setVisibility(View.VISIBLE);
-                        progressBar.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {}
-                });
             }
 
             @Override

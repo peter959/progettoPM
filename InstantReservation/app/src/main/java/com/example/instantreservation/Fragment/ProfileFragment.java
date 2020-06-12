@@ -125,6 +125,26 @@ public class ProfileFragment extends Fragment {
 
 
         referenceReservation = FirebaseDatabase.getInstance().getReference().child("reservations");
+        referenceReservation.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot q: dataSnapshot.getChildren()) {
+                    for(DataSnapshot uid: dataSnapshot.getChildren()){
+                        if(uid.getKey().equals(userID)){
+                            final Reservation r = new Reservation();
+                            r.setId_user(uid.getKey());
+                            r.setId_queue(q.getKey());
+                            System.out.println("AAAAAAAAAAAAadded:" +uid.getKey() +", " + q.getKey() );
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         referenceReservation.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -138,7 +158,7 @@ public class ProfileFragment extends Fragment {
                         r.setId_queue(dataSnapshot.getKey());
 
                         referenceQueueInfo = FirebaseDatabase.getInstance().getReference().child("queues").child(r.getId_queue());
-                        referenceQueueInfo.addListenerForSingleValueEvent(new ValueEventListener() {
+                        referenceQueueInfo.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshotQueue) {
                                 System.out.println("queueSnaphotkey     " + dataSnapshotQueue.getKey());
@@ -171,6 +191,7 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                System.out.println("AAAAAA" + dataSnapshot.getKey());
                 Reservation r = dataSnapshot.getValue(Reservation.class);
                 //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
                 for (int i = 0; i<list.size(); i++){
@@ -201,7 +222,8 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onResume() {
-        list.clear();
         super.onResume();
+        list.clear();
+
     }
 }
