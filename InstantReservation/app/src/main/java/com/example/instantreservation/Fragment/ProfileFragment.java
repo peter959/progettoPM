@@ -124,8 +124,8 @@ public class ProfileFragment extends Fragment {
         list = new ArrayList<Reservation>();
 
 
-        referenceReservation = FirebaseDatabase.getInstance().getReference().child("reservations");
-        referenceReservation.addValueEventListener(new ValueEventListener() {
+        //referenceReservation = FirebaseDatabase.getInstance().getReference().child("reservations");
+      /*  referenceReservation.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot q: dataSnapshot.getChildren()) {
@@ -148,6 +148,56 @@ public class ProfileFragment extends Fragment {
         referenceReservation.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                System.out.println("onChildAdded queues");
+                final String queueID = dataSnapshot.getKey();
+                FirebaseDatabase.getInstance().getReference().child("reservation").child(queueID).addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        System.out.println("onChildAdded reservation");
+                        if(dataSnapshot.getKey().equals(userID)){
+                            final Reservation r = new Reservation();
+                            r.setId_user(userID);
+                            r.setId_queue(queueID);
+                            r.setId_business("prova");
+                            r.setBusiness_name("prova");
+                            r.setQueue_name("prova");
+
+                            System.out.println("Adding reservation for: " + userID + ", for queue: " + queueID);
+                            list.add(r);
+
+                            reservationAdapter = new ReservationAdapter(getActivity(), (ArrayList<Reservation>) list);
+                            reservations.setAdapter(reservationAdapter);
+                            reservationAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                        System.out.println("onChildRemoved reservation");
+                        if(dataSnapshot.getKey().equals(userID)){
+                            for (int i = 0; i < list.size(); i++) {
+                                if (list.get(i).getId_queue().equals(dataSnapshot.getKey())) {
+                                    list.remove(i);
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
                 for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
                     if (dataSnapshot1.getKey().equals(userID)) {
                         System.out.println("user      " + dataSnapshot1.getKey());
@@ -186,16 +236,95 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                System.out.println("onChildChanged queues");
+                final String queueID = dataSnapshot.getKey();
+                referenceQueueInfo = FirebaseDatabase.getInstance().getReference().child("queues").child(queueID);
+                referenceQueueInfo.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        System.out.println("onChildAdded reservation");
+                        if(dataSnapshot.getKey().equals(userID)){
+                            final Reservation r = new Reservation();
+                            r.setId_user(userID);
+                            r.setId_queue(queueID);
+                            System.out.println("Adding reservation for: " + userID + ", for queue: " + queueID);
+                            list.add(r);
 
+                            reservationAdapter = new ReservationAdapter(getActivity(), (ArrayList<Reservation>) list);
+                            reservations.setAdapter(reservationAdapter);
+                            reservationAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                        System.out.println("onChildRemoved reservation");
+                        if(dataSnapshot.getKey().equals(userID)){
+                            for (int i = 0; i < list.size(); i++) {
+                                if (list.get(i).getId_queue().equals(dataSnapshot.getKey())) {
+                                    list.remove(i);
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+                for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
+                    if (dataSnapshot1.getKey().equals(userID)) {
+                        System.out.println("user      " + dataSnapshot1.getKey());
+                        System.out.println("queue     " + dataSnapshot.getKey());
+
+                        final Reservation r = dataSnapshot1.getValue(Reservation.class);
+                        r.setId_user(dataSnapshot1.getKey());
+                        r.setId_queue(dataSnapshot.getKey());
+
+                        referenceQueueInfo = FirebaseDatabase.getInstance().getReference().child("queues").child(r.getId_queue());
+                        referenceQueueInfo.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshotQueue) {
+                                System.out.println("queueSnaphotkey     " + dataSnapshotQueue.getKey());
+                                System.out.println("business ID     " + dataSnapshotQueue.child("queue_businessID").getValue(String.class));
+                                r.setId_business(dataSnapshotQueue.child("queue_businessID").getValue(String.class));
+                                r.setBusiness_name(dataSnapshotQueue.child("queue_business").getValue(String.class));
+                                r.setQueue_name(dataSnapshotQueue.child("queue_name").getValue(String.class));
+
+                                list.add(list.size(), r);
+
+                                reservationAdapter = new ReservationAdapter(getActivity(), (ArrayList<Reservation>) list);
+                                reservations.setAdapter(reservationAdapter);
+                                reservationAdapter.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                }
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
                 System.out.println("AAAAAA" + dataSnapshot.getKey());
-                Reservation r = dataSnapshot.getValue(Reservation.class);
                 //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
                 for (int i = 0; i<list.size(); i++){
-                    if(list.get(i).getId_queue().equals(r.getId_queue())){
+                    if(list.get(i).getId_queue().equals(dataSnapshot.getKey())){
                         list.remove(i);
                     }
                 }
@@ -208,13 +337,14 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
 
 
         return returnView;
