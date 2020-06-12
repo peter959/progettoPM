@@ -60,6 +60,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "171061890673-c8b5lnhcdh1c7rvbhsc8mnmujd1559td.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.instantreservationbusiness",
+            "certificate_hash": "35251a8748ecc9435a7dda7b3ac53eb7086c83b3"
+          }
+        },
+        {
           "client_id": "171061890673-srd4pg64dur2rv6bsinfvki65tmm9ulj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

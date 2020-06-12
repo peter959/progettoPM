@@ -21,6 +21,7 @@ public class FirebaseMessaging extends FirebaseMessagingService {
     public FirebaseMessaging() {
     }
 
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
@@ -65,7 +66,6 @@ public class FirebaseMessaging extends FirebaseMessagingService {
             notificationChannel.setDescription("my channel");
             notificationChannel.setVibrationPattern(new long[] {0, 1000, 500, 1000});
             notificationManager.createNotificationChannel(notificationChannel);
-
         }
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);

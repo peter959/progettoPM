@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
                         // Log and toast
                         //@SuppressLint({"StringFormatInvalid", "LocalSuppress"}) String msg = getString(R.string.msg_token_fmt, token);
                         Log.d("TOKEN", token);
-                        Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, token, Toast.LENGTH_LONG).show();
                     }
                 });
 
