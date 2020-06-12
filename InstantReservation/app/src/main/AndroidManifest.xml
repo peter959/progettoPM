@@ -20,16 +20,6 @@
         android:roundIcon="@mipmap/ir_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <service
-            android:name=".FirebaseMessaging"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-
         <activity android:name=".Activity.BusinessActivity"></activity>
         <activity android:name=".Activity.QueueActivity" />
         <activity
