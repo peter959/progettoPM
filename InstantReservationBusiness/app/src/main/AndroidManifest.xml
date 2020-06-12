@@ -6,20 +6,31 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <meta-data
         android:name="com.google.android.gms.vision.DEPENDENCIES"
         android:value="qrcode" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/irb_logo_round"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/irb_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.EditQueueActivity"></activity>
+
+        <service
+            android:name=".FirebaseMessaging"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity android:name=".Activity.EditQueueActivity" />
         <activity android:name=".Activity.EditBusinessActivity" />
         <activity android:name=".Activity.ReservationMenager" />
         <activity android:name=".Activity.AddQueueActivity" />
@@ -42,6 +53,7 @@
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".Activity.MainActivity" />
         <activity android:name=".Activity.WelcomeActivity" />
+
     </application>
 
 </manifest>
