@@ -40,7 +40,7 @@
 
         <activity android:name=".Activity.EditQueueActivity" />
         <activity android:name=".Activity.EditBusinessActivity" />
-        <activity android:name=".Activity.ReservationMenager" />
+        <activity android:name=".Activity.ReservationManager" />
         <activity android:name=".Activity.AddQueueActivity" />
         <activity android:name=".Activity.WrongAccountActivity" />
         <activity android:name=".Activity.QueueActivity" />
