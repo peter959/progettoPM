@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.algolia.search.saas.AlgoliaException;
@@ -50,6 +51,7 @@ public class SearchFragment extends Fragment {
     RecyclerView recyclerView;
     QueueAdapterRecycler queueAdapter;
     List<Queue> models;
+    ProgressBar progressBar;
 
     DatabaseReference referenceForQueueInfo;
     CompletionHandler completionHandler;
@@ -84,6 +86,7 @@ public class SearchFragment extends Fragment {
 
         View returnView = inflater.inflate(R.layout.fragment_search, container, false);
 
+        progressBar = returnView.findViewById(R.id.progressBarSearch);
         final EditText et_keyword = returnView.findViewById(R.id.keyword);
 
         recyclerView = returnView.findViewById(R.id.match_list);
@@ -93,6 +96,8 @@ public class SearchFragment extends Fragment {
         completionHandler = new CompletionHandler() {
             @Override
             public void requestCompleted(JSONObject content, AlgoliaException error) {
+                recyclerView.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
                 try {
                     JSONArray hits = (JSONArray)content.get("hits");
                     for(int i=0; i<hits.length(); i++){
@@ -113,6 +118,8 @@ public class SearchFragment extends Fragment {
                                     queueAdapter = new QueueAdapterRecycler(getContext(), models);
                                     recyclerView.setAdapter(queueAdapter);
                                     queueAdapter.notifyDataSetChanged();
+                                    recyclerView.setVisibility(View.VISIBLE);
+                                    progressBar.setVisibility(View.GONE);
                                 }else {
                                     models.clear();
                                     Toast.makeText(getContext(), "not found", Toast.LENGTH_SHORT).show();
