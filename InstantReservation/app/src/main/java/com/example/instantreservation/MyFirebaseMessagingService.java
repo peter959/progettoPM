@@ -25,29 +25,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         Map<String, String> extraData = remoteMessage.getData();
 
-        String brandId = extraData.get("brandId");
-        String category = extraData.get("category");
-
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, "TAC")
                         .setContentTitle(title)
                         .setContentText(body)
                         .setSmallIcon(R.drawable.ic_launcher_background);
-
-        Intent intent;
-        if (category.equals("shoes")) {
-            intent = new Intent(this, ReceiveNotificationActivity.class);
-
-        } else {
-            intent = new Intent(this, ReceiveNotificationActivity.class);
-
-        }
-        intent.putExtra("brandId", brandId);
-        intent.putExtra("category", category);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 10, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        notificationBuilder.setContentIntent(pendingIntent);
 
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

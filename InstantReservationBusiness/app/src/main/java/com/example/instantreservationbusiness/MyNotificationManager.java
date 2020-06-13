@@ -46,7 +46,7 @@ public class MyNotificationManager {
 
             //JSONObject extraData = new JSONObject();
             //extraData.put("brandId","puma");
-           // extraData.put("category","Shoes");
+           //extraData.put("category","Shoes");
 
 
 
