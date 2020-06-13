@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private Toolbar toolbar;
 
-    final Fragment profileFragment = new ProfileFragment();
     final Fragment homeFragment = new HomeFragment();
     final Fragment searchFragment = new SearchFragment();
     final Fragment cameraFragment = new CameraFragment();
@@ -125,10 +124,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigationMyProfile:
-                    fm.beginTransaction().hide(active).show(profileFragment).commit();
-                    active = profileFragment;
-                    return true;
                 case R.id.navigationFavorites:
                     fm.beginTransaction().hide(active).show(favoritesFragment).commit();
                     active = favoritesFragment;
@@ -164,10 +159,9 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        fm.beginTransaction().add(R.id.main_container,cameraFragment,"5").hide(cameraFragment).commit();
-        fm.beginTransaction().add(R.id.main_container,searchFragment,"3").hide(searchFragment).commit();
-        fm.beginTransaction().add(R.id.main_container,favoritesFragment,"4").hide(favoritesFragment).commit();
-        fm.beginTransaction().add(R.id.main_container,profileFragment,"2").hide(profileFragment).commit();
+        fm.beginTransaction().add(R.id.main_container,cameraFragment,"4").hide(cameraFragment).commit();
+        fm.beginTransaction().add(R.id.main_container,searchFragment,"2").hide(searchFragment).commit();
+        fm.beginTransaction().add(R.id.main_container,favoritesFragment,"3").hide(favoritesFragment).commit();
         fm.beginTransaction().add(R.id.main_container,homeFragment, "1").commit();
 
 
