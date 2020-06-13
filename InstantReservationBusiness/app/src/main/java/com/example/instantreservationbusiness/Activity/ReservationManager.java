@@ -187,7 +187,6 @@ public class ReservationManager extends AppCompatActivity {
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendNotification();
                 if (!list.isEmpty()) {
                     final String userID = list.get(0).getId_user();
                     FirebaseDatabase.getInstance().getReference().child("reservations").child(queueID).child(userID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -198,6 +197,7 @@ public class ReservationManager extends AppCompatActivity {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         int nReservation = dataSnapshot.child("queue_nReservation").getValue(Integer.class);
+                                        final String queueName = dataSnapshot.child("queue_name").getValue(String.class);
                                         referenceQueueinfo.child("queue_nReservation").setValue(nReservation - 1).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task1) {
@@ -208,9 +208,11 @@ public class ReservationManager extends AppCompatActivity {
                                                             if (task2.isSuccessful()) {
 
                                                                 //send Notificaiton
+                                                                MyNotificationManager myNotificationManager = new MyNotificationManager(ReservationManager.this, userID, queueName, businessName);
+                                                                myNotificationManager.sendNotification();
 
                                                                 Toast.makeText(getApplicationContext(), "next!", Toast.LENGTH_LONG).show();
-                                                                reservationAdapter = new ReservationAdapter(ReservationMenager.this, (ArrayList<Reservation>) list);
+                                                                reservationAdapter = new ReservationAdapter(ReservationManager.this, (ArrayList<Reservation>) list);
                                                                 reservations.setAdapter(reservationAdapter);
                                                                 reservationAdapter.notifyDataSetChanged();
                                                             } else
