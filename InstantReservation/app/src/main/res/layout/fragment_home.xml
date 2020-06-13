@@ -10,6 +10,18 @@
     android:orientation="vertical"
     android:layout_marginBottom="50dp">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_home"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            />
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -144,5 +156,6 @@
 
             </LinearLayout>
         </ScrollView>
+    </LinearLayout>
 
 </LinearLayout>
