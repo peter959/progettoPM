@@ -32,7 +32,6 @@ import com.example.instantreservation.BottomNavigationBehavior;
 import com.example.instantreservation.Fragment.CameraFragment;
 import com.example.instantreservation.Fragment.FavoritesFragment;
 import com.example.instantreservation.Fragment.HomeFragment;
-import com.example.instantreservation.Fragment.ProfileFragment;
 import com.example.instantreservation.Fragment.SearchFragment;
 import com.example.instantreservation.Queue;
 import com.example.instantreservation.R;
