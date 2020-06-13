@@ -100,14 +100,12 @@ public class BusinessActivity extends AppCompatActivity {
                 Queue queue = dataSnapshot.getValue(Queue.class);
                 if(queue.getQueue_businessID().equals(business_ID)){
                     //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
-
+                    queue.setQueue_id(dataSnapshot.getKey());
                     models.add(models.size(), queue);
-                    System.out.println("ADDED on Favorites LIST: " + queue.getQueue_id());
 
                     queueAdapter = new QueueAdapterRecycler(BusinessActivity.this, models);
                     recyclerView.setAdapter(queueAdapter);
                     queueAdapter.notifyDataSetChanged();
-
                 }
             }
 
@@ -118,20 +116,18 @@ public class BusinessActivity extends AppCompatActivity {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                Queue queue = dataSnapshot.getValue(Queue.class);
-                if(queue.getQueue_businessID().equals(business_ID)){
-                    //System.out.println("Adding queue in business list: " + queue.getQueue_businessID());
-                    for (int i = 0; i<models.size(); i++){
-                        if(models.get(i).getQueue_id().equals(queue.getQueue_id())){
-                            models.remove(i);
-                            System.out.println("REMOVED on Business LIST: " + queue.getQueue_id());
-                        }
+                String queueID = dataSnapshot.getKey();
+                for (int i = 0; i<models.size(); i++){
+                    if(models.get(i).getQueue_id().equals(queueID)){
+                        models.remove(i);
+                        System.out.println("REMOVED on Business LIST: " + queueID);
                     }
-
-                    queueAdapter = new QueueAdapterRecycler(BusinessActivity.this, models);
-                    recyclerView.setAdapter(queueAdapter);
-                    queueAdapter.notifyDataSetChanged();
                 }
+
+                queueAdapter = new QueueAdapterRecycler(BusinessActivity.this, models);
+                recyclerView.setAdapter(queueAdapter);
+                queueAdapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -172,7 +168,7 @@ public class BusinessActivity extends AppCompatActivity {
         business_ID = intent.getStringExtra("business_id");
 
         referenceForBusinessInfo = FirebaseDatabase.getInstance().getReference().child("business");
-        referenceForBusinessQueuesInfo = FirebaseDatabase.getInstance().getReference().child("codeattivita");
+        referenceForBusinessQueuesInfo = FirebaseDatabase.getInstance().getReference().child("queues");
 
         recyclerView = findViewById(R.id.business_queues);
         recyclerView.setLayoutManager(new LinearLayoutManager(BusinessActivity.this));
@@ -180,6 +176,12 @@ public class BusinessActivity extends AppCompatActivity {
 
         models = new ArrayList<>();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        models.clear();
     }
 
     @Override

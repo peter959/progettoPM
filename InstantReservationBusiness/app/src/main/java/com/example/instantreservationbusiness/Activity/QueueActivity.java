@@ -125,31 +125,36 @@ public class QueueActivity extends AppCompatActivity {
         progressBarQueue.setVisibility(View.VISIBLE);
 
         // Check if user is signed in (non-null) and update UI accordingly.
-        referenceForQueueInfo.addValueEventListener(new ValueEventListener() {
+        referenceForQueueInfo.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Queue queue = dataSnapshot.child(queueID).getValue(Queue.class);
-                //queueBusinessID = queue.getQueue_businessID();
-                queue_business.setText(queue.getQueue_business());
-                queue_city.setText(queue.getQueue_city());
-                queue_description.setText(queue.getQueue_description());
-                queue_name.setText(queue.getQueue_name());
-                //queue_nMaxReservation = queue.getQueue_nMaxReservation();
-                //queue_nReservation = queue.getQueue_nReservation();
-                queue_nReservationString.setText(String.format("%s/%d", queue.getQueue_nReservationString(), queue.getQueue_nMaxReservation()));
-                imageUri = queue.getQueue_image();
-                if (!imageUri.equals("")) {
-                    StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(imageUri);
-                    Glide.with(QueueActivity.this).load(storageReference).into(queue_image);
-                }
-                qrUri = queue.getQueue_QRCodeImage();
-                if (!qrUri.equals("")) {
-                    StorageReference storageReferenceQR = FirebaseStorage.getInstance().getReference().child(qrUri);
-                    Glide.with(QueueActivity.this).load(storageReferenceQR).into(queue_qr);
+                if(dataSnapshot.hasChildren()){
+                    Queue queue = dataSnapshot.child(queueID).getValue(Queue.class);
+                    //queueBusinessID = queue.getQueue_businessID();
+                    queue_business.setText(queue.getQueue_business());
+                    queue_city.setText(queue.getQueue_city());
+                    queue_description.setText(queue.getQueue_description());
+                    queue_name.setText(queue.getQueue_name());
+                    //queue_nMaxReservation = queue.getQueue_nMaxReservation();
+                    //queue_nReservation = queue.getQueue_nReservation();
+                    queue_nReservationString.setText(String.format("%s/%d", queue.getQueue_nReservationString(), queue.getQueue_nMaxReservation()));
+                    imageUri = queue.getQueue_image();
+                    if (!imageUri.equals("")) {
+                        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(imageUri);
+                        Glide.with(QueueActivity.this).load(storageReference).into(queue_image);
+                    }
+                    qrUri = queue.getQueue_QRCodeImage();
+                    if (!qrUri.equals("")) {
+                        StorageReference storageReferenceQR = FirebaseStorage.getInstance().getReference().child(qrUri);
+                        Glide.with(QueueActivity.this).load(storageReferenceQR).into(queue_qr);
+                    }
+
+                    queue_layout.setVisibility(View.VISIBLE);
+                    progressBarQueue.setVisibility(View.GONE);
+                }else{
+
                 }
 
-                queue_layout.setVisibility(View.VISIBLE);
-                progressBarQueue.setVisibility(View.GONE);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}

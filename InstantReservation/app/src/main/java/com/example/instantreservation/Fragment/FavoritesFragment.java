@@ -135,15 +135,12 @@ public class FavoritesFragment extends Fragment {
                 referenceForQueueInfo.child(queueID).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
-                        Queue queue = dataSnapshot1.getValue(Queue.class);
-
                         for (int i = 0; i<models.size(); i++){
                             if(models.get(i).getQueue_id().equals(queueID)){
                                 models.remove(i);
                                 System.out.println("REMOVED on Favorites LIST: " + queueID);
                             };
                         }
-
                         queueAdapter = new QueueAdapterRecycler(getContext(), models);
                         recyclerView.setAdapter(queueAdapter);
                         queueAdapter.notifyDataSetChanged();

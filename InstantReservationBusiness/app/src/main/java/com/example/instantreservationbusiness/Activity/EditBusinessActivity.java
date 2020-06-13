@@ -63,8 +63,10 @@ public class EditBusinessActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE) {
-           imageUri = data.getData();
-           add_business_image.setImageURI(imageUri);
+            if(data!=null) {
+                imageUri = data.getData();
+                add_business_image.setImageURI(imageUri);
+            }
         }
     }
 
