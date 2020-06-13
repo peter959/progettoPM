@@ -10,13 +10,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.instantreservationbusiness.Queue;
-import com.example.instantreservationbusiness.QueueAdapterRecycler;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
 import com.example.instantreservationbusiness.R;
 import com.example.instantreservationbusiness.Reservation;
 import com.example.instantreservationbusiness.ReservationAdapter;
@@ -30,12 +37,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.RemoteMessage;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ReservationMenager extends AppCompatActivity {
+
+    RequestQueue mRequestQueue;
+    String URL = "https://fcm.googleapis.com/fcm/send";
 
     TextView queue_title, n_reservation;
     Button btn_next;
@@ -151,6 +165,9 @@ public class ReservationMenager extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservation_menager);
 
+        mRequestQueue = Volley.newRequestQueue(this);
+        FirebaseMessaging.getInstance().subscribeToTopic("news");
+
         Intent intent = getIntent();
         queueID = intent.getStringExtra("payload");
         sharedPreferences = getSharedPreferences("BusinessInfo", Context.MODE_PRIVATE);
@@ -172,6 +189,9 @@ public class ReservationMenager extends AppCompatActivity {
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sendNotification();
+
+
                 final String userID = list.get(0).getId_user();
                 FirebaseDatabase.getInstance().getReference().child("reservations").child(queueID).child(userID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -189,7 +209,9 @@ public class ReservationMenager extends AppCompatActivity {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task2) {
                                                         if(task2.isSuccessful()){
-                                                            sendToToken();
+
+                                                            //send Notificaiton
+
                                                             Toast.makeText(getApplicationContext(), "next!", Toast.LENGTH_LONG).show();
                                                             reservationAdapter = new ReservationAdapter(ReservationMenager.this, (ArrayList<Reservation>) list);
                                                             reservations.setAdapter(reservationAdapter);
@@ -218,20 +240,55 @@ public class ReservationMenager extends AppCompatActivity {
         });
     }
 
-    public void sendToToken(){
-        // [START send_to_token]
-        // This registration token comes from the client FCM SDKs.
-        String registrationToken = "csNG12jgma4:APA91bEXgM9WT0j6LkE05t9y3QfUzneCzX_isZzIwgCIpd8tBU1LKUw-AuIZppKaUlMCODCosqQGvdrGeWqToOtBHJRfY78swOUJnIGXspVbI0lbSYVkqE4eUy4V_57nbeiehJevaO4Y";
+    private void sendNotification() {
 
-        // See documentation on defining a message payload.
-        RemoteMessage message = new RemoteMessage.Builder(registrationToken).addData("title","jko").build();
+        JSONObject json = new JSONObject();
+        try {
+            json.put("to","/topics/"+"news");
+            JSONObject notificationObj = new JSONObject();
+            notificationObj.put("title","any title");
+            notificationObj.put("body","any body");
 
-        // Send a message to the device corresponding to the provided
-        // registration token.
-        FirebaseMessaging.getInstance().send(message);
-        // Response is a message ID string.
-        System.out.println("Successfully sent message: " + message.getData().toString());
-        // [END send_to_token]
+            JSONObject extraData = new JSONObject();
+            extraData.put("brandId","puma");
+            extraData.put("category","Shoes");
+
+
+
+            json.put("notification",notificationObj);
+            json.put("data",extraData);
+
+
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,
+                    json,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+
+                            Log.d("MUR", "onResponse: ");
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("MUR", "onError: "+error.networkResponse);
+                }
+            }
+            ){
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String,String> header = new HashMap<>();
+                    header.put("content-type","application/json");
+                    header.put("authorization","key=AAAAJ9QVTnE:APA91bFTVoDSyFqeVqG70atokpsG4s24FRKFSazw-VYlNnopatehRWRv3sNy5mXUxlwz7FWOiW2iFNbLmdXaSpACi9tVS-PeyO2BkOcbWgw82vNhjIrT6i4BngE5XflhCtj6YJB_Lqh-");
+                    return header;
+                }
+            };
+            mRequestQueue.add(request);
+        }
+        catch (JSONException e)
+
+        {
+            e.printStackTrace();
+        }
     }
 
     @Override

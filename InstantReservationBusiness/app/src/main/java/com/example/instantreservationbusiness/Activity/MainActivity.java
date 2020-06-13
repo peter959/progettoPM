@@ -173,23 +173,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w("TOKEN", "getInstanceId failed", task.getException());
-                            return;
-                        }
-                        // Get new Instance ID token
-                        String token = task.getResult().getToken();
-                        // Log and toast
-                        //@SuppressLint({"StringFormatInvalid", "LocalSuppress"}) String msg = getString(R.string.msg_token_fmt, token);
-                        Log.d("TOKEN", token);
-                        Toast.makeText(MainActivity.this, token, Toast.LENGTH_LONG).show();
-                    }
-                });
-
         mAuth = FirebaseAuth.getInstance();
 
         userInfo = getSharedPreferences("BusinessInfo", Context.MODE_PRIVATE);
