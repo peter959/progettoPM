@@ -111,7 +111,7 @@ public class HomeFragment extends Fragment {
                             for (int i = 0; i<models.size(); i++){
                                 if(models.get(i).getQueue_id().equals(queueID)){
                                     models.remove(i);
-                                    System.out.println("REMOVED on Reservated LIST becouse doesn't exist anymore: " + queueID);
+                                    System.out.println("REMOVED on Reservated LIST: " + queueID);
                                 }
                                 referenceForReservedQueue.child(queueID).removeValue().isComplete();
                                 queueAdapter = new QueueAdapter(models, getContext());
@@ -141,7 +141,7 @@ public class HomeFragment extends Fragment {
                 for (int i = 0; i<models.size(); i++){
                     if(models.get(i).getQueue_id().equals(queueID)){
                         models.remove(i);
-                        System.out.println("REMOVED on Reserved LIST: " + queueID);
+                        System.out.println("!!!REMOVED on Reserved LIST: " + queueID);
                     };
                 }
 
