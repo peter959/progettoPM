@@ -23,17 +23,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String title = remoteMessage.getNotification().getTitle();
         String body = remoteMessage.getNotification().getBody();
 
-        Map<String, String> extraData = remoteMessage.getData();
-
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, "TAC")
+                        .setSmallIcon(R.drawable.ic_directions_walk_black_24dp)
                         .setContentTitle(title)
                         .setContentText(body)
-                        .setSmallIcon(R.drawable.ic_launcher_background);
-
+                        .setVibrate(new long[] { 1000, 1000});
+                        //.setSmallIcon(R.drawable.ic_launcher_background);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
 
         int id =  (int) System.currentTimeMillis();
 

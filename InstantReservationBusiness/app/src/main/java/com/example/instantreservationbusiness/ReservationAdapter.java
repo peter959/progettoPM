@@ -1,6 +1,7 @@
 package com.example.instantreservationbusiness;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,8 +42,6 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     Context context;
     ArrayList<Reservation> reservations;
 
-    RequestQueue mRequestQueue;
-    String URL = "https://fcm.googleapis.com/fcm/send";
 
     public ReservationAdapter(Context c, ArrayList<Reservation> reservations) {
         context = c;
@@ -67,8 +66,6 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         myViewHolder.user_phone.setText(user_phone);
         myViewHolder.reservation_description.setText(reservation_description);
 
-        mRequestQueue = Volley.newRequestQueue(context);
-        FirebaseMessaging.getInstance().subscribeToTopic("news");
 
         myViewHolder.item_next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +81,9 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     int nReservation = dataSnapshot.child("queue_nReservation").getValue(Integer.class);
+                                    final String queueName = dataSnapshot.child("queue_name").getValue(String.class);
+                                    final String queueBusiness = dataSnapshot.child("queue_business").getValue(String.class);
+
                                     referenceQueueinfo.child("queue_nReservation").setValue(nReservation-1).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task1) {
@@ -92,7 +92,8 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task2) {
                                                         if(task2.isSuccessful()){
-                                                            sendNotification();
+                                                            MyNotificationManager myNotificationManager = new MyNotificationManager(context, userID, queueName, queueBusiness);
+                                                            myNotificationManager.sendNotification();
                                                             Toast.makeText(context, "next!", Toast.LENGTH_LONG).show();
                                                             //reservationAdapter = new ReservationAdapter(ReservationAdapter.this, (ArrayList<Reservation>) list);
                                                            // reservations.setAdapter(reservationAdapter);
@@ -119,57 +120,6 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         });
 
 
-    }
-
-    private void sendNotification() {
-
-        JSONObject json = new JSONObject();
-        try {
-            json.put("to","/topics/"+"news");
-            JSONObject notificationObj = new JSONObject();
-            notificationObj.put("title","any title");
-            notificationObj.put("body","any body");
-
-            JSONObject extraData = new JSONObject();
-            extraData.put("brandId","puma");
-            extraData.put("category","Shoes");
-
-
-
-            json.put("notification",notificationObj);
-            json.put("data",extraData);
-
-
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,
-                    json,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-
-                            Log.d("MUR", "onResponse: ");
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d("MUR", "onError: "+error.networkResponse);
-                }
-            }
-            ){
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String,String> header = new HashMap<>();
-                    header.put("content-type","application/json");
-                    header.put("authorization","key=AAAAJ9QVTnE:APA91bFTVoDSyFqeVqG70atokpsG4s24FRKFSazw-VYlNnopatehRWRv3sNy5mXUxlwz7FWOiW2iFNbLmdXaSpACi9tVS-PeyO2BkOcbWgw82vNhjIrT6i4BngE5XflhCtj6YJB_Lqh-");
-                    return header;
-                }
-            };
-            mRequestQueue.add(request);
-        }
-        catch (JSONException e)
-
-        {
-            e.printStackTrace();
-        }
     }
 
     @Override

@@ -206,11 +206,9 @@ public class ReservationManager extends AppCompatActivity {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task2) {
                                                             if (task2.isSuccessful()) {
-
                                                                 //send Notificaiton
                                                                 MyNotificationManager myNotificationManager = new MyNotificationManager(ReservationManager.this, userID, queueName, businessName);
                                                                 myNotificationManager.sendNotification();
-
                                                                 Toast.makeText(getApplicationContext(), "next!", Toast.LENGTH_LONG).show();
                                                                 reservationAdapter = new ReservationAdapter(ReservationManager.this, (ArrayList<Reservation>) list);
                                                                 reservations.setAdapter(reservationAdapter);
