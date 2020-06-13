@@ -24,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import com.example.instantreservationbusiness.MyNotificationManager;
 import com.example.instantreservationbusiness.R;
 import com.example.instantreservationbusiness.Reservation;
 import com.example.instantreservationbusiness.ReservationAdapter;
@@ -46,10 +47,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ReservationMenager extends AppCompatActivity {
+public class ReservationManager extends AppCompatActivity {
 
-    RequestQueue mRequestQueue;
-    String URL = "https://fcm.googleapis.com/fcm/send";
 
     TextView queue_title, n_reservation;
     Button btn_next;
@@ -64,6 +63,7 @@ public class ReservationMenager extends AppCompatActivity {
 
     String businessID;
     String queueID;
+    String businessName;
 
     SharedPreferences sharedPreferences;
 
@@ -110,7 +110,7 @@ public class ReservationMenager extends AppCompatActivity {
 
                         list.add(list.size(), r);
                         System.out.println("Adding in queue list user: " + dataSnapshot.child("fullname").getValue(String.class));
-                        reservationAdapter = new ReservationAdapter(ReservationMenager.this, (ArrayList<Reservation>) list);
+                        reservationAdapter = new ReservationAdapter(ReservationManager.this, (ArrayList<Reservation>) list);
                         reservations.setAdapter(reservationAdapter);
                         reservationAdapter.notifyDataSetChanged();
                     }
@@ -140,7 +140,7 @@ public class ReservationMenager extends AppCompatActivity {
                     }
                 }
 
-                reservationAdapter = new ReservationAdapter(ReservationMenager.this, (ArrayList<Reservation>) list);
+                reservationAdapter = new ReservationAdapter(ReservationManager.this, (ArrayList<Reservation>) list);
                 reservations.setAdapter(reservationAdapter);
                 reservationAdapter.notifyDataSetChanged();
             }
@@ -165,13 +165,11 @@ public class ReservationMenager extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservation_menager);
 
-        mRequestQueue = Volley.newRequestQueue(this);
-        FirebaseMessaging.getInstance().subscribeToTopic("news");
-
         Intent intent = getIntent();
         queueID = intent.getStringExtra("payload");
         sharedPreferences = getSharedPreferences("BusinessInfo", Context.MODE_PRIVATE);
         businessID = sharedPreferences.getString("businessID", null);
+        businessName = sharedPreferences.getString("businessName", null);
 
         queue_title = findViewById(R.id.queue_title);
         n_reservation = findViewById(R.id.nReservation);
@@ -233,6 +231,7 @@ public class ReservationMenager extends AppCompatActivity {
 
                             } else
                                 Toast.makeText(getApplicationContext(), "There is an error", Toast.LENGTH_LONG).show();
+
                         }
                     });
                 }
@@ -243,57 +242,6 @@ public class ReservationMenager extends AppCompatActivity {
 
             }
         });
-    }
-
-    private void sendNotification() {
-
-        JSONObject json = new JSONObject();
-        try {
-            json.put("to","/topics/"+"news");
-            JSONObject notificationObj = new JSONObject();
-            notificationObj.put("title","any title");
-            notificationObj.put("body","any body");
-
-            JSONObject extraData = new JSONObject();
-            extraData.put("brandId","puma");
-            extraData.put("category","Shoes");
-
-
-
-            json.put("notification",notificationObj);
-            json.put("data",extraData);
-
-
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,
-                    json,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-
-                            Log.d("MUR", "onResponse: ");
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d("MUR", "onError: "+error.networkResponse);
-                }
-            }
-            ){
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String,String> header = new HashMap<>();
-                    header.put("content-type","application/json");
-                    header.put("authorization","key=AAAAJ9QVTnE:APA91bFTVoDSyFqeVqG70atokpsG4s24FRKFSazw-VYlNnopatehRWRv3sNy5mXUxlwz7FWOiW2iFNbLmdXaSpACi9tVS-PeyO2BkOcbWgw82vNhjIrT6i4BngE5XflhCtj6YJB_Lqh-");
-                    return header;
-                }
-            };
-            mRequestQueue.add(request);
-        }
-        catch (JSONException e)
-
-        {
-            e.printStackTrace();
-        }
     }
 
     @Override

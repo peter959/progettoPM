@@ -181,7 +181,7 @@ public class QueueActivity extends AppCompatActivity {
         btn_menage_reservation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ReservationMenager.class);
+                Intent intent = new Intent(getApplicationContext(), ReservationManager.class);
                 intent.putExtra("payload", queueID);
                 startActivity(intent);
             }
