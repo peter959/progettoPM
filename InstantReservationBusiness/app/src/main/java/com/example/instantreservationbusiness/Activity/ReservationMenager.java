@@ -190,50 +190,55 @@ public class ReservationMenager extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sendNotification();
+                if (!list.isEmpty()) {
+                    final String userID = list.get(0).getId_user();
+                    FirebaseDatabase.getInstance().getReference().child("reservations").child(queueID).child(userID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                referenceQueueinfo.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        int nReservation = dataSnapshot.child("queue_nReservation").getValue(Integer.class);
+                                        referenceQueueinfo.child("queue_nReservation").setValue(nReservation - 1).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task1) {
+                                                if (task1.isSuccessful()) {
+                                                    FirebaseDatabase.getInstance().getReference().child("users").child(userID).child("reservedQueue").child(queueID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task2) {
+                                                            if (task2.isSuccessful()) {
 
+                                                                //send Notificaiton
 
-                final String userID = list.get(0).getId_user();
-                FirebaseDatabase.getInstance().getReference().child("reservations").child(queueID).child(userID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()) {
-                            referenceQueueinfo.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    int nReservation = dataSnapshot.child("queue_nReservation").getValue(Integer.class);
-                                    referenceQueueinfo.child("queue_nReservation").setValue(nReservation-1).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task1) {
-                                            if(task1.isSuccessful()) {
-                                                FirebaseDatabase.getInstance().getReference().child("users").child(userID).child("reservedQueue").child(queueID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task2) {
-                                                        if(task2.isSuccessful()){
+                                                                Toast.makeText(getApplicationContext(), "next!", Toast.LENGTH_LONG).show();
+                                                                reservationAdapter = new ReservationAdapter(ReservationMenager.this, (ArrayList<Reservation>) list);
+                                                                reservations.setAdapter(reservationAdapter);
+                                                                reservationAdapter.notifyDataSetChanged();
+                                                            } else
+                                                                Toast.makeText(getApplicationContext(), "There is an error", Toast.LENGTH_LONG).show();
+                                                        }
+                                                    });
+                                                } else
+                                                    Toast.makeText(getApplicationContext(), "There is an error", Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+                                    }
 
-                                                            //send Notificaiton
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                                            Toast.makeText(getApplicationContext(), "next!", Toast.LENGTH_LONG).show();
-                                                            reservationAdapter = new ReservationAdapter(ReservationMenager.this, (ArrayList<Reservation>) list);
-                                                            reservations.setAdapter(reservationAdapter);
-                                                            reservationAdapter.notifyDataSetChanged();
-                                                        }  else Toast.makeText(getApplicationContext(), "There is an error", Toast.LENGTH_LONG).show();
-                                                    }
-                                                });
-                                            }  else Toast.makeText(getApplicationContext(), "There is an error", Toast.LENGTH_LONG).show();
-                                        }
-                                    });
-                                }
+                                    }
+                                });
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
-
+                            } else
+                                Toast.makeText(getApplicationContext(), "There is an error", Toast.LENGTH_LONG).show();
                         }
-                        else Toast.makeText(getApplicationContext(), "There is an error", Toast.LENGTH_LONG).show();
-                    }
-                });
+                    });
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "No more reservations", Toast.LENGTH_SHORT).show();
+                }
 
 
             }
