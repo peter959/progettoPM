@@ -134,6 +134,7 @@ public class AddQueueActivity extends AppCompatActivity {
                 referenceQueue.setValue(queue).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        final Bitmap qrImage = qrGenerator(queue_id);
                         if(task.isSuccessful()){
                             //UPDATE N. QUEUES IN BUSINESS
                             referenceBusiness = FirebaseDatabase.getInstance().getReference().child("business").child(businessID);
@@ -149,6 +150,7 @@ public class AddQueueActivity extends AppCompatActivity {
                                             if (task.isSuccessful()) {
                                                 //generate and add QR
                                                 Bitmap qrImage = qrGenerator(queue_id);
+
                                                 if (qrImage != null) {
                                                     StorageReference imageRef = storageRefQR.child(queue_id);
                                                     ByteArrayOutputStream baos = new ByteArrayOutputStream();

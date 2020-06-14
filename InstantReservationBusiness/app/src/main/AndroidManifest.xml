@@ -38,7 +38,6 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
 
-        <activity android:name=".Activity.EditQueueActivity" />
         <activity android:name=".Activity.EditBusinessActivity" />
         <activity android:name=".Activity.ReservationManager" />
         <activity android:name=".Activity.AddQueueActivity" />

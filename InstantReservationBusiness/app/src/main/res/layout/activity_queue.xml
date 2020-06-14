@@ -55,7 +55,6 @@
                         android:layout_height="match_parent"
                         android:src="@drawable/resturant_example"
                         android:scaleType="fitXY"/>
-
                 </RelativeLayout>
 
                 <androidx.cardview.widget.CardView

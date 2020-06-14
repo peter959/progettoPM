@@ -68,7 +68,9 @@ public class ReservationManager extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 System.out.println(dataSnapshot.getKey());
                 queue_title.setText(dataSnapshot.child("queue_name").getValue(String.class));
-                n_reservation.setText(Integer.toString(dataSnapshot.child("queue_nReservation").getValue(Integer.class)));
+                if(dataSnapshot.child("queue_nReservation").exists()){
+                    n_reservation.setText(Integer.toString(dataSnapshot.child("queue_nReservation").getValue(Integer.class)));
+                }else  n_reservation.setText("0");
             }
 
             @Override
