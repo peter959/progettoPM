@@ -15,25 +15,10 @@ import com.balysv.materialripple.MaterialRippleLayout;
 import com.example.instantreservationbusiness.R;
 
 public class WelcomeActivity extends AppCompatActivity {
-    //private FirebaseAuth mAuth;
 
     MaterialRippleLayout btnRegister;
     MaterialRippleLayout btnSignIn;
     TextView title;
-
-   /* @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            //mAuth.signOut();
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-        }
-        //updateUI(currentUser);
-    }*/
-
 
 
     @Override
@@ -41,8 +26,12 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
+        //initialize views
         title = (TextView) findViewById(R.id.txt_title);
+        btnRegister = findViewById(R.id.btnRegister);
+        btnSignIn = findViewById(R.id.btnSignIn);
 
+        //Apply gradient to title in welcome screen
         TextPaint paint = title.getPaint();
         float width = paint.measureText("Instant Reservation");
 
@@ -54,10 +43,7 @@ public class WelcomeActivity extends AppCompatActivity {
         title.getPaint().setShader(textShader);
 
 
-        //mAuth = FirebaseAuth.getInstance();
-        btnRegister = findViewById(R.id.btnRegister);
-        btnSignIn = findViewById(R.id.btnSignIn);
-
+        //navigate to Register activity
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +52,7 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         });
 
+        //navigate to Login activity
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

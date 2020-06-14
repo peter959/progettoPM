@@ -32,6 +32,7 @@ import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    // pattern for password validation format
     private static final Pattern PASSWORD_PATTERN =
             Pattern.compile("^" +
                     //"(?=.*[0-9])" +         //at least 1 digit
@@ -45,7 +46,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
-    private SharedPreferences settings;
 
     //Button btnSignUp;
     View btnSignUp;
@@ -63,15 +63,16 @@ public class RegisterActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        btnSignUp = findViewById(R.id.btn_sign_up);
-        progressButton = new ProgressButton(RegisterActivity.this, btnSignUp, "Get Started");
-
+        //initialize toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         getSupportActionBar().setTitle("");
 
+        //initialize views
+        btnSignUp = findViewById(R.id.btn_sign_up);
+        progressButton = new ProgressButton(RegisterActivity.this, btnSignUp, "Get Started");
         ETname = findViewById(R.id.et_name);
         ETphone = findViewById(R.id.et_phone);
         ETemail = findViewById(R.id.et_email);
@@ -103,7 +104,7 @@ public class RegisterActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
 
                                 if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
+                                    // Sign in success, save user info in firebase and in shared preferences
                                     Log.d("Register", "createUserWithEmail:success");
 
                                     FirebaseUser firebaseUser = mAuth.getCurrentUser();
@@ -120,32 +121,27 @@ public class RegisterActivity extends AppCompatActivity {
                                     editor.putString("businessEmail", email);
                                     editor.putString("businessPhone", phone);
                                     editor.commit();
-                                    //SHARED PREFERENCES
 
                                     progressButton.buttonFinished("DONE");
+
+                                    //navigate to MainActivity
                                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                     startActivity(intent);
                                     finish();
-                                    //updateUI(user);
+
                                 } else {
                                     progressButton.buttonFinished("Something went wrong :(");
                                     // If sign in fails, display a message to the user.
                                     Log.w("Register", "createUserWithEmail:failure", task.getException());
                                     Toast.makeText(RegisterActivity.this, "Authentication failed.",
                                             Toast.LENGTH_SHORT).show();
-                                    //updateUI(null);
                                 }
 
-                                // ...
                 }});
 
             }
         });
     }
-
-    private void updateUI(Object o) {
-    }
-
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -158,6 +154,7 @@ public class RegisterActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //Email validation
     private boolean validateEmail() {
         String emailInput = ETemail.getText().toString().trim();
         if (emailInput.isEmpty()) {
@@ -171,6 +168,8 @@ public class RegisterActivity extends AppCompatActivity {
             return true;
         }
     }
+
+    //Username validation
     private boolean validateUsername() {
         String usernameInput = ETname.getText().toString().trim();
         if (usernameInput.isEmpty()) {
@@ -185,6 +184,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    //Phone validation
     private boolean validatePhone() {
         String phonenumber = ETphone.getText().toString().trim();
         if (phonenumber.isEmpty()) {
@@ -199,6 +199,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    //Password validation
     private boolean validatePassword() {
         String passwordInput = ETpassword.getText().toString().trim();
         if (passwordInput.isEmpty()) {
@@ -213,6 +214,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    //Confirm Password validation
     private boolean confirmPassword() {
         String passwordInput = ETpassword.getText().toString().trim();
         String confirmpasswordInput = ETconfPass.getText().toString().trim();
@@ -230,10 +232,4 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    private boolean validateInput() {
-        if (!validateEmail() | !validateUsername() | !validatePhone() | !validatePassword() | !confirmPassword()) {
-            return false;
-        }
-        return true;
-    }
 }

@@ -9,18 +9,14 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.ContactsContract;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -30,26 +26,19 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
-import com.example.instantreservationbusiness.ProgressButton;
 import com.example.instantreservationbusiness.Queue;
 import com.example.instantreservationbusiness.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import java.io.File;
-import java.io.IOException;
 
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
@@ -65,8 +54,6 @@ public class QueueActivity extends AppCompatActivity {
     TextView queue_business;
     TextView queue_city;
     TextView queue_nReservationString;
-    int queue_nMaxReservation;
-    int queue_nReservation;
     TextView queue_description ;
 
     ImageView queue_qr;
@@ -92,8 +79,9 @@ public class QueueActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_queue_test);
+        setContentView(R.layout.activity_queue);
 
+        //initialize views
         Toolbar toolbar = findViewById(R.id.toolbar_queue);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -114,28 +102,28 @@ public class QueueActivity extends AppCompatActivity {
         progressBarQueue = findViewById(R.id.progressBarQueue);
         queue_layout = findViewById(R.id.queue_layout);
 
+        // get queue id from intent extra
         Intent intent = getIntent();
         queueID = intent.getStringExtra("payload");
         sharedPreferences = getSharedPreferences("BusinessInfo", Context.MODE_PRIVATE);
 
+        //initialize firebase references
         referenceForQueueInfo = FirebaseDatabase.getInstance().getReference().child("queues");
         referenceBusiness = FirebaseDatabase.getInstance().getReference().child("business").child(sharedPreferences.getString("businessUID", null));
 
+        //show loading
         queue_layout.setVisibility(View.GONE);
         progressBarQueue.setVisibility(View.VISIBLE);
 
-        // Check if user is signed in (non-null) and update UI accordingly.
+        //retreive additrional queue info
         referenceForQueueInfo.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Queue queue = dataSnapshot.child(queueID).getValue(Queue.class);
-                //queueBusinessID = queue.getQueue_businessID();
                 queue_business.setText(queue.getQueue_business());
                 queue_city.setText(queue.getQueue_city());
                 queue_description.setText(queue.getQueue_description());
                 queue_name.setText(queue.getQueue_name());
-                //queue_nMaxReservation = queue.getQueue_nMaxReservation();
-                //queue_nReservation = queue.getQueue_nReservation();
                 queue_nReservationString.setText(String.format("%s/%d", queue.getQueue_nReservationString(), queue.getQueue_nMaxReservation()));
                 imageUri = queue.getQueue_image();
                 if (!imageUri.equals("")) {
@@ -148,6 +136,7 @@ public class QueueActivity extends AppCompatActivity {
                     Glide.with(QueueActivity.this).load(storageReferenceQR).into(queue_qr);
                 }
 
+                //hide loading
                 queue_layout.setVisibility(View.VISIBLE);
                 progressBarQueue.setVisibility(View.GONE);
             }
@@ -155,10 +144,11 @@ public class QueueActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
 
+        // download qr code  on long press of the qr image
         queue_qr.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                    Toast.makeText(getApplicationContext(), "hey", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "download", Toast.LENGTH_SHORT).show();
                     StorageReference storageReferenceQR = FirebaseStorage.getInstance().getReference().child(qrUri);
 
                     storageReferenceQR.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -178,6 +168,7 @@ public class QueueActivity extends AppCompatActivity {
             }
         });
 
+        // navigate to ReservationManager
         btn_menage_reservation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -188,6 +179,7 @@ public class QueueActivity extends AppCompatActivity {
         });
 
 
+        // removing queue
         btn_remove_queue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -198,12 +190,14 @@ public class QueueActivity extends AppCompatActivity {
 
     }
 
+    // removing queue method
     private void removeQueue(final String queueID){
-
+        //remove queue's reservations
         DatabaseReference resRef = FirebaseDatabase.getInstance().getReference().child("reservations").child(queueID);
         resRef.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
+                //remove queue
                 DatabaseReference ref = referenceForQueueInfo.child(queueID);
                 ref.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -213,7 +207,9 @@ public class QueueActivity extends AppCompatActivity {
                             referenceBusiness.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    //decrement business' queue number
                                     int nQueues = dataSnapshot.child("business_nQueues").getValue(int.class) -1;
+                                    //remove queue's images/qr in storage
                                     dataSnapshot.getRef().child("business_nQueues").setValue(nQueues).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
@@ -270,11 +266,9 @@ public class QueueActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void checkPermission() {
-    }
-
-
+    // download qr code method
     public void downloadFile(Context context, String fileName, String fileExtension, String destinationDirectory, String url) {
+        //check permission
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,

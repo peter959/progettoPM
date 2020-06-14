@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragment.ProfileFragment"
+    tools:context=".Activity.WrongAccountActivity"
     android:background="@drawable/background"
     android:orientation="vertical"
     >
@@ -30,7 +30,7 @@
                 <ImageView
                     android:layout_marginTop="32dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_user"
+                    android:src="@drawable/ic_error_outline_black_24dp"
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     />

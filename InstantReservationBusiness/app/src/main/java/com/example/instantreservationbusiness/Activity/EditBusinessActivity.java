@@ -50,7 +50,6 @@ public class EditBusinessActivity extends AppCompatActivity {
     Button btn_cancel;
     View btn_edit;
     ImageButton add_business_image;
-    ImageView business_image;
     String current_imageUri;
     Uri imageUri;
 
@@ -63,8 +62,10 @@ public class EditBusinessActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE) {
-           imageUri = data.getData();
-           add_business_image.setImageURI(imageUri);
+            if(data!=null) {
+                imageUri = data.getData();
+                add_business_image.setImageURI(imageUri);
+            }
         }
     }
 
@@ -73,12 +74,14 @@ public class EditBusinessActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_business);
 
+        //initialize storage reference
         storageRef = FirebaseStorage.getInstance().getReference().child("images/business_images");
 
+        //get info from shared preferences
         businessInfo = getSharedPreferences("BusinessInfo", Context.MODE_PRIVATE);
         businessID = businessInfo.getString("businessUID", "error");
 
-
+        //initialize views
         btn_edit = findViewById(R.id.btn_edit);
         btn_cancel = findViewById(R.id.btn_cancel);
         progressButton = new ProgressButton(EditBusinessActivity.this, btn_edit, "Save changes");
@@ -88,13 +91,14 @@ public class EditBusinessActivity extends AppCompatActivity {
         add_business_city = findViewById(R.id.add_business_city);
         add_business_image = findViewById(R.id.add_business_image);
 
+        //get business info from intent
         Intent intent = getIntent();
         add_business_city.setText(intent.getStringExtra("city"));
         add_business_name.setText(intent.getStringExtra("name"));
         add_business_desc.setText(intent.getStringExtra("description"));
 
 
-
+        //add image from gallery
         add_business_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,11 +107,11 @@ public class EditBusinessActivity extends AppCompatActivity {
             }
         });
 
+        //save changes in database
         btn_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 progressButton.buttonActivated();
-
                 referenceBusiness = FirebaseDatabase.getInstance().getReference().child("business").child(businessID);
                 referenceBusiness.addValueEventListener(new ValueEventListener() {
                     @Override

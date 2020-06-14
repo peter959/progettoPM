@@ -5,32 +5,20 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.ToggleButton;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.example.instantreservationbusiness.Activity.QueueActivity;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecycler.MyViewHolder> {
 
     Context context;
     List<Queue> queues;
-    private FirebaseUser firebaseUser;
-    DatabaseReference referenceForAddingReservationInUserFavorites;
 
     public QueueAdapterRecycler(Context c, List<Queue> p) {
         context = c;
@@ -66,7 +54,7 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
 
         View v = myViewHolder.itemView;
 
-        //Quando il does viene toccato, vengono passati ad EditTaskDesk le informazioni già presenti
+        //when the queue get touched, navigate to queue activity passing, queue_id
         myViewHolder.itemView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -87,7 +75,6 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
 
         TextView queue_name, queue_business, queue_nReservation, queue_city;
         ImageView queue_image;
-        ToggleButton tb;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);

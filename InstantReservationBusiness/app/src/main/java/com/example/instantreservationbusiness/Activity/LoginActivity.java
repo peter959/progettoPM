@@ -9,6 +9,7 @@ import android.util.Patterns;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,19 +43,9 @@ public class LoginActivity extends AppCompatActivity {
     ProgressButton progressButton;
     EditText ETemail, ETpassword;
     String email, password;
+    TextView txtRegister;
 
     AwesomeValidation awesomeValidation;
-
-   /* @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        //updateUI(currentUser);
-    } */
-
-    private void updateUI(FirebaseUser currentUser) {
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,20 +53,33 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
 
+        //initialize toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         getSupportActionBar().setTitle("");
 
+        // initialize views
         btnLogIn = findViewById(R.id.btn_sign_in);
         progressButton = new ProgressButton(LoginActivity.this, btnLogIn, "LOG IN");
         ETemail = findViewById(R.id.edit_text_email);
         ETpassword = findViewById(R.id.edit_text_password);
+        txtRegister = findViewById(R.id.txtRegister);
 
         //initialize Validation Style
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
 
+        txtRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        //Login Button
         btnLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,38 +98,61 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
+                                    // if the user is successfully connected, check if it is a business user
                                     firebaseUser = mAuth.getCurrentUser();
-                                    mDatabase = FirebaseDatabase.getInstance().getReference().child("business").child(firebaseUser.getUid());
-                                    mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                                    DatabaseReference CheckBusinessUserReference = FirebaseDatabase.getInstance().getReference().child("business");
+                                    CheckBusinessUserReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                            String name =  dataSnapshot.child("business_name").getValue().toString();
-                                            String phone =  dataSnapshot.child("business_phone").getValue().toString();
-                                            String city =  dataSnapshot.child("business_city").getValue().toString();
+                                            if (!dataSnapshot.hasChild(firebaseUser.getUid())) {
+                                                // if it is not a business user, show wronAccountActivity
+                                                Intent intent = new Intent(getApplicationContext(), WrongAccountActivity.class);
+                                                startActivity(intent);
+                                                finish();
+                                            }
+                                            else {
+                                                // if the user is successfully connected, save his data in shared preferences
+                                                mDatabase = FirebaseDatabase.getInstance().getReference().child("business").child(firebaseUser.getUid());
+                                                mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                        String name =  dataSnapshot.child("business_name").getValue().toString();
+                                                        String phone =  dataSnapshot.child("business_phone").getValue().toString();
+                                                        String city =  dataSnapshot.child("business_city").getValue().toString();
 
-                                            //SHARED PREFERENCES
-                                            SharedPreferences sharedPreferences = getSharedPreferences("BusinessInfo", Context.MODE_PRIVATE);
-                                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                                            editor.putString("businessUID", firebaseUser.getUid());
-                                            editor.putString("businessName", name);
-                                            editor.putString("businessCity", city);
-                                            editor.putString("businessEmail", email);
-                                            editor.putString("businessPhone", phone);
-                                            editor.commit();
-                                            System.out.println("-------Logged: email: " + email + ", name: " + name + ", phone:" + phone + ", UID: " + firebaseUser.getUid());
+                                                        //SHARED PREFERENCES
+                                                        SharedPreferences sharedPreferences = getSharedPreferences("BusinessInfo", Context.MODE_PRIVATE);
+                                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                                        editor.putString("businessUID", firebaseUser.getUid());
+                                                        editor.putString("businessName", name);
+                                                        editor.putString("businessCity", city);
+                                                        editor.putString("businessEmail", email);
+                                                        editor.putString("businessPhone", phone);
+                                                        editor.commit();
+                                                        System.out.println("-------Logged: email: " + email + ", name: " + name + ", phone:" + phone + ", UID: " + firebaseUser.getUid());
 
-                                            progressButton.buttonFinished("DONE");
-                                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                            startActivity(intent);
-                                            finish();
+                                                        progressButton.buttonFinished("DONE");
+                                                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                                        startActivity(intent);
+                                                        finish();
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError databaseError) {}
+                                                });
+                                            }
                                         }
 
                                         @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {}
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
                                     });
 
 
                                 } else {
+                                    // show errors
                                     progressButton.buttonFinished("Something went wrong :(");
                                     // If sign in fails, display a message to the user.
                                     Log.w("LOG IN", "signInWithEmail:failure", task.getException());
@@ -134,13 +161,13 @@ public class LoginActivity extends AppCompatActivity {
                                             Toast.LENGTH_SHORT).show();
                                 }
 
-                                // ...
                             }
                         });
             }
         });
     }
 
+    //tab bar options
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId())
@@ -152,6 +179,7 @@ public class LoginActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //Email validation
     private boolean validateEmail() {
         String emailInput = ETemail.getText().toString().trim();
         if (emailInput.isEmpty()) {
@@ -166,6 +194,8 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+
+    //Password validation
     private boolean validatePassword() {
         String passwordInput = ETpassword.getText().toString().trim();
         if (passwordInput.isEmpty()) {
@@ -180,6 +210,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    // pattern for password validation format
     private static final Pattern PASSWORD_PATTERN =
             Pattern.compile("^" +
                     //"(?=.*[0-9])" +         //at least 1 digit

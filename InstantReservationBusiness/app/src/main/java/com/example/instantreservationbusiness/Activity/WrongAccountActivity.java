@@ -25,6 +25,7 @@ public class WrongAccountActivity extends AppCompatActivity {
 
         final TextView logout = (TextView) findViewById(R.id.txt_log_out);
 
+        // let log out the user to access with a correct account
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

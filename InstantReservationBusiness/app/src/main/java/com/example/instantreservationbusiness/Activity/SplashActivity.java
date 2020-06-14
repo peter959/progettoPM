@@ -23,36 +23,19 @@ public class SplashActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private FirebaseUser firebaseUser;
 
-    /*
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            //mAuth.signOut();
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-        }
-        else {
-            Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
-            startActivity(intent);
-        }
-        //updateUI(currentUser);
-    }*/
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mAuth = FirebaseAuth.getInstance();
-        //mAuth.signOut();
+
         try {
             Thread.sleep(1000L);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
+        // check if some user is currently connected
         final FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("business");
@@ -61,11 +44,13 @@ public class SplashActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     // check if the user is a business
                     if (!dataSnapshot.hasChild(currentUser.getUid())) {
+                        // if it is not a business user, show wronAccountActivity
                         Intent intent = new Intent(getApplicationContext(), WrongAccountActivity.class);
                         startActivity(intent);
                         finish();
                     }
                     else {
+                        //save user data in shared preferences
                         dataSnapshot = dataSnapshot.child(currentUser.getUid());
                         String name =  dataSnapshot.child("business_name").getValue().toString();
                         String phone =  dataSnapshot.child("business_phone").getValue().toString();
@@ -97,7 +82,7 @@ public class SplashActivity extends AppCompatActivity {
             });
         }
         else {
-            System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+            // if there's no user, show welcome activity
             Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
             startActivity(intent);
             finish();

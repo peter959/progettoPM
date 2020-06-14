@@ -81,9 +81,6 @@ public class Business {
         return Integer.toString(business_nQueues);
     }
 
-    /*public void setBusiness_nQueuesString(String business_nQueues) {
-        this.business_nQueues = Integer.getInteger(business_nQueues);
-    }*/
 
     public void setBusiness_nQueues(int business_nQueues) {
         this.business_nQueues = business_nQueues;

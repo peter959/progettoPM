@@ -56,24 +56,6 @@
                         android:src="@drawable/resturant_example"
                         android:scaleType="fitXY"/>
 
-                    <RelativeLayout
-                        android:layout_margin="20dp"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/bg_circle"
-                        android:layout_alignParentRight="true">
-
-                        <ImageButton
-                            android:background="@color/transparent"
-                            android:id="@+id/edit_button"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/ic_edit_black_24dp"
-                            />
-
-                    </RelativeLayout>
-
-
                 </RelativeLayout>
 
                 <androidx.cardview.widget.CardView

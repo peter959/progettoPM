@@ -8,13 +8,6 @@ public class Reservation {
     String user_name;
     String user_phone;
 
-    /*public Reservation(String id_queue, String id_user, String note, int ticket) {
-        this.id_queue = id_queue;
-        this.id_user = id_user;
-        this.note = note;
-        this.ticket = ticket;
-    } */
-
     public Reservation(String note, int ticket) {
         this.note = note;
         this.ticket = ticket;

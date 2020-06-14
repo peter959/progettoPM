@@ -44,14 +44,7 @@ public class MyNotificationManager {
             notificationObj.put("title","It's your turn for the queue: " + queueName);
             notificationObj.put("body",queueBusiness);
 
-            //JSONObject extraData = new JSONObject();
-            //extraData.put("brandId","puma");
-           //extraData.put("category","Shoes");
-
-
-
             json.put("notification",notificationObj);
-            //json.put("data",extraData);
 
 
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,

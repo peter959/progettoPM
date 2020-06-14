@@ -100,6 +100,7 @@ public class AddQueueActivity extends AppCompatActivity {
         add_queue_maxReserv = findViewById(R.id.add_queue_maxReserv);
         add_queue_image = findViewById(R.id.add_queue_image);
 
+        //add queue image, open gallery
         add_queue_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,13 +147,13 @@ public class AddQueueActivity extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
+                                                //generate and add QR
                                                 Bitmap qrImage = qrGenerator(queue_id);
                                                 if (qrImage != null) {
                                                     StorageReference imageRef = storageRefQR.child(queue_id);
                                                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                                                     qrImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                                                     byte[] data = baos.toByteArray();
-
                                                     UploadTask uploadTask = imageRef.putBytes(data);
                                                     uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                                                         //UPDATE QUEUE QR URI IN FIREBASE
@@ -161,8 +162,8 @@ public class AddQueueActivity extends AppCompatActivity {
                                                             referenceQueue.child("queue_QRCodeImage").setValue("images/queue_qr_codes/"+queue_id).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                 @Override
                                                                 public void onComplete(@NonNull Task<Void> task) {
-                                                                    //ADD IMAGE IN STORAGE
                                                                     if (imageUri != null) {
+                                                                        //ADD IMAGE IN STORAGE
                                                                         StorageReference imageRef = storageRefImages.child(imageUri.getLastPathSegment());
                                                                         UploadTask uploadTask = imageRef.putFile(imageUri);
                                                                         uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
@@ -218,7 +219,6 @@ public class AddQueueActivity extends AppCompatActivity {
 
     }
 
-
     private Bitmap qrGenerator (String queue_id) {
         JSONObject json = new JSONObject();
         try {
@@ -236,7 +236,7 @@ public class AddQueueActivity extends AppCompatActivity {
             //qrImage.setImageBitmap(bitmap);
 
         } catch (WriterException e) {
-            System.out.println("------------------------- Errore generazione QRcode: ");
+            System.out.println("------------------------- generation QRcode Error: ");
             return null;
         }
 
