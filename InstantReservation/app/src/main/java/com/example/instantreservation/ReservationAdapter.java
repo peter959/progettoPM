@@ -24,12 +24,11 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
     @NonNull
     @Override
-    //specifico quali oggetti "iniettare" nell'adapter (itemdoes)
+    //specifico quali oggetti "iniettare" nell'adapter
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         return new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.item_reservation, viewGroup, false));
     }
 
-    //
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         final String business_name = reservations.get(i).getBusiness_name();

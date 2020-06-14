@@ -39,7 +39,6 @@ public class BusinessActivity extends AppCompatActivity {
 
     DatabaseReference referenceForBusinessInfo;
     DatabaseReference referenceForBusinessQueuesInfo;
-    DatabaseReference referenceForQueueInfo;
 
     TextView business_name;
     TextView business_description;
@@ -66,7 +65,6 @@ public class BusinessActivity extends AppCompatActivity {
         business_layout.setVisibility(View.GONE);
         progressBarBusiness.setVisibility(View.VISIBLE);
 
-        // Check if user is signed in (non-null) and update UI accordingly.
         referenceForBusinessInfo.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -80,9 +78,6 @@ public class BusinessActivity extends AppCompatActivity {
                     StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(imageUri);
                     Glide.with(BusinessActivity.this).load(storageReference).into(business_image);
                 }
-
-                //business_image
-
                 business_layout.setVisibility(View.VISIBLE);
                 progressBarBusiness.setVisibility(View.GONE);
 

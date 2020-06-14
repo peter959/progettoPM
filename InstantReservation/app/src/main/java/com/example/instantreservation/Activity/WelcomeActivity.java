@@ -15,27 +15,12 @@ import com.balysv.materialripple.MaterialRippleLayout;
 import com.example.instantreservation.R;
 
 public class WelcomeActivity extends AppCompatActivity {
-    //private FirebaseAuth mAuth;
-
     MaterialRippleLayout btnRegister;
     MaterialRippleLayout btnSignIn;
     TextView title;
 
-   /* @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            //mAuth.signOut();
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-        }
-        //updateUI(currentUser);
-    }*/
 
-
-
+    //Da la possibilità all'utente di registrarsi o effetturare login
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,8 +38,6 @@ public class WelcomeActivity extends AppCompatActivity {
                 }, null, Shader.TileMode.CLAMP);
         title.getPaint().setShader(textShader);
 
-
-        //mAuth = FirebaseAuth.getInstance();
         btnRegister = findViewById(R.id.btnRegister);
         btnSignIn = findViewById(R.id.btnSignIn);
 

@@ -24,13 +24,6 @@ import org.json.JSONObject;
 
 
 public class CameraFragment extends Fragment {
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
-
     MaterialRippleLayout btnScan;
 
     private IntentIntegrator qrScan;
@@ -40,22 +33,14 @@ public class CameraFragment extends Fragment {
     }
 
     // TODO: Rename and change types and number of parameters
-    public static CameraFragment newInstance(String param1, String param2) {
+    public static CameraFragment newInstance() {
         CameraFragment fragment = new CameraFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -100,18 +85,6 @@ public class CameraFragment extends Fragment {
                 intent.putExtra("payload", result.getContents());
                 startActivity(intent);
                 Toast.makeText(getContext(), result.getContents(), Toast.LENGTH_LONG).show();
-               /* try {
-                    //converting the data to json
-                    JSONObject obj = new JSONObject(result.getContents());
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    //if control comes here
-                    //that means the encoded format not matches
-                    //in this case you can display whatever data is available on the qrcode
-                    //to a toast
-                    Toast.makeText(getContext(), result.getContents(), Toast.LENGTH_LONG).show();
-                }*/
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);

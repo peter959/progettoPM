@@ -9,13 +9,6 @@ public class Reservation {
     String business_name;
     String queue_name;
 
-    /*public Reservation(String id_queue, String id_user, String note, int ticket) {
-        this.id_queue = id_queue;
-        this.id_user = id_user;
-        this.note = note;
-        this.ticket = ticket;
-    } */
-
     public Reservation(String id_user, int ticket, String note) {
         this.id_user = id_user;
         this.ticket = ticket;
@@ -67,9 +60,6 @@ public class Reservation {
 
     public void setNote(String note) {
         this.note = note;
-    }
-
-    public Reservation() {
     }
 
     public String getId_queue() {

@@ -93,7 +93,6 @@ public class QueueActivity extends AppCompatActivity {
         queue_layout.setVisibility(View.GONE);
         progressBarQueue.setVisibility(View.VISIBLE);
 
-        // Check if user is signed in (non-null) and update UI accordingly.
         referenceForQueueInfo.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -157,19 +156,16 @@ public class QueueActivity extends AppCompatActivity {
 
                     queue_layout.setVisibility(View.VISIBLE);
                     progressBarQueue.setVisibility(View.GONE);
-
-
-
-                }else {
-                    System.out.println("errore");
-                    queue_business.setText("Errore");
-                    queue_business.setText("Errore");
-                    queue_city.setText("Errore");
+                }else { //Se la coda è stata rimossa ma è ancora accessibile allora fallo comprendere all'utente
+                    System.out.println("The queue probably doesn't exist anymore");
+                    queue_business.setText("Error");
+                    queue_business.setText("Error");
+                    queue_city.setText("Error");
                     queue_description.setText("The queue probably doesn't exist anymore");
-                    queue_name.setText("Errore");
+                    queue_name.setText("Error");
                     queue_nReservationString.setText("0/0");
-                    queueBusinessID = "Errore";
-                    queueID = "Errore";
+                    queueBusinessID = "Error";
+                    queueID = "Error";
 
                     queue_layout.setVisibility(View.VISIBLE);
                     progressBarQueue.setVisibility(View.GONE);
@@ -184,11 +180,10 @@ public class QueueActivity extends AppCompatActivity {
         btnReserve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(queueID!="Errore"){
+                if(queueID!="Error"){
                     if(!reserved) {
                         reserveButton.buttonActivated();
                         writeNewReservation(userUID, queueID);
-                        //btnRemoveReservation.setVisibility(View.VISIBLE);
                     }else{
                         Toast.makeText(QueueActivity.this, "You've already took a ticket!", Toast.LENGTH_SHORT).show();
                     }
@@ -227,7 +222,7 @@ public class QueueActivity extends AppCompatActivity {
         toggleFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if(queueID!="Errore") {
+                if(queueID!="Error") {
                     firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                     referenceForAddingReservationInUserFavorites = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid());
                     if (checked) {
@@ -365,18 +360,16 @@ public class QueueActivity extends AppCompatActivity {
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                        @Override
                                                                        public void onComplete(@NonNull Task<Void> task2) {
-                                                                           if (task2.isSuccessful()) {
-                                                                               et_note.setVisibility(View.VISIBLE);
-                                                                               reserveButton = new ProgressButton(QueueActivity.this, btnReserve, "Pick up a ticket");
-                                                                               reserved = false;
-                                                                               btnRemoveReservation.setVisibility(View.GONE);
-                                                                               Toast.makeText(QueueActivity.this, "Reservation cancelled", Toast.LENGTH_SHORT).show();
-                                                                           }else
-                                                                               removeReservationButton.buttonFinishedUnsuccessully("Something went wrong :(");
-                                                                       }
-                                                                   }
-
-                                            );
+                                               if (task2.isSuccessful()) {
+                                                   et_note.setVisibility(View.VISIBLE);
+                                                   reserveButton = new ProgressButton(QueueActivity.this, btnReserve, "Pick up a ticket");
+                                                   reserved = false;
+                                                   btnRemoveReservation.setVisibility(View.GONE);
+                                                   Toast.makeText(QueueActivity.this, "Reservation cancelled", Toast.LENGTH_SHORT).show();
+                                               }else
+                                                   removeReservationButton.buttonFinishedUnsuccessully("Something went wrong :(");
+                                               }
+                                             });
                                 } else removeReservationButton.buttonFinishedUnsuccessully("Something went wrong :(");
                             }
                         });

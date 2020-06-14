@@ -51,7 +51,6 @@ public class FavoritesFragment extends Fragment {
     RecyclerView recyclerView;
     QueueAdapterRecycler queueAdapter;
     List<Queue> models;
-    //ProgressBar progressBar;
 
     DatabaseReference referenceForFavoritesQueues;
     DatabaseReference referenceForQueueInfo;

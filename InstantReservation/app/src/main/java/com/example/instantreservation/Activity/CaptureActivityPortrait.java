@@ -11,6 +11,5 @@ public class CaptureActivityPortrait extends CaptureActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_capture_portrait);
     }
 }

@@ -45,16 +45,7 @@ public class LoginActivity extends AppCompatActivity {
 
     AwesomeValidation awesomeValidation;
 
-   /* @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        //updateUI(currentUser);
-    } */
-
-    private void updateUI(FirebaseUser currentUser) {
-    }
+    //Activity di login, con controlli di verifica dei dati inseriti
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +63,6 @@ public class LoginActivity extends AppCompatActivity {
         progressButton = new ProgressButton(LoginActivity.this, btnLogIn, "LOG IN");
         ETemail = findViewById(R.id.edit_text_email);
         ETpassword = findViewById(R.id.edit_text_password);
-
-        //initialize Validation Style
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
 
         btnLogIn.setOnClickListener(new View.OnClickListener() {

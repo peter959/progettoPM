@@ -23,8 +23,6 @@ public class ProgressButton {
     private ProgressBar progressBar;
     private TextView textView;
 
-    Animation fade_in;
-
     public ProgressButton(Context ct, View view, String text) {
         cardView = view.findViewById(R.id.card_btn);
         layout = view.findViewById(R.id.constraint_layout);
@@ -42,7 +40,6 @@ public class ProgressButton {
     }
 
     public void buttonFinished(String text) {
-        //layout.setBackground(cardView.getResources().getDrawable(R.drawable.background_gradient_button_done));
         textView.setText(text);
         progressBar.setVisibility(View.GONE);
     }
@@ -50,7 +47,6 @@ public class ProgressButton {
     public void buttonRemove(String text) {
         layout.setBackground(cardView.getResources().getDrawable(R.drawable.background_gradient_button_unsuccess));
         textView.setText(text);
-        //progressBar.setVisibility(View.GONE);
     }
 
     public void buttonFinishedUnsuccessully(String text) {

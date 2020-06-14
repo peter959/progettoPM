@@ -12,7 +12,7 @@ public class ReceiveNotificationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recieve_notification);
 
-        TextView categotyTv = findViewById(R.id.category);
+       /* TextView categotyTv = findViewById(R.id.category);
         TextView brandTv = findViewById(R.id.brand);
 
         if (getIntent().hasExtra("category")){
@@ -20,6 +20,6 @@ public class ReceiveNotificationActivity extends AppCompatActivity {
             String brand = getIntent().getStringExtra("brandId");
             categotyTv.setText(category);
             brandTv.setText(brand);
-        }
+        }*/
     }
 }

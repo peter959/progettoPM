@@ -52,9 +52,6 @@ public class ReservationManager extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
 
-
-//    Reservation reservation = new Reservation("alkhslda", "asldalskj", "tavolo per 4", 4);
-
     @Override
     public void onStart() {
         super.onStart();

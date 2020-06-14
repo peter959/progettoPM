@@ -52,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
     Fragment active = homeFragment;
 
     FusedLocationProviderClient fusedLocationProviderClient;
-    String city;
 
+    //info per geo-localizzazione
     double latitude, longitude;
     String locality;
     String address;

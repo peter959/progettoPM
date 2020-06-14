@@ -36,9 +36,6 @@ public class QueueAdapter extends PagerAdapter {
     private LayoutInflater layoutInflater;
     private Context context;
 
-    private FirebaseUser firebaseUser;
-    DatabaseReference referenceForAddingReservationInUserFavorites;
-
     public QueueAdapter(List<Queue> models, Context context) {
         this.models = models;
         this.context = context;
@@ -57,8 +54,6 @@ public class QueueAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull final ViewGroup container, final int position) {
-
-
         layoutInflater = LayoutInflater.from(context);
         final View view = layoutInflater.inflate(R.layout.queue_card_mini, container, false);
         TextView queue_ID;
@@ -68,9 +63,7 @@ public class QueueAdapter extends PagerAdapter {
         TextView queue_city;
         TextView queue_nReservation;
         final String queue_id;
-        final String userUID;
         String queue_imageUri;
-        boolean queue_is_favorite;
 
         queue_ID = view.findViewById(R.id.queue_ID);
         queue_image = view.findViewById(R.id.queue_image);
@@ -92,25 +85,8 @@ public class QueueAdapter extends PagerAdapter {
             StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(queue_imageUri);
             Glide.with(context).load(storageReference).into(queue_image);
         }
-       // queue_is_favorite = models.get(position).getQueue_is_favorite();
 
         container.addView(view, 0);
-
-        /*ToggleButton tb = view.findViewById(R.id.toggleFavorite);
-        //tb.setChecked(queue_is_favorite);
-        tb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                referenceForAddingReservationInUserFavorites = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid());
-                if (checked) {
-                   referenceForAddingReservationInUserFavorites.child("favoritesQueue").child(models.get(position).getQueue_id()).setValue("favorite");
-                } else {
-                    destroyItem(container, position, view);
-                    referenceForAddingReservationInUserFavorites.child("favoritesQueue").child(models.get(position).getQueue_id()).removeValue();
-                }
-            }
-        });*/
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override

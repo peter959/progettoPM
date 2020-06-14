@@ -116,7 +116,7 @@ public class QueueActivity extends AppCompatActivity {
         progressBarQueue.setVisibility(View.VISIBLE);
 
         //retreive additrional queue info
-        referenceForQueueInfo.addValueEventListener(new ValueEventListener() {
+        referenceForQueueInfo.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Queue queue = dataSnapshot.child(queueID).getValue(Queue.class);
@@ -127,12 +127,12 @@ public class QueueActivity extends AppCompatActivity {
                 queue_nReservationString.setText(String.format("%s/%d", queue.getQueue_nReservationString(), queue.getQueue_nMaxReservation()));
                 imageUri = queue.getQueue_image();
                 if (!imageUri.equals("")) {
-                    StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(imageUri);
+                    final StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(imageUri);
                     Glide.with(QueueActivity.this).load(storageReference).into(queue_image);
                 }
                 qrUri = queue.getQueue_QRCodeImage();
-                if (!qrUri.equals("")) {
-                    StorageReference storageReferenceQR = FirebaseStorage.getInstance().getReference().child(qrUri);
+                if (qrUri.length()!=0) {
+                    final StorageReference storageReferenceQR = FirebaseStorage.getInstance().getReference().child(qrUri);
                     Glide.with(QueueActivity.this).load(storageReferenceQR).into(queue_qr);
                 }
 

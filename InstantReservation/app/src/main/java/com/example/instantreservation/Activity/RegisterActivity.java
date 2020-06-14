@@ -47,9 +47,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
-    private SharedPreferences settings;
 
-    //Button btnSignUp;
     View btnSignUp;
     ProgressButton progressButton;
     
@@ -143,10 +141,6 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void updateUI(Object o) {
-    }
-
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId())
@@ -231,9 +225,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private boolean validateInput() {
-        if (!validateEmail() | !validateUsername() | !validatePhone() | !validatePassword() | !confirmPassword()) {
-            return false;
-        }
-        return true;
+        return !(!validateEmail() | !validateUsername() | !validatePhone() | !validatePassword() | !confirmPassword());
     }
 }

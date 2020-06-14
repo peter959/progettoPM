@@ -36,12 +36,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class HomeFragment extends Fragment {
 
     private SharedPreferences userInfo;
@@ -83,7 +77,6 @@ public class HomeFragment extends Fragment {
         referenceForQueueInfo = FirebaseDatabase.getInstance().getReference().child("queues");
 
         models = new ArrayList<>();
-
     }
 
     @Override

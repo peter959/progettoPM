@@ -36,7 +36,7 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
 
     @NonNull
     @Override
-    //specifico quali oggetti "iniettare" nell'adapter (itemdoes)
+    //specifico quali oggetti "iniettare" nell'adapter
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         return new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.queue_card, viewGroup, false));
     }
@@ -67,24 +67,6 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
             StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(queue_imageUri);
             Glide.with(context).load(storageReference).into(myViewHolder.queue_image);
         }
-
-        View v = myViewHolder.itemView;
-        ToggleButton tb = v.findViewById(R.id.toggleFavorite);
-
-        //tb.setChecked(queue_is_favorite);
-        /*tb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                referenceForAddingReservationInUserFavorites = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid());
-                if (checked) {
-                    referenceForAddingReservationInUserFavorites.child("favoritesQueue").child(queue_id).setValue("favorite");
-                } else {
-                    referenceForAddingReservationInUserFavorites.child("favoritesQueue").child(queue_id).removeValue();
-                }
-            }
-        });*/
-
 
         //Quando il does viene toccato, vengono passati ad EditTaskDesk le informazioni già presenti
         myViewHolder.itemView.setOnClickListener(new View.OnClickListener(){

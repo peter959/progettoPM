@@ -78,7 +78,10 @@ public class SearchFragment extends Fragment {
 
 
 
+
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,6 +96,24 @@ public class SearchFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setNestedScrollingEnabled(false);
 
+
+        Button button = returnView.findViewById(R.id.goSearch);
+        button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v)
+            {
+                String keyword = et_keyword.getText().toString();
+                System.out.println("The keyword inserted is: " + keyword);
+                if(keyword.length()==0){
+                    Toast.makeText(getContext(), "Insert a search keyword for queues", Toast.LENGTH_SHORT).show();
+                }else{
+                    models = new ArrayList<>();
+                    index.searchAsync(new Query(keyword), completionHandler);
+                }
+
+            }
+        });
+
         completionHandler = new CompletionHandler() {
             @Override
             public void requestCompleted(JSONObject content, AlgoliaException error) {
@@ -100,36 +121,39 @@ public class SearchFragment extends Fragment {
                 progressBar.setVisibility(View.VISIBLE);
                 try {
                     JSONArray hits = (JSONArray)content.get("hits");
-                    for(int i=0; i<hits.length(); i++){
-                        JSONObject hitsChild = hits.getJSONObject(i);
-                        final String queue_id = hitsChild.getString("objectID");
-                        System.out.println("MATCHED Queues ID for search: " + " ???? " + queue_id);
-                        models = new ArrayList<>();
-                        referenceForQueueInfo.child(queue_id).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
-                                if(dataSnapshot1.exists()){
-                                    Queue queue = dataSnapshot1.getValue(Queue.class);
+                    if(hits.length()==0){
+                        recyclerView.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
+                        models.clear();
+                        Toast.makeText(getContext(), "Not matching queues for your research", Toast.LENGTH_SHORT).show();
+                    }else {
+                        for (int i = 0; i < hits.length(); i++) {
+                            JSONObject hitsChild = hits.getJSONObject(i);
+                            final String queue_id = hitsChild.getString("objectID");
+                            System.out.println("MATCHED Queues ID for search: " + " ???? " + queue_id);
+                            models = new ArrayList<>();
+                            referenceForQueueInfo.child(queue_id).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
+                                    if(dataSnapshot1.exists()) {
+                                        Queue queue = dataSnapshot1.getValue(Queue.class);
+                                        queue.setQueue_id(dataSnapshot1.getKey());
+                                        models.add(queue);
+                                        System.out.println("ADDED on Matched LIST: " + queue_id);
 
-                                    queue.setQueue_id(dataSnapshot1.getKey());
-                                    models.add(queue);
-                                    System.out.println("ADDED on Matched LIST: " + queue_id);
-
-                                    queueAdapter = new QueueAdapterRecycler(getContext(), models);
-                                    recyclerView.setAdapter(queueAdapter);
-                                    queueAdapter.notifyDataSetChanged();
-                                    recyclerView.setVisibility(View.VISIBLE);
-                                    progressBar.setVisibility(View.GONE);
-                                }else {
-                                    models.clear();
-                                    Toast.makeText(getContext(), "not found", Toast.LENGTH_SHORT).show();
+                                        queueAdapter = new QueueAdapterRecycler(getContext(), models);
+                                        recyclerView.setAdapter(queueAdapter);
+                                        queueAdapter.notifyDataSetChanged();
+                                        recyclerView.setVisibility(View.VISIBLE);
+                                        progressBar.setVisibility(View.GONE);
+                                    }
                                 }
 
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {}
-                        });
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                }
+                            });
+                        }
                     }
                 }catch (JSONException e) {
                     e.printStackTrace();
@@ -137,20 +161,6 @@ public class SearchFragment extends Fragment {
             }
         };
 
-        Button button = returnView.findViewById(R.id.goSearch);
-        button.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                String keyword = et_keyword.getText().toString();
-                models = new ArrayList<>();
-                index.searchAsync(new Query(keyword), completionHandler);
-            }
-        });
-
-
-        // Inflate the layout for this fragment
         return returnView;
     }
 
