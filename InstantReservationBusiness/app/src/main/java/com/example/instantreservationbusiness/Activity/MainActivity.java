@@ -123,7 +123,23 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                String queueID = dataSnapshot.getKey();
+                for (int i = 0; i<models.size(); i++){
+                    if(models.get(i).getQueue_id().equals(queueID)){
+                        models.remove(i);
+                        Queue queue = dataSnapshot.getValue(Queue.class);
+                        if(queue.getQueue_businessID().equals(business_ID)){
 
+                            queue.setQueue_id(dataSnapshot.getKey());
+                            models.add(models.size(), queue);
+
+                            queueAdapter = new QueueAdapterRecycler(MainActivity.this, models);
+                            recyclerView.setAdapter(queueAdapter);
+                            queueAdapter.notifyDataSetChanged();
+                        }
+                        System.out.println("Changed on Business LIST: " + queueID);
+                    }
+                }
             }
 
             @Override

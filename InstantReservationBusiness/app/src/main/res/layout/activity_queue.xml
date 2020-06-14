@@ -111,6 +111,7 @@
                             </LinearLayout>
                         </LinearLayout>
 
+                        <!--
                         <LinearLayout
                             android:padding="10dp"
                             android:layout_marginRight="10dp"
@@ -159,7 +160,7 @@
                                     </LinearLayout>
                                 </LinearLayout>
                             </androidx.cardview.widget.CardView>
-                        </LinearLayout>
+                        </LinearLayout> -->
                     </RelativeLayout>
 
 

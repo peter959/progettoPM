@@ -124,7 +124,7 @@ public class QueueActivity extends AppCompatActivity {
                 queue_city.setText(queue.getQueue_city());
                 queue_description.setText(queue.getQueue_description());
                 queue_name.setText(queue.getQueue_name());
-                queue_nReservationString.setText(String.format("%s/%d", queue.getQueue_nReservationString(), queue.getQueue_nMaxReservation()));
+                //queue_nReservationString.setText(String.format("%s/%d", queue.getQueue_nReservationString(), queue.getQueue_nMaxReservation()));
                 imageUri = queue.getQueue_image();
                 if (!imageUri.equals("")) {
                     final StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(imageUri);
