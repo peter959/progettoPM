@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
@@ -66,6 +67,9 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
         if (!queue_imageUri.equals("")) {
             StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(queue_imageUri);
             Glide.with(context).load(storageReference).into(myViewHolder.queue_image);
+        }
+        if(queue_id==null){
+            Toast.makeText(context, "The queue probably doesn't exist anymore", Toast.LENGTH_LONG).show();
         }
 
         //Quando il does viene toccato, vengono passati ad EditTaskDesk le informazioni già presenti

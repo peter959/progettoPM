@@ -52,9 +52,6 @@ public class HomeFragment extends Fragment {
 
     DatabaseReference referenceForReservedQueue;
     DatabaseReference referenceForQueueInfo;
-    DatabaseReference referenceForFavoritesQueues;
-
-    private TextView hello_name;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -117,21 +114,35 @@ public class HomeFragment extends Fragment {
                 viewPager.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
                 final String queueID =  dataSnapshot.getKey();
-                referenceForQueueInfo.child(queueID).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                referenceForQueueInfo.child(queueID).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
                         if(dataSnapshot1.exists()) {
-                            Queue queue = dataSnapshot1.getValue(Queue.class);
+                            final Queue queue = dataSnapshot1.getValue(Queue.class);
                             queue.setQueue_id(dataSnapshot1.getKey());
-                            models.add(models.size(), queue);
-                            System.out.println("ADDED on Reserved LIST: " + queueID);
+                            referenceForReservedQueue.child(queueID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.exists()){
+                                        models.add(queue);
+                                        System.out.println("ADDED on Reserved LIST: " + queueID);
+                                        queueAdapter = new QueueAdapter(models, getContext());
+                                        viewPager.setAdapter(queueAdapter);
+                                        queueAdapter.notifyDataSetChanged();
+                                        viewPager.setPadding(0, 0, 80, 0);
+                                        viewPager.setVisibility(View.VISIBLE);
+                                        progressBar.setVisibility(View.GONE);
+                                    }
+                                }
 
-                            queueAdapter = new QueueAdapter(models, getContext());
-                            viewPager.setAdapter(queueAdapter);
-                            queueAdapter.notifyDataSetChanged();
-                            viewPager.setPadding(0, 0, 80, 0);
-                            viewPager.setVisibility(View.VISIBLE);
-                            progressBar.setVisibility(View.GONE);
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+
                         }else {
                             for (int i = 0; i<models.size(); i++){
                                 if(models.get(i).getQueue_id().equals(queueID)){
@@ -167,15 +178,16 @@ public class HomeFragment extends Fragment {
                     if(models.get(i).getQueue_id().equals(queueID)){
                         models.remove(i);
                         System.out.println("!!!REMOVED on Reserved LIST: " + queueID);
+                        queueAdapter = new QueueAdapter(models, getContext());
+                        viewPager.setAdapter(queueAdapter);
+                        queueAdapter.notifyDataSetChanged();
+                        viewPager.setPadding(0,0,80,0);
+                        viewPager.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
                     };
                 }
 
-                queueAdapter = new QueueAdapter(models, getContext());
-                viewPager.setAdapter(queueAdapter);
-                queueAdapter.notifyDataSetChanged();
-                viewPager.setPadding(0,0,80,0);
-                viewPager.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
+
 
             }
 

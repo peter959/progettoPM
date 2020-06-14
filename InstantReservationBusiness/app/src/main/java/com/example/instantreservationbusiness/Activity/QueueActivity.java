@@ -213,24 +213,29 @@ public class QueueActivity extends AppCompatActivity {
                                     dataSnapshot.getRef().child("business_nQueues").setValue(nQueues).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
-                                            StorageReference storageRefQR = FirebaseStorage.getInstance().getReference().child(qrUri);
-                                            storageRefQR.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (!imageUri.equals("")) {
-                                                        StorageReference storageRefImage = FirebaseStorage.getInstance().getReference().child(imageUri);
-                                                        storageRefImage.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                            @Override
-                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                finish();
-                                                            }
-                                                        });
-                                                    }else {
-                                                        finish();
-                                                    }
+                                            if(qrUri.length()!=0){
+                                                StorageReference storageRefQR = FirebaseStorage.getInstance().getReference().child(qrUri);
+                                                storageRefQR.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if (!imageUri.equals("")) {
+                                                            StorageReference storageRefImage = FirebaseStorage.getInstance().getReference().child(imageUri);
+                                                            storageRefImage.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                    finish();
+                                                                }
+                                                            });
+                                                        }else {
+                                                            finish();
+                                                        }
 
-                                                }
-                                            });
+                                                    }
+                                                });
+
+                                            }else{
+                                                finish();
+                                            }
 
                                         }
                                     });

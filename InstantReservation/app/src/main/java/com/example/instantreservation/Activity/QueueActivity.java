@@ -153,7 +153,6 @@ public class QueueActivity extends AppCompatActivity {
 
                         }
                     });
-
                     queue_layout.setVisibility(View.VISIBLE);
                     progressBarQueue.setVisibility(View.GONE);
                 }else { //Se la coda è stata rimossa ma è ancora accessibile allora fallo comprendere all'utente
@@ -166,10 +165,11 @@ public class QueueActivity extends AppCompatActivity {
                     queue_nReservationString.setText("0/0");
                     queueBusinessID = "Error";
                     queueID = "Error";
-
+                    //Toast.makeText(QueueActivity.this, "The queue probably doesn't exist anymore", Toast.LENGTH_LONG).show();
                     queue_layout.setVisibility(View.VISIBLE);
                     progressBarQueue.setVisibility(View.GONE);
 
+                    finish();
                 }
 
             }
@@ -180,7 +180,7 @@ public class QueueActivity extends AppCompatActivity {
         btnReserve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(queueID!="Error"){
+                if(!queueID.equals("Error")){
                     if(!reserved) {
                         reserveButton.buttonActivated();
                         writeNewReservation(userUID, queueID);
@@ -222,7 +222,7 @@ public class QueueActivity extends AppCompatActivity {
         toggleFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if(queueID!="Error") {
+                if(!queueID.equals("Error")) {
                     firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                     referenceForAddingReservationInUserFavorites = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid());
                     if (checked) {
