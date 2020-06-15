@@ -98,20 +98,20 @@ public class QueueActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.child(queueID).exists()) {
                     Queue queue = dataSnapshot.child(queueID).getValue(Queue.class);
-                    queueBusinessID = queue.getQueue_businessID();
+                    /*queueBusinessID = queue.getQueue_businessID();
                     queue_business.setText(queue.getQueue_business());
                     queue_city.setText(queue.getQueue_city());
                     queue_description.setText(queue.getQueue_description());
                     queue_name.setText(queue.getQueue_name());
-                    queue_nMaxReservation = queue.getQueue_nMaxReservation();
+                    queue_nMaxReservation = queue.getQueue_nMaxReservation();*/
                     queue_nReservation = queue.getQueue_nReservation();
                     queue_nReservationString.setText(queue.getQueue_nReservationString() + "/" + queue.getQueue_nMaxReservation());
-                    queueBusinessID = queue.getQueue_businessID();
+                   /* queueBusinessID = queue.getQueue_businessID();
                     imageUri = queue.getQueue_image();
                     if (!imageUri.equals("")) {
                         StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(imageUri);
                         Glide.with(QueueActivity.this).load(storageReference).into(queue_image);
-                    }
+                    }*/
                     //queue_image.setImageURI(queue.getQueue_image());
                     //queue_QRCodeImage.setImageURI();
                     referenceForFavoritesQueues.addValueEventListener(new ValueEventListener() {
@@ -169,7 +169,7 @@ public class QueueActivity extends AppCompatActivity {
                     queue_layout.setVisibility(View.VISIBLE);
                     progressBarQueue.setVisibility(View.GONE);
 
-                    finish();
+                    //finish();
                 }
 
             }
@@ -275,6 +275,34 @@ public class QueueActivity extends AppCompatActivity {
                 Intent i = new Intent(getApplicationContext(), BusinessActivity.class);
                 i.putExtra("business_id", queueBusinessID);
                 startActivity(i);
+            }
+        });
+
+        referenceForQueueInfo.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.child(queueID).exists()) {
+                    Queue queue = dataSnapshot.child(queueID).getValue(Queue.class);
+                    queueBusinessID = queue.getQueue_businessID();
+                    queue_business.setText(queue.getQueue_business());
+                    queue_city.setText(queue.getQueue_city());
+                    queue_description.setText(queue.getQueue_description());
+                    queue_name.setText(queue.getQueue_name());
+                    queue_nMaxReservation = queue.getQueue_nMaxReservation();
+                    queue_nReservation = queue.getQueue_nReservation();
+                    queue_nReservationString.setText(queue.getQueue_nReservationString() + "/" + queue.getQueue_nMaxReservation());
+                    queueBusinessID = queue.getQueue_businessID();
+                    imageUri = queue.getQueue_image();
+                    if (!imageUri.equals("")) {
+                        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(imageUri);
+                        Glide.with(QueueActivity.this).load(storageReference).into(queue_image);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
 
