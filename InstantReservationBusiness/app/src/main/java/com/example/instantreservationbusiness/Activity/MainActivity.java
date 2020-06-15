@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
     String imageUri;
     String business_ID;
+    String businessName;
 
     Business business;
 
@@ -181,12 +182,13 @@ public class MainActivity extends AppCompatActivity {
         //get business info from shared preferences
         businessInfo = getSharedPreferences("BusinessInfo", Context.MODE_PRIVATE);
         business_ID = businessInfo.getString("businessUID", "null");
+        businessName = businessInfo.getString("businessName", "null");
 
         //initialize views
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setTitle("");
+        getSupportActionBar().setTitle("Hello " + businessName + "!");
 
         business_name = findViewById(R.id.business_name);
         business_city = findViewById(R.id.business_city);
