@@ -15,8 +15,11 @@ import com.bumptech.glide.Glide;
 import com.example.instantreservation.Activity.QueueActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -30,6 +33,7 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
     Context context;
     List<Queue> queues;
 
+
     public QueueAdapterRecycler(Context c, List<Queue> p) {
         this.context = c;
         this.queues = p;
@@ -42,15 +46,8 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
         return new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.queue_card, viewGroup, false));
     }
 
-    public void updateList(List<Queue> itemList)
-    {
-        this.queues.clear();
-        this.queues.addAll(itemList);
-        notifyDataSetChanged();
-    }
-
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
+    public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, int i) {
         final String queue_name = queues.get(i).getQueue_name();
         final String queue_business = queues.get(i).getQueue_business();
         final String queue_city = queues.get(i).getQueue_city();
@@ -58,7 +55,7 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
         final String queue_imageUri = queues.get(i).getQueue_image();
         final String queue_id = queues.get(i).getQueue_id();
         //final Boolean queue_is_favorite = queues.get(i).getQueue_is_favorite();
-
+        
         myViewHolder.queue_name.setText(queue_name);
         myViewHolder.queue_business.setText(queue_business);
         myViewHolder.queue_city.setText(queue_city);

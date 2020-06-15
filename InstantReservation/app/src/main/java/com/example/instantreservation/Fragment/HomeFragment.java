@@ -108,100 +108,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        referenceForReservedQueue.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull final DataSnapshot dataSnapshot, @Nullable String s) {
-                viewPager.setVisibility(View.GONE);
-                progressBar.setVisibility(View.VISIBLE);
-                final String queueID =  dataSnapshot.getKey();
-
-                referenceForQueueInfo.child(queueID).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
-                        if(dataSnapshot1.exists()) {
-                            final Queue queue = dataSnapshot1.getValue(Queue.class);
-                            queue.setQueue_id(dataSnapshot1.getKey());
-                            referenceForReservedQueue.child(queueID).addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    if (dataSnapshot.exists()){
-                                        models.add(queue);
-                                        System.out.println("ADDED on Reserved LIST: " + queueID);
-                                        queueAdapter = new QueueAdapter(models, getContext());
-                                        viewPager.setAdapter(queueAdapter);
-                                        queueAdapter.notifyDataSetChanged();
-                                        viewPager.setPadding(0, 0, 80, 0);
-                                        viewPager.setVisibility(View.VISIBLE);
-                                        progressBar.setVisibility(View.GONE);
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
-
-
-                        }else {
-                            for (int i = 0; i<models.size(); i++){
-                                if(models.get(i).getQueue_id().equals(queueID)){
-                                    models.remove(i);
-                                    System.out.println("REMOVED on Reservated LIST: " + queueID);
-                                }
-                                referenceForReservedQueue.child(queueID).removeValue().isComplete();
-                                queueAdapter = new QueueAdapter(models, getContext());
-                                viewPager.setAdapter(queueAdapter);
-                                queueAdapter.notifyDataSetChanged();
-                                viewPager.setPadding(0, 0, 80, 0);
-                                viewPager.setVisibility(View.VISIBLE);
-                                progressBar.setVisibility(View.GONE);
-                            }
-                        }
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {}
-                });
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                final String queueID =  dataSnapshot.getKey();
-                for (int i = 0; i<models.size(); i++){
-                    if(models.get(i).getQueue_id().equals(queueID)){
-                        models.remove(i);
-                        System.out.println("!!!REMOVED on Reserved LIST: " + queueID);
-                        queueAdapter = new QueueAdapter(models, getContext());
-                        viewPager.setAdapter(queueAdapter);
-                        queueAdapter.notifyDataSetChanged();
-                        viewPager.setPadding(0,0,80,0);
-                        viewPager.setVisibility(View.VISIBLE);
-                        progressBar.setVisibility(View.GONE);
-                    };
-                }
-
-
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
         queueAdapter = new QueueAdapter(models, getContext());
         viewPager.setAdapter(queueAdapter);
         queueAdapter.notifyDataSetChanged();
@@ -209,4 +115,71 @@ public class HomeFragment extends Fragment {
         return returnView;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        referenceForReservedQueue.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                models = new ArrayList<>();
+                for(DataSnapshot ds: dataSnapshot.getChildren()){
+                    final String queueID = ds.getKey();
+
+                    referenceForQueueInfo.child(queueID).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
+                            if(dataSnapshot1.exists()){
+                                Queue queue = dataSnapshot1.getValue(Queue.class);
+                                queue.setQueue_id(dataSnapshot1.getKey());
+                                if(models.size()==0){
+                                    models.add(queue);
+                                }else{
+                                    for (int i = 0; i<models.size(); i++){
+                                        if(!models.get(i).getQueue_id().equals(queue.getQueue_id())){
+                                            models.add(queue);
+                                        }
+                                    }
+                                }
+                                System.out.println("ADDED on Reserved LIST: " + queueID);
+                                queueAdapter = new QueueAdapter(models, getContext());
+                                viewPager.setAdapter(queueAdapter);
+                                queueAdapter.notifyDataSetChanged();
+                                viewPager.setPadding(0, 0, 80, 0);
+                                viewPager.setVisibility(View.VISIBLE);
+                                progressBar.setVisibility(View.GONE);
+                            }else{
+                                for (int i = 0; i<models.size(); i++){
+                                    if(models.get(i).getQueue_id().equals(queueID)){
+                                        dataSnapshot.getRef().child(queueID).removeValue();
+                                        models.remove(i);
+                                        System.out.println("REMOVED on Reservated LIST: " + queueID);
+                                    }
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        models.clear();
+        queueAdapter = new QueueAdapter(models, getContext());
+        viewPager.setAdapter(queueAdapter);
+        queueAdapter.notifyDataSetChanged();
+        viewPager.setPadding(0, 0, 80, 0);
+    }
 }
