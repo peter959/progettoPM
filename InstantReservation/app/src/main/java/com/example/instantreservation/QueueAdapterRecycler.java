@@ -55,7 +55,7 @@ public class QueueAdapterRecycler extends RecyclerView.Adapter<QueueAdapterRecyc
         final String queue_imageUri = queues.get(i).getQueue_image();
         final String queue_id = queues.get(i).getQueue_id();
         //final Boolean queue_is_favorite = queues.get(i).getQueue_is_favorite();
-        
+
         myViewHolder.queue_name.setText(queue_name);
         myViewHolder.queue_business.setText(queue_business);
         myViewHolder.queue_city.setText(queue_city);

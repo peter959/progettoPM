@@ -46,7 +46,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create an account to access all features.\nRegister with Facebook, Google or your email"
+            android:text="Create an account to access all features.\nRegister with your email"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             android:textStyle="normal"
