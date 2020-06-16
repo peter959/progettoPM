@@ -85,7 +85,6 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 progressButton.buttonActivated();
-
                 name = ETname.getText().toString();
                 email = ETemail.getText().toString();
                 city = ETcity.getText().toString();
