@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -52,6 +53,7 @@ public class SearchFragment extends Fragment {
     QueueAdapterRecycler queueAdapter;
     List<Queue> models;
     ProgressBar progressBar;
+    ImageButton src_location;
 
     DatabaseReference referenceForQueueInfo;
     CompletionHandler completionHandler;
@@ -76,10 +78,6 @@ public class SearchFragment extends Fragment {
 
         models = new ArrayList<>();
 
-
-
-
-
     }
 
 
@@ -95,6 +93,7 @@ public class SearchFragment extends Fragment {
         recyclerView = returnView.findViewById(R.id.match_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setNestedScrollingEnabled(false);
+        src_location = returnView.findViewById(R.id.btn_src_location);
 
 
         Button button = returnView.findViewById(R.id.goSearch);
@@ -111,6 +110,20 @@ public class SearchFragment extends Fragment {
                     index.searchAsync(new Query(keyword), completionHandler);
                 }
 
+            }
+        });
+
+        src_location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String keyword = getArguments().getString("locality");
+                System.out.println("The keyword inserted is: " + keyword);
+                if(keyword.length()==0){
+                    Toast.makeText(getContext(), "Insert a search keyword for queues", Toast.LENGTH_SHORT).show();
+                }else{
+                    models = new ArrayList<>();
+                    index.searchAsync(new Query(keyword), completionHandler);
+                }
             }
         });
 

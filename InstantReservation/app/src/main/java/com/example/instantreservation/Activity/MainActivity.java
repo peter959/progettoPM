@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -44,11 +45,11 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private Toolbar toolbar;
 
-    final Fragment homeFragment = new HomeFragment();
-    final Fragment searchFragment = new SearchFragment();
-    final Fragment cameraFragment = new CameraFragment();
-    final Fragment favoritesFragment = new FavoritesFragment();
-    final FragmentManager fm = getSupportFragmentManager();
+    Fragment homeFragment = new HomeFragment();
+    Fragment searchFragment = new SearchFragment();
+    Fragment cameraFragment = new CameraFragment();
+    Fragment favoritesFragment = new FavoritesFragment();
+    FragmentManager fm = getSupportFragmentManager();
     Fragment active = homeFragment;
 
     FusedLocationProviderClient fusedLocationProviderClient;
@@ -75,6 +76,10 @@ public class MainActivity extends AppCompatActivity {
                         longitude = addresses.get(0).getLongitude();
                         locality = addresses.get(0).getLocality();
                         address = addresses.get(0).getAddressLine(0);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("locality", locality);
+                        // set Fragmentclass Arguments
+                        searchFragment.setArguments(bundle);
                     }
                     catch (IOException e) {
                         e.printStackTrace();
@@ -94,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             //when permission granted
             getLocation();
+
             //Toast.makeText(this, locality + " " + address, Toast.LENGTH_LONG).show();
 
         } else {

@@ -49,6 +49,15 @@
 
         </LinearLayout>
 
+    <ImageButton
+        android:id="@+id/btn_src_location"
+        android:src="@drawable/ic_location"
+        android:layout_gravity="center"
+        android:layout_width="150dp"
+        android:layout_height="35dp"
+        android:background="@drawable/bgbtncreate"
+        />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
